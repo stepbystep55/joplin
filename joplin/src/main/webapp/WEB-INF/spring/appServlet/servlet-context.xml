@@ -20,9 +20,26 @@
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
-	
+
 	<context:component-scan base-package="com.ippoippo.joplin" />
-	
-	
-	
+
+	<beans:bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<beans:property name="basename" value="messages" />
+	</beans:bean>
+
+	<beans:bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<beans:property name="location">
+			<beans:value>application.properties</beans:value>
+		</beans:property>
+<!--
+		<beans:property name="properties">
+			<beans:props>
+				<beans:prop key="entry.1">123</beans:prop>
+			</beans:props>
+		</beans:property>
+-->
+	</beans:bean>
+
+	<beans:import resource="datasrc.xml" />
+
 </beans:beans>
