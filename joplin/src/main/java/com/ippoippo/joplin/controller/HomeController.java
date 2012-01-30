@@ -1,4 +1,4 @@
-package com.ippoippo.joplin;
+package com.ippoippo.joplin.controller;
 
 import java.text.DateFormat;
 import java.util.Date;

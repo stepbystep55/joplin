@@ -20,8 +20,7 @@ import com.ippoippo.joplin.social.SimpleConnectionSignUp;
 import com.ippoippo.joplin.social.SimpleSignInAdapter;
 
 /**
- * Spring Social Configuration.
- * @author Keith Donald
+ * Social Configuration.
  */
 @Configuration
 public class SocialConfig {
@@ -37,6 +36,9 @@ public class SocialConfig {
 	
 	@Value("${twitter.clientSecret}")
 	private String twitterClientSecret;
+	
+	@Value("${post.signin.url}")
+	private String postSignInUrl;
 	
 	@Inject
 	private DataSource dataSource;
@@ -58,8 +60,11 @@ public class SocialConfig {
 	 */
 	@Bean
 	public UsersConnectionRepository usersConnectionRepository() {
-		JdbcUsersConnectionRepository repository = new JdbcUsersConnectionRepository(dataSource,
-				connectionFactoryLocator(), Encryptors.noOpText());
+		JdbcUsersConnectionRepository repository
+		= new JdbcUsersConnectionRepository(
+				dataSource,
+				connectionFactoryLocator(),
+				Encryptors.noOpText());
 		repository.setConnectionSignUp(new SimpleConnectionSignUp());
 		return repository;
 	}
@@ -71,6 +76,7 @@ public class SocialConfig {
 				connectionFactoryLocator()
 				, usersConnectionRepository()
 				, new SimpleSignInAdapter());
+		providerSignInController.setPostSignInUrl(postSignInUrl);
 
 		return providerSignInController;
 	}
