@@ -35,7 +35,7 @@ public class UserCookieGenerator {
 
 				encoder = Cipher.getInstance("DESede");
 				encoder.init(Cipher.ENCRYPT_MODE, secretKey);
-				
+
 				decoder = Cipher.getInstance("DESede");
 				decoder.init(Cipher.DECRYPT_MODE, secretKey);
 

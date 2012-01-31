@@ -12,6 +12,10 @@
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
 
+	<interceptors>
+		<beans:bean class="com.ippoippo.joplin.controller.AuthInterceptor" />
+	</interceptors>
+
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
 
@@ -29,7 +33,7 @@
 
 	<beans:bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<beans:property name="location">
-			<beans:value>application.properties</beans:value>
+			<beans:value>classpath:/application.properties</beans:value>
 		</beans:property>
 <!--
 		<beans:property name="properties">

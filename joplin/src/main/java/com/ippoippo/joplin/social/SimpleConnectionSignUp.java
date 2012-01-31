@@ -1,12 +1,15 @@
 package com.ippoippo.joplin.social;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.inject.Inject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionSignUp;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.ippoippo.joplin.dto.User;
+import com.ippoippo.joplin.mapper.UserMasterMapper;
 import com.ippoippo.joplin.util.UserCookieGenerator;
 
 /**
@@ -14,15 +17,23 @@ import com.ippoippo.joplin.util.UserCookieGenerator;
  */
 public class SimpleConnectionSignUp implements ConnectionSignUp {
 
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+	@Inject
+	private UserMasterMapper userMasterMapper;
+
 	private UserCookieGenerator userCookieGenerator = new UserCookieGenerator();
 
+	@Transactional(rollbackForClassName="java.lang.Exception")
 	public String execute(Connection<?> connection) {
-		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
-		String userId = userCookieGenerator.getUserId(request).toString();
-		System.out.println("SimpleConnectionSignUp#userId="+userId);
-		return userId;
-		//return userCookieGenerator.getUserId(request).toString();
-		//return connection.getKey().getProviderUserId();
+		
+		User user = new User();
+		Integer userId = userMasterMapper.newId();
+		user.setId(userMasterMapper.newId());
+		userMasterMapper.createUser(user);
+		
+		logger.info("SimpleConnectionSignUp#userId="+userId);
+		return userId.toString();
 	}
 
 }

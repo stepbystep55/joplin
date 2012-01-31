@@ -10,6 +10,8 @@
 	<!-- Embedded database for storing connections -->
 	<jdbc:embedded-database id="dataSource" type="H2">
 		<jdbc:script location="classpath:/org/springframework/social/connect/jdbc/JdbcUsersConnectionRepository.sql" />
+		<jdbc:script location="classpath:/com/ippoippo/joplin/mapper/create_sequence_user.sql" />
+		<jdbc:script location="classpath:/com/ippoippo/joplin/mapper/create_user_master.sql" />
 	</jdbc:embedded-database>	
 
 	<!-- Local, JDBC-based TransactionManager -->
