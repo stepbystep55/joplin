@@ -14,8 +14,11 @@ import org.springframework.web.util.CookieGenerator;
 
 public class UserCookieGenerator {
 
+	/*
 	@Value("${cipher.key}")
 	private String cipherKey;
+	*/
+	private String cipherKey = "osdfa790523qdsu3as4d38be";
 
 	public static final String SESSION_KEY_AUTH = "uid";
 

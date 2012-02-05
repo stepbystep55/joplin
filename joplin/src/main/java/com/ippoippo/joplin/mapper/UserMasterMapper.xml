@@ -14,7 +14,7 @@
 
 	<select id="getUserById" parameterType="int" resultMap="user">
 		SELECT
-			UM.ID
+			UM.ID,
 			UM.NAME
 		FROM
 			USER_MASTER UM
@@ -25,12 +25,13 @@
 	<insert id="createUser" parameterType="com.ippoippo.joplin.dto.User">
 		INSERT INTO USER_MASTER
 		(
-			ID
+			ID,
 			NAME
 		)
 		VALUES
 		(
-			#{id}
+			#{id},
+			#{name}
 		)
 	</insert>
 

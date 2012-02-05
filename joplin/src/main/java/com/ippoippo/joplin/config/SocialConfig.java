@@ -20,11 +20,13 @@ import com.ippoippo.joplin.social.SimpleConnectionSignUp;
 import com.ippoippo.joplin.social.SimpleSignInAdapter;
 
 /**
+ * @deprecated
+ * I don't know how defined objects.
  * Social Configuration.
  */
-@Configuration
+//@Configuration
 public class SocialConfig {
-
+/*
 	@Value("${facebook.clientId}")
 	private String facebookClientId;
 	
@@ -42,11 +44,7 @@ public class SocialConfig {
 	
 	@Inject
 	private DataSource dataSource;
-
-	/**
-	 * When a new provider is added to the app, register its {@link ConnectionFactory} here.
-	 * @see FacebookConnectionFactory
-	 */
+	
 	@Bean
 	public ConnectionFactoryLocator connectionFactoryLocator() {
 		ConnectionFactoryRegistry registry = new ConnectionFactoryRegistry();
@@ -55,9 +53,6 @@ public class SocialConfig {
 		return registry;
 	}
 
-	/**
-	 * Singleton data access object providing access to connections across all users.
-	 */
 	@Bean
 	public UsersConnectionRepository usersConnectionRepository() {
 		JdbcUsersConnectionRepository repository
@@ -80,4 +75,5 @@ public class SocialConfig {
 
 		return providerSignInController;
 	}
+	*/
 }

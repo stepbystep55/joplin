@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ippoippo.joplin.dto.User;
 import com.ippoippo.joplin.mapper.UserMasterMapper;
-import com.ippoippo.joplin.util.UserCookieGenerator;
 
 /**
  * {@link ConnectionSignUp}
@@ -22,8 +21,6 @@ public class SimpleConnectionSignUp implements ConnectionSignUp {
 	@Inject
 	private UserMasterMapper userMasterMapper;
 
-	private UserCookieGenerator userCookieGenerator = new UserCookieGenerator();
-
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	public String execute(Connection<?> connection) {
 		
@@ -31,9 +28,9 @@ public class SimpleConnectionSignUp implements ConnectionSignUp {
 		Integer userId = userMasterMapper.newId();
 		user.setId(userMasterMapper.newId());
 		userMasterMapper.createUser(user);
-		
-		logger.info("SimpleConnectionSignUp#userId="+userId);
+
+		logger.info("Signup with userId=" + userId);
+
 		return userId.toString();
 	}
-
 }
