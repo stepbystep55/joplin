@@ -8,13 +8,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.servlet.view.RedirectView;
 
-import com.ippoippo.joplin.util.UserCookieGenerator;
+import com.ippoippo.joplin.util.UserCookieForTemporaryGenerator;
 
 public class AuthInterceptor extends HandlerInterceptorAdapter {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-	private UserCookieGenerator userCookieGenerator = new UserCookieGenerator();
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.NativeWebRequest;
 
 import com.ippoippo.joplin.dto.User;
-import com.ippoippo.joplin.util.UserCookieGenerator;
+import com.ippoippo.joplin.util.UserCookieForTemporaryGenerator;
 
 /**
  * Handles requests for the application home page.
@@ -27,8 +27,6 @@ public class HomeController {
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
-	private UserCookieGenerator userCookieGenerator = new UserCookieGenerator();
-
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home() {
 

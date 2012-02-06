@@ -7,26 +7,27 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.encrypt.Encryptors;
-import org.springframework.social.connect.ConnectionFactory;
 import org.springframework.social.connect.ConnectionFactoryLocator;
+import org.springframework.social.connect.ConnectionSignUp;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository;
 import org.springframework.social.connect.support.ConnectionFactoryRegistry;
 import org.springframework.social.connect.web.ProviderSignInController;
+import org.springframework.social.connect.web.SignInAdapter;
 import org.springframework.social.facebook.connect.FacebookConnectionFactory;
 import org.springframework.social.twitter.connect.TwitterConnectionFactory;
+import org.springframework.web.util.CookieGenerator;
 
 import com.ippoippo.joplin.social.SimpleConnectionSignUp;
 import com.ippoippo.joplin.social.SimpleSignInAdapter;
+import com.ippoippo.joplin.util.UserCookieForTemporaryGenerator;
 
 /**
- * @deprecated
  * I don't know how defined objects.
  * Social Configuration.
  */
-//@Configuration
+@Configuration
 public class SocialConfig {
-/*
 	@Value("${facebook.clientId}")
 	private String facebookClientId;
 	
@@ -46,6 +47,11 @@ public class SocialConfig {
 	private DataSource dataSource;
 	
 	@Bean
+	public UserCookieForTemporaryGenerator userCookieForTemporaryGenerator() {
+		return new UserCookieForTemporaryGenerator();
+	}
+	
+	@Bean
 	public ConnectionFactoryLocator connectionFactoryLocator() {
 		ConnectionFactoryRegistry registry = new ConnectionFactoryRegistry();
 		registry.addConnectionFactory(new FacebookConnectionFactory(facebookClientId, facebookClientSecret));
@@ -54,13 +60,23 @@ public class SocialConfig {
 	}
 
 	@Bean
+	public ConnectionSignUp ConnectionSignUp() {
+		return new SimpleConnectionSignUp();
+	}
+	
+	@Bean
+	public SignInAdapter signInAdapter() {
+		return new SimpleSignInAdapter();
+	}
+	
+	@Bean
 	public UsersConnectionRepository usersConnectionRepository() {
 		JdbcUsersConnectionRepository repository
 		= new JdbcUsersConnectionRepository(
 				dataSource,
 				connectionFactoryLocator(),
 				Encryptors.noOpText());
-		repository.setConnectionSignUp(new SimpleConnectionSignUp());
+		repository.setConnectionSignUp(ConnectionSignUp());
 		return repository;
 	}
 
@@ -70,10 +86,9 @@ public class SocialConfig {
 		= new ProviderSignInController(
 				connectionFactoryLocator()
 				, usersConnectionRepository()
-				, new SimpleSignInAdapter());
+				, signInAdapter());
 		providerSignInController.setPostSignInUrl(postSignInUrl);
 
 		return providerSignInController;
 	}
-	*/
 }

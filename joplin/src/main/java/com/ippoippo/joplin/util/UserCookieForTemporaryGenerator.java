@@ -12,13 +12,11 @@ import org.apache.commons.codec.binary.Hex;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.util.CookieGenerator;
 
-public class UserCookieGenerator {
+public class UserCookieForTemporaryGenerator {
 
-	/*
 	@Value("${cipher.key}")
 	private String cipherKey;
-	*/
-	private String cipherKey = "osdfa790523qdsu3as4d38be";
+	//private String cipherKey = "osdfa790523qdsu3as4d38be";
 
 	public static final String SESSION_KEY_AUTH = "uid";
 
@@ -27,8 +25,6 @@ public class UserCookieGenerator {
 	private Cipher decoder = null;
 
 	private CookieGenerator userIdCookieGenerator = new CookieGenerator();
-
-	private static final int ONE_WEEK = 7 * 24 * 60 * 60;
 
 	private void initCipher() {
 		if (encoder == null || decoder == null) {
@@ -71,17 +67,12 @@ public class UserCookieGenerator {
 		return new Integer(new String(bytes));
 	}
 
-	public UserCookieGenerator() {
+	public UserCookieForTemporaryGenerator() {
 		this.userIdCookieGenerator.setCookieName(SESSION_KEY_AUTH);
 	}
 
-	public void addUserIdForTemporary(HttpServletResponse response, Integer userId) {
+	public void addUserId(HttpServletResponse response, Integer userId) {
 		this.userIdCookieGenerator.setCookieMaxAge(-1);
-		this.userIdCookieGenerator.addCookie(response, ""+encrypt(userId));
-	}
-
-	public void addUserIdForOneWeek(HttpServletResponse response, Integer userId) {
-		this.userIdCookieGenerator.setCookieMaxAge(ONE_WEEK);
 		this.userIdCookieGenerator.addCookie(response, ""+encrypt(userId));
 	}
 
