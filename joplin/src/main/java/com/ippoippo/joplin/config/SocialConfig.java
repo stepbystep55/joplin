@@ -16,18 +16,16 @@ import org.springframework.social.connect.web.ProviderSignInController;
 import org.springframework.social.connect.web.SignInAdapter;
 import org.springframework.social.facebook.connect.FacebookConnectionFactory;
 import org.springframework.social.twitter.connect.TwitterConnectionFactory;
-import org.springframework.web.util.CookieGenerator;
 
 import com.ippoippo.joplin.social.SimpleConnectionSignUp;
 import com.ippoippo.joplin.social.SimpleSignInAdapter;
-import com.ippoippo.joplin.util.UserCookieForTemporaryGenerator;
 
 /**
- * I don't know how defined objects.
  * Social Configuration.
  */
 @Configuration
 public class SocialConfig {
+
 	@Value("${facebook.clientId}")
 	private String facebookClientId;
 	
@@ -45,11 +43,6 @@ public class SocialConfig {
 	
 	@Inject
 	private DataSource dataSource;
-	
-	@Bean
-	public UserCookieForTemporaryGenerator userCookieForTemporaryGenerator() {
-		return new UserCookieForTemporaryGenerator();
-	}
 	
 	@Bean
 	public ConnectionFactoryLocator connectionFactoryLocator() {

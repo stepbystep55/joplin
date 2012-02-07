@@ -1,78 +1,41 @@
 package com.ippoippo.joplin.util;
 
 import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.DESedeKeySpec;
+import javax.inject.Inject;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.codec.binary.Hex;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.util.CookieGenerator;
 
 public class UserCookieForTemporaryGenerator {
 
-	@Value("${cipher.key}")
-	private String cipherKey;
-	//private String cipherKey = "osdfa790523qdsu3as4d38be";
-
 	public static final String SESSION_KEY_AUTH = "uid";
 
-	private Cipher encoder = null;
+	@Inject
+	private Cipher encoder;
 
-	private Cipher decoder = null;
+	@Inject
+	private Cipher decoder;
 
 	private CookieGenerator userIdCookieGenerator = new CookieGenerator();
 
-	private void initCipher() {
-		if (encoder == null || decoder == null) {
-			try {
-				SecretKey secretKey
-				= SecretKeyFactory.getInstance("DESede").generateSecret(new DESedeKeySpec(cipherKey.getBytes()));
-
-				encoder = Cipher.getInstance("DESede");
-				encoder.init(Cipher.ENCRYPT_MODE, secretKey);
-
-				decoder = Cipher.getInstance("DESede");
-				decoder.init(Cipher.DECRYPT_MODE, secretKey);
-
-			} catch (Exception e) {
-				throw new RuntimeException(e);
-			}
-		}
-	}
-
-	private String encrypt(Integer target) {
-		initCipher();
-		byte[] bytes = null;
-		try {
-			bytes = encoder.doFinal(target.toString().getBytes());
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-		return Hex.encodeHexString(bytes);
-	}
-
-	private Integer decrypt(String target) {
-		initCipher();
-		byte[] bytes = null;
-		try {
-			bytes = Hex.decodeHex(target.toCharArray());
-			decoder.doFinal(bytes);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-		return new Integer(new String(bytes));
-	}
+	private static final int ONE_WEEK = 7 * 24 * 60 * 60; // for 1 week
 
 	public UserCookieForTemporaryGenerator() {
+		this.userIdCookieGenerator.setCookieMaxAge(-1);
 		this.userIdCookieGenerator.setCookieName(SESSION_KEY_AUTH);
 	}
 
+	private String encrypt(Integer target) {
+		return StringUtils.encrypt(target.toString(), encoder);
+	}
+
+	private Integer decrypt(String target) {
+		return new Integer(StringUtils.decrypt(target, decoder));
+	}
+
 	public void addUserId(HttpServletResponse response, Integer userId) {
-		this.userIdCookieGenerator.setCookieMaxAge(-1);
 		this.userIdCookieGenerator.addCookie(response, ""+encrypt(userId));
 	}
 

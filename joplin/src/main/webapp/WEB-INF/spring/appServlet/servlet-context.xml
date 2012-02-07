@@ -45,8 +45,5 @@
 	</beans:bean>
 
 	<beans:import resource="datasrc.xml" />
-<!--
-	<beans:import resource="social.xml" />
--->
 
 </beans:beans>
