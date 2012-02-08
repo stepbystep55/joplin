@@ -27,30 +27,22 @@ public class UserCookieForTemporaryGenerator {
 		this.userIdCookieGenerator.setCookieName(SESSION_KEY_AUTH);
 	}
 
-	private String encrypt(Integer target) {
-		return StringUtils.encrypt(target.toString(), encoder);
-	}
-
-	private Integer decrypt(String target) {
-		return new Integer(StringUtils.decrypt(target, decoder));
-	}
-
-	public void addUserId(HttpServletResponse response, Integer userId) {
-		this.userIdCookieGenerator.addCookie(response, ""+encrypt(userId));
+	public void addUserId(HttpServletResponse response, String userId) {
+		this.userIdCookieGenerator.addCookie(response, StringUtils.encrypt(userId, encoder));
 	}
 
 	public void removeUserId(HttpServletResponse response) {
 		this.userIdCookieGenerator.removeCookie(response);
 	}
 
-	public Integer getUserId(HttpServletRequest request) {
+	public String getUserId(HttpServletRequest request) {
 		Cookie[] cookies = request.getCookies();
 		if (cookies == null) return null;
 
-		Integer userId = null;
+		String userId = null;
 		for (Cookie cookie : cookies) {
 			if (cookie.getName().equals(SESSION_KEY_AUTH)) {
-				userId = decrypt(cookie.getValue());
+				userId = StringUtils.decrypt(cookie.getValue(), decoder);
 				break;
 			}
 		}

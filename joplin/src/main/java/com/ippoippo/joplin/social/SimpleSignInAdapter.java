@@ -25,7 +25,7 @@ public final class SimpleSignInAdapter implements SignInAdapter {
 		logger.info("Signin with userId=" + userId);
 		
 		HttpServletResponse nativeResponse = (HttpServletResponse)request.getNativeResponse();
-		userCookieGenerator.addUserId(nativeResponse, new Integer(userId));
+		userCookieGenerator.addUserId(nativeResponse, userId);
 
 		return null;
 	}

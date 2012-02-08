@@ -4,17 +4,14 @@ package com.ippoippo.joplin.dto;
 
 public class User {
 
-	public static final String KEY_ID = "id";
-	public static final String KEY_NAME = "name";
+	private String id;
 
-	private Integer id = null;
-
-	private String name = "anonymouos";
+	private String name = "anonymous";
 	
-	public Integer getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getName() {

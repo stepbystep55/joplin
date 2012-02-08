@@ -1,4 +1,4 @@
 CREATE TABLE USER_MASTER (
-	ID Integer not null,
+	ID varchar(255)not null,
 	NAME  varchar(128) not null,
 	primary key (ID));

@@ -10,8 +10,8 @@
 	<!-- Embedded database for storing connections -->
 	<jdbc:embedded-database id="dataSource" type="H2">
 		<jdbc:script location="classpath:/org/springframework/social/connect/jdbc/JdbcUsersConnectionRepository.sql" />
-		<jdbc:script location="classpath:/com/ippoippo/joplin/mapper/create_sequence_user.sql" />
-		<jdbc:script location="classpath:/com/ippoippo/joplin/mapper/create_user_master.sql" />
+		<jdbc:script location="classpath:/com/ippoippo/joplin/jdbc/mapper/create_sequence_user.sql" />
+		<jdbc:script location="classpath:/com/ippoippo/joplin/jdbc/mapper/create_user_master.sql" />
 	</jdbc:embedded-database>	
 
 	<!-- Local, JDBC-based TransactionManager -->
@@ -26,7 +26,7 @@
 	</bean>
 
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value= "com.ippoippo.joplin.mapper" />
+		<property name="basePackage" value= "com.ippoippo.joplin.jdbc.mapper" />
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
 	</bean>
 </beans>
