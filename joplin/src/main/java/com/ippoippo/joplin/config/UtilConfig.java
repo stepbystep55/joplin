@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.ippoippo.joplin.util.Encryptor;
 import com.ippoippo.joplin.util.UserCookieForTemporaryGenerator;
 
 /**
@@ -22,34 +23,23 @@ public class UtilConfig {
 
 	@Bean
 	public UserCookieForTemporaryGenerator userCookieForTemporaryGenerator() {
-		return new UserCookieForTemporaryGenerator();
+		return new UserCookieForTemporaryGenerator(encryptor());
 	}
 	
 	@Bean
-	public Cipher encoder() {
+	public Encryptor encryptor() {
 		Cipher encoder = null;
+		Cipher decoder = null;
 		try {
 			SecretKey secretKey
 			= SecretKeyFactory.getInstance("DESede").generateSecret(new DESedeKeySpec(cipherKey.getBytes()));
 			encoder = Cipher.getInstance("DESede");
 			encoder.init(Cipher.ENCRYPT_MODE, secretKey);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-		return encoder;
-	}
-
-	@Bean
-	public Cipher decoder() {
-		Cipher decoder = null;
-		try {
-			SecretKey secretKey
-			= SecretKeyFactory.getInstance("DESede").generateSecret(new DESedeKeySpec(cipherKey.getBytes()));
 			decoder = Cipher.getInstance("DESede");
 			decoder.init(Cipher.DECRYPT_MODE, secretKey);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-		return decoder;
+		return new Encryptor(encoder, decoder);
 	}
 }

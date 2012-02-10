@@ -1,7 +1,5 @@
 package com.ippoippo.joplin.util;
 
-import javax.crypto.Cipher;
-import javax.inject.Inject;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,23 +10,20 @@ public class UserCookieForTemporaryGenerator {
 
 	public static final String SESSION_KEY_AUTH = "uid";
 
-	@Inject
-	private Cipher encoder;
-
-	@Inject
-	private Cipher decoder;
+	private Encryptor encryptor;
 
 	private CookieGenerator userIdCookieGenerator = new CookieGenerator();
 
 	private static final int ONE_WEEK = 7 * 24 * 60 * 60; // for 1 week
 
-	public UserCookieForTemporaryGenerator() {
+	public UserCookieForTemporaryGenerator(Encryptor encryptor) {
+		this.encryptor = encryptor;
 		this.userIdCookieGenerator.setCookieMaxAge(-1);
 		this.userIdCookieGenerator.setCookieName(SESSION_KEY_AUTH);
 	}
 
 	public void addUserId(HttpServletResponse response, String userId) {
-		this.userIdCookieGenerator.addCookie(response, StringUtils.encrypt(userId, encoder));
+		this.userIdCookieGenerator.addCookie(response, encryptor.encrypt(userId));
 	}
 
 	public void removeUserId(HttpServletResponse response) {
@@ -42,7 +37,7 @@ public class UserCookieForTemporaryGenerator {
 		String userId = null;
 		for (Cookie cookie : cookies) {
 			if (cookie.getName().equals(SESSION_KEY_AUTH)) {
-				userId = StringUtils.decrypt(cookie.getValue(), decoder);
+				userId = encryptor.decrypt(cookie.getValue());
 				break;
 			}
 		}

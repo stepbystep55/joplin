@@ -28,8 +28,6 @@ public class SimpleConnectionSignUp implements ConnectionSignUp {
 */
 	@Inject
 	private MongoOperations mongoOperations;
-	@Inject
-	private UserRepository userRepository;
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	public String execute(Connection<?> connection) {
@@ -42,12 +40,7 @@ public class SimpleConnectionSignUp implements ConnectionSignUp {
 		*/
 		mongoOperations.save(user);
 		String userId = user.getId();
-		List<User> users = mongoOperations.find(Query.query(Criteria.where("name").is("anonymous")), User.class);
-		logger.info(""+users);
-		User tempUser = mongoOperations.findById(userId, User.class);
-		logger.info("tempUserId="+tempUser.getId());
-		logger.info("result by find="+userRepository.findByName("anonymous"));
-	
+
 		logger.info("Signup with userId=" + userId);
 		return userId;
 	}
