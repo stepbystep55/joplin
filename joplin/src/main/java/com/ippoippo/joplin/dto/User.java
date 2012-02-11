@@ -3,11 +3,13 @@ package com.ippoippo.joplin.dto;
 
 
 public class User {
-
+	
 	private String id;
 
 	private String name = "anonymous";
 	
+	private String email = "none@no.where";
+
 	public String getId() {
 		return id;
 	}
@@ -19,5 +21,15 @@ public class User {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", name=" + name + ", email=" + email + "]";
 	}
 }

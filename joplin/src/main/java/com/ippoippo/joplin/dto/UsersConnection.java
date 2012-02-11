@@ -1,6 +1,6 @@
 package com.ippoippo.joplin.dto;
 
-public class UserConnection {
+public class UsersConnection {
 
 	private String userId;
 	private String providerId;
@@ -78,5 +78,14 @@ public class UserConnection {
 	}
 	public void setExpireTime(Long expireTime) {
 		this.expireTime = expireTime;
+	}
+	@Override
+	public String toString() {
+		return "UsersConnection [userId=" + userId + ", providerId="
+				+ providerId + ", providerUserId=" + providerUserId + ", rank="
+				+ rank + ", displayName=" + displayName + ", profileUrl="
+				+ profileUrl + ", imageUrl=" + imageUrl + ", accessToken="
+				+ accessToken + ", secret=" + secret + ", refreshToken="
+				+ refreshToken + ", expireTime=" + expireTime + "]";
 	}
 }

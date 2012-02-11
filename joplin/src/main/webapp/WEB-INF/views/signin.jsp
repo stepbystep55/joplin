@@ -15,5 +15,9 @@
 	<input type="hidden" name="scope" value="email,read_stream,offline_access" />
 	<input type="submit" name="connectFacebook" value="connect" />
 </form:form>
+<h2>Twitter</h2>
+<form:form action="signin/twitter" method="post">
+	<input type="submit" name="connectTwitter" value="connect" />
+</form:form>
 </body>
 </html>

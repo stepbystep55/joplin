@@ -17,7 +17,7 @@ import org.springframework.social.connect.ConnectionSignUp;
 import org.springframework.social.connect.UsersConnectionRepository;
 
 import com.ippoippo.joplin.dto.User;
-import com.ippoippo.joplin.dto.UserConnection;
+import com.ippoippo.joplin.dto.UsersConnection;
 import com.ippoippo.joplin.util.Encryptor;
 
 public class MongoUsersConnectionRepository implements UsersConnectionRepository {
@@ -50,11 +50,11 @@ public class MongoUsersConnectionRepository implements UsersConnectionRepository
 	@Override
 	public Set<String> findUserIdsConnectedTo(String providerId, Set<String> providerUserIds) {
 		Set<String> localUserIds = new HashSet<String>();
-		List<UserConnection> userConnections
+		List<UsersConnection> userConnections
 			= mongoOperations.find(
 					Query.query(
-						Criteria.where("providerId").is(providerId).and("providerUserId").in(providerId))
-					, UserConnection.class);
+						Criteria.where("providerId").is(providerId).and("providerUserId").in(providerUserIds))
+					, UsersConnection.class);
 		for (int i = 0; i < userConnections.size(); i++) localUserIds.add(userConnections.get(i).getUserId());
 		return localUserIds;
 	}
