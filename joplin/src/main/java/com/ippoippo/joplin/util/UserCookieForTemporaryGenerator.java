@@ -18,7 +18,8 @@ public class UserCookieForTemporaryGenerator {
 
 	public UserCookieForTemporaryGenerator(Encryptor encryptor) {
 		this.encryptor = encryptor;
-		this.userIdCookieGenerator.setCookieMaxAge(-1);
+		//this.userIdCookieGenerator.setCookieMaxAge(-1);
+		this.userIdCookieGenerator.setCookieMaxAge(ONE_WEEK);
 		this.userIdCookieGenerator.setCookieName(SESSION_KEY_AUTH);
 	}
 

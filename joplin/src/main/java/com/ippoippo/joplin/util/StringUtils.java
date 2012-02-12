@@ -46,8 +46,7 @@ public class StringUtils {
 	public static String decrypt(String target, Cipher decoder) {
 		byte[] bytes = null;
 		try {
-			bytes = Hex.decodeHex(target.toCharArray());
-			decoder.doFinal(bytes);
+			bytes = decoder.doFinal(Hex.decodeHex(target.toCharArray()));
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

@@ -6,9 +6,9 @@ public interface UserMasterMapper {
 
 	public Integer newId();
 
-	public User getUserById(String id);
+	public User getById(String id);
 
-	public void createUser(User user);
+	public void create(User user);
 
-	public void deleteUser(String id);
+	public void delete(String id);
 }

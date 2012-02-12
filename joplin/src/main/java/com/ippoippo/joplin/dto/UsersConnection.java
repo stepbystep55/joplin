@@ -1,5 +1,12 @@
 package com.ippoippo.joplin.dto;
 
+import org.springframework.social.connect.Connection;
+import org.springframework.social.connect.ConnectionData;
+import org.springframework.social.connect.ConnectionFactory;
+import org.springframework.social.connect.ConnectionFactoryLocator;
+
+import com.ippoippo.joplin.util.Encryptor;
+
 public class UsersConnection {
 
 	private String userId;
@@ -74,10 +81,30 @@ public class UsersConnection {
 		this.refreshToken = refreshToken;
 	}
 	public Long getExpireTime() {
-		return expireTime;
+		return (expireTime == 0) ? null : expireTime;
 	}
 	public void setExpireTime(Long expireTime) {
 		this.expireTime = expireTime;
+	}
+	public void encrypt(Encryptor encryptor) {
+		if (this.accessToken != null) this.accessToken = encryptor.encrypt(this.accessToken);
+		if (this.secret != null) this.secret = encryptor.encrypt(this.secret);
+		if (this.refreshToken != null) this.refreshToken = encryptor.encrypt(this.refreshToken);
+	}
+	public void decrypt(Encryptor encryptor) {
+		if (this.accessToken != null) this.accessToken = encryptor.decrypt(this.accessToken);
+		if (this.secret != null) this.secret = encryptor.decrypt(this.secret);
+		if (this.refreshToken != null) this.refreshToken = encryptor.decrypt(this.refreshToken);
+	}
+	public ConnectionData getConnectionData() {
+		return new ConnectionData(
+				providerId, providerUserId, displayName, profileUrl, imageUrl,
+				accessToken, secret, refreshToken, expireTime);
+	}
+	public Connection<?> getConnection(ConnectionFactoryLocator connectionFactoryLocator) {
+		ConnectionData connectionData = getConnectionData();
+		ConnectionFactory<?> connectionFactory = connectionFactoryLocator.getConnectionFactory(connectionData.getProviderId());
+		return connectionFactory.createConnection(connectionData);
 	}
 	@Override
 	public String toString() {

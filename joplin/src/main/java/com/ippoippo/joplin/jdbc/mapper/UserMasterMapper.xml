@@ -12,7 +12,7 @@
 		SELECT SEQ_USER.NEXTVAL
 	</select>
 
-	<select id="getUserById" parameterType="String" resultMap="user">
+	<select id="getById" parameterType="String" resultMap="user">
 		SELECT
 			UM.ID,
 			UM.NAME
@@ -22,7 +22,7 @@
 			UM.ID = #{id}
 	</select>
 
-	<insert id="createUser" parameterType="com.ippoippo.joplin.dto.User">
+	<insert id="create" parameterType="com.ippoippo.joplin.dto.User">
 		INSERT INTO USER_MASTER
 		(
 			ID,
@@ -35,7 +35,7 @@
 		)
 	</insert>
 
-	<delete id="deleteUser" parameterType="String">
+	<delete id="delete" parameterType="String">
 		DELETE FROM 
 			USER_MASTER
 		WHERE 

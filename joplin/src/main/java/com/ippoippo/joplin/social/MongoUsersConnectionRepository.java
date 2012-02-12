@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.inject.Inject;
+
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -18,11 +20,12 @@ import org.springframework.social.connect.UsersConnectionRepository;
 
 import com.ippoippo.joplin.dto.User;
 import com.ippoippo.joplin.dto.UsersConnection;
+import com.ippoippo.joplin.mongo.operations.MongoConnectionOperations;
 import com.ippoippo.joplin.util.Encryptor;
 
 public class MongoUsersConnectionRepository implements UsersConnectionRepository {
 
-	private MongoOperations mongoOperations;
+	private MongoConnectionOperations mongoConnectionOperations;
 
 	private ConnectionFactoryLocator connectionFactoryLocator;
 	
@@ -31,12 +34,12 @@ public class MongoUsersConnectionRepository implements UsersConnectionRepository
 	private ConnectionSignUp connectionSignUp;
 
 	public MongoUsersConnectionRepository(
-			MongoOperations mongoOperations
+			MongoConnectionOperations mongoConnectionOperations
 			, ConnectionFactoryLocator connectionFactoryLocator
 			, Encryptor encryptor
 			) {
 		super();
-		this.mongoOperations = mongoOperations;
+		this.mongoConnectionOperations = mongoConnectionOperations;
 		this.connectionFactoryLocator = connectionFactoryLocator;
 		this.encryptor = encryptor;
 	}
@@ -44,18 +47,15 @@ public class MongoUsersConnectionRepository implements UsersConnectionRepository
 	@Override
 	public ConnectionRepository createConnectionRepository(String userId) {
 		if (userId == null) throw new IllegalArgumentException("userId cannot be null");
-		return new MongoConnectionRepository(userId, mongoOperations, connectionFactoryLocator, encryptor);
+		return new MongoConnectionRepository(userId, mongoConnectionOperations, connectionFactoryLocator, encryptor);
 	}
 
 	@Override
 	public Set<String> findUserIdsConnectedTo(String providerId, Set<String> providerUserIds) {
+		List<UsersConnection> usersConnections
+			= mongoConnectionOperations.listByProviderIdAndProviderUserIds(providerId, providerUserIds);
 		Set<String> localUserIds = new HashSet<String>();
-		List<UsersConnection> userConnections
-			= mongoOperations.find(
-					Query.query(
-						Criteria.where("providerId").is(providerId).and("providerUserId").in(providerUserIds))
-					, UsersConnection.class);
-		for (int i = 0; i < userConnections.size(); i++) localUserIds.add(userConnections.get(i).getUserId());
+		for (UsersConnection usersConnection : usersConnections) localUserIds.add(usersConnection.getUserId());
 		return localUserIds;
 	}
 
@@ -64,13 +64,10 @@ public class MongoUsersConnectionRepository implements UsersConnectionRepository
 
 		ConnectionKey key = connection.getKey();
 		
-		List<User> localUsers
-			= mongoOperations.find(
-					Query.query(
-						Criteria.where("providerId").is(key.getProviderId()).and("providerUserId").is( key.getProviderId()))
-					, User.class);
+		List<UsersConnection> usersConnections
+			= mongoConnectionOperations.listByProviderIdAndProviderUserId(key.getProviderId(), key.getProviderId());
 
-		if (localUsers.size() == 0 && connectionSignUp != null) {
+		if (usersConnections.size() == 0 && connectionSignUp != null) {
 			String newUserId = connectionSignUp.execute(connection);
 			if (newUserId != null) {
 				createConnectionRepository(newUserId).addConnection(connection);
@@ -78,7 +75,7 @@ public class MongoUsersConnectionRepository implements UsersConnectionRepository
 			}
 		}
 		List<String> localUserIds = new ArrayList<String>();
-		for (int i = 0; i < localUsers.size(); i++) localUserIds.add(localUsers.get(i).getId());
+		for (UsersConnection usersConnection : usersConnections) localUserIds.add(usersConnection.getUserId());
 		return localUserIds;
 	}
 

@@ -2,13 +2,16 @@
 <%@ page session="false" %>
 <html>
 <head>
-	<title>Home</title>
+	<title>Top</title>
 </head>
 <body>
 <h1>
 	Hello world!  
 </h1>
-
-<P>  The time on the server is ${serverTime}. </P>
+<P>
+	<c:forEach items="${userDisplays}" var="userDisplay">
+		<c:out value="${userDisplay.name}"/>
+	</c:forEach>
+</P>
 </body>
 </html>

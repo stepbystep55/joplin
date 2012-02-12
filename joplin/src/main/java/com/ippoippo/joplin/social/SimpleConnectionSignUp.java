@@ -35,8 +35,10 @@ public class SimpleConnectionSignUp implements ConnectionSignUp {
 	@Inject
 	private MongoConnectionRepository mongoConnectionRepository;
 */
+	/*
 	@Inject
 	private MongoConnectionOperations mongoConnectionOperations;
+	*/
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	public String execute(Connection<?> connection) {
@@ -44,7 +46,7 @@ public class SimpleConnectionSignUp implements ConnectionSignUp {
 		User user = new User();
 		String userId = userMasterMapper.newId().toString();
 		user.setId(userId);
-		userMasterMapper.createUser(user);
+		userMasterMapper.create(user);
 		
 		/*
 		User user = userRepository.save(new User());
@@ -53,6 +55,7 @@ public class SimpleConnectionSignUp implements ConnectionSignUp {
 		logger.info("users=" + users);
 		*/
 
+		/*
 		ConnectionData data = connection.createData();
 		Integer rank = mongoConnectionOperations.getMaxRankByUserIdAndProviderId(userId, data.getProviderId());
 		UsersConnection usersConnection = new UsersConnection();
@@ -70,6 +73,7 @@ public class SimpleConnectionSignUp implements ConnectionSignUp {
 		mongoConnectionOperations.raw().save(usersConnection);
 		rank = mongoConnectionOperations.getMaxRankByUserIdAndProviderId(userId, data.getProviderId());
 		logger.info("cons="+rank);
+		*/
 
 		logger.info("Signup with userId=" + userId);
 		return userId;
