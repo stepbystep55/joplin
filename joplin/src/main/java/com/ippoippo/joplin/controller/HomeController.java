@@ -1,7 +1,7 @@
 package com.ippoippo.joplin.controller;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.net.URL;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gdata.client.youtube.YouTubeQuery;
+import com.google.gdata.client.youtube.YouTubeService;
+import com.google.gdata.data.youtube.VideoEntry;
+import com.google.gdata.data.youtube.VideoFeed;
+import com.google.gdata.util.ServiceException;
 import com.ippoippo.joplin.dto.UserDisplay;
 import com.ippoippo.joplin.util.UserCookieForTemporaryGenerator;
 
@@ -47,30 +52,52 @@ public class HomeController {
 			MultiValueMap<String, Connection<?>> connections = connectionRepository.findAllConnections();
 			if (connections.isEmpty()) throw new NotSigninException();
 
-			List<UserDisplay> userDisplays = new ArrayList<UserDisplay>();
-			for (String providerName: connections.keySet()) {
-				for (Connection<?> connection : connections.get(providerName)) {
-					UserDisplay userDisplay = new UserDisplay();
-					userDisplay.setProviderName(providerName);
-					userDisplay.setName(connection.getDisplayName());
-					userDisplay.setImageUrl(connection.getImageUrl());
-					userDisplays.add(userDisplay);
-				}
+			UserDisplay userDisplay = new UserDisplay();
+			boolean success = userDisplay.setWithConnectionRepository(connectionRepository);
+			if (!success) throw new NotSigninException();
+			try {
+				this.searchFeed();
+			} catch (Exception e) {
+				logger.error(e.toString(), e);
 			}
-			if (userDisplays.isEmpty()) throw new NotSigninException(); // because connections.isEmpty() doesn't work well
 
 			userCookieForTemporaryGenerator.addUserId(response, userId); // renew cookie for extending maxage
 			ModelAndView modelAndView = new ModelAndView();
-			modelAndView.addObject("userDisplays", userDisplays);
+			modelAndView.addObject("userDisplay", userDisplay);
 			modelAndView.setViewName("top");
 			return modelAndView;
 
 		} catch (NotSigninException e) {
 			userCookieForTemporaryGenerator.removeUserId(response);
 			ModelAndView modelAndView = new ModelAndView();
-			modelAndView.setViewName("signin");
+			modelAndView.setViewName("login");
 			return modelAndView;
 			
+		}
+	}
+
+	public static final String YOUTUBE_GDATA_SERVER = "http://gdata.youtube.com";
+	public static final String VIDEOS_FEED = YOUTUBE_GDATA_SERVER + "/feeds/api/videos";
+
+	private void searchFeed() throws IOException, ServiceException {
+		YouTubeService myService = new YouTubeService("gdataSample-YouTube-1");
+		
+		YouTubeQuery query = new YouTubeQuery(new URL(VIDEOS_FEED));
+		// order results by the number of views (most viewed first)
+		query.setOrderBy(YouTubeQuery.OrderBy.VIEW_COUNT);
+
+		// do not exclude restricted content from the search results 
+		// (by default, it is excluded) 
+		query.setSafeSearch(YouTubeQuery.SafeSearch.NONE);
+
+		String searchTerms = "adele";
+
+		query.setFullTextQuery(searchTerms);
+
+		logger.info("Running Search for '" + searchTerms + "'");
+		VideoFeed videoFeed = myService.query(query, VideoFeed.class);
+		for (VideoEntry ve : videoFeed.getEntries()) {
+			logger.info("title="+ve.getTitle()+", summary="+ve.getSummary());
 		}
 	}
 

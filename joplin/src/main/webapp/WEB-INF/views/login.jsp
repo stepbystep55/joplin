@@ -6,16 +6,16 @@
 <html>
 <head>
 	<%@ include file="_head_base.jsp"%>
-	<title>Sign in</title>
+	<title>Login</title>
 </head>
 <body>
 <h1>Sign in</h1>
-<h2>Facebook</h2>
+<h2>with Facebook</h2>
 <form:form action="signin/facebook" method="post">
-	<input type="hidden" name="scope" value="email,read_stream,offline_access" />
+	<input type="hidden" name="scope" value="user_likes,publish_stream,offline_access" />
 	<input type="submit" name="connectFacebook" value="connect" />
 </form:form>
-<h2>Twitter</h2>
+<h2>with Twitter</h2>
 <form:form action="signin/twitter" method="post">
 	<input type="submit" name="connectTwitter" value="connect" />
 </form:form>
