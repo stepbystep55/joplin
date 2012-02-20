@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns='http://www.w3.org/2005/Atom' xmlns:media='http://search.yahoo.com/mrss/'
+	xmlns:openSearch='http://a9.com/-/spec/opensearchrss/1.0/' xmlns:gd='http://schemas.google.com/g/2005'
+	xmlns:yt='http://gdata.youtube.com/schemas/2007'>
+	<id>http://gdata.youtube.com/feeds/api/videos</id>
+	<updated>2012-02-20T05:15:12.638Z</updated>
+	<category scheme='http://schemas.google.com/g/2005#kind' term='http://gdata.youtube.com/schemas/2007#video' />
+	<title type='text'>YouTube Videos matching query: プラスマイナス</title>
+	<logo>http://www.youtube.com/img/pic_youtubelogo_123x63.gif</logo>
+	<link rel='alternate' type='text/html' href='http://www.youtube.com' />
+	<link rel='http://schemas.google.com/g/2005#feed' type='application/atom+xml'
+		href='http://gdata.youtube.com/feeds/api/videos' />
+	<link rel='http://schemas.google.com/g/2005#batch' type='application/atom+xml'
+		href='http://gdata.youtube.com/feeds/api/videos/batch' />
+	<link rel='self' type='application/atom+xml'
+		href='http://gdata.youtube.com/feeds/api/videos?start-index=1&amp;max-results=1&amp;vq=%E3%83%97%E3%83%A9%E3%82%B9%E3%83%9E%E3%82%A4%E3%83%8A%E3%82%B9&amp;orderby=relevance' />
+	<link rel='next' type='application/atom+xml'
+		href='http://gdata.youtube.com/feeds/api/videos?start-index=2&amp;max-results=1&amp;vq=%E3%83%97%E3%83%A9%E3%82%B9%E3%83%9E%E3%82%A4%E3%83%8A%E3%82%B9&amp;orderby=relevance' />
+	<author>
+		<name>YouTube</name>
+		<uri>http://www.youtube.com/</uri>
+	</author>
+	<generator version='2.1' uri='http://gdata.youtube.com'>YouTube data API</generator>
+	<openSearch:totalResults>693</openSearch:totalResults>
+	<openSearch:startIndex>1</openSearch:startIndex>
+	<openSearch:itemsPerPage>1</openSearch:itemsPerPage>
+	<entry>
+		<id>http://gdata.youtube.com/feeds/api/videos/7q16a7Mqptw</id>
+		<published>2011-11-02T16:55:50.000Z</published>
+		<updated>2012-01-31T12:28:32.000Z</updated>
+		<category scheme='http://schemas.google.com/g/2005#kind'
+			term='http://gdata.youtube.com/schemas/2007#video' />
+		<category scheme='http://gdata.youtube.com/schemas/2007/categories.cat'
+			term='Comedy' label='コメディー' />
+		<category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat'
+			term='お笑い' />
+		<category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat'
+			term='漫才' />
+		<category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat'
+			term='岩橋良昌' />
+		<category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat'
+			term='兼光貴史' />
+		<category scheme='http://gdata.youtube.com/schemas/2007/keywords.cat'
+			term='クセ' />
+		<title type='text'>プラスマイナス</title>
+		<content type='text'>吉本に入るのが遅かったのが功を奏し短い年数で同期に圧倒的な貫録を見せつけたコンビ変なクセwとモノマネと一人一人でも勝負のできるコンビツッコミのほうのアゴを鳴らす技術は素晴らしくとても大きいよい音が出る遅咲きコンビで０７年にNHK上方漫才コンテスト最優秀賞を受賞しているちなみに二位がアジアンで三位が千鳥である
+		</content>
+		<link rel='alternate' type='text/html'
+			href='http://www.youtube.com/watch?v=7q16a7Mqptw&amp;feature=youtube_gdata' />
+		<link rel='http://gdata.youtube.com/schemas/2007#video.responses'
+			type='application/atom+xml'
+			href='http://gdata.youtube.com/feeds/api/videos/7q16a7Mqptw/responses' />
+		<link rel='http://gdata.youtube.com/schemas/2007#video.related'
+			type='application/atom+xml' href='http://gdata.youtube.com/feeds/api/videos/7q16a7Mqptw/related' />
+		<link rel='http://gdata.youtube.com/schemas/2007#mobile' type='text/html'
+			href='http://m.youtube.com/details?v=7q16a7Mqptw' />
+		<link rel='self' type='application/atom+xml'
+			href='http://gdata.youtube.com/feeds/api/videos/7q16a7Mqptw' />
+		<author>
+			<name>modorevt</name>
+			<uri>http://gdata.youtube.com/feeds/api/users/modorevt</uri>
+		</author>
+		<gd:comments>
+			<gd:feedLink rel='http://gdata.youtube.com/schemas/2007#comments'
+				href='http://gdata.youtube.com/feeds/api/videos/7q16a7Mqptw/comments'
+				countHint='1' />
+		</gd:comments>
+		<media:group>
+			<media:category label='コメディー'
+				scheme='http://gdata.youtube.com/schemas/2007/categories.cat'>Comedy</media:category>
+			<media:content
+				url='http://www.youtube.com/v/7q16a7Mqptw?version=3&amp;f=videos&amp;app=youtube_gdata'
+				type='application/x-shockwave-flash' medium='video' isDefault='true'
+				expression='full' duration='306' yt:format='5' />
+			<media:content
+				url='rtsp://v1.cache2.c.youtube.com/CiILENy73wIaGQncpiqza3qt7hMYDSANFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+				type='video/3gpp' medium='video' expression='full' duration='306'
+				yt:format='1' />
+			<media:content
+				url='rtsp://v7.cache1.c.youtube.com/CiILENy73wIaGQncpiqza3qt7hMYESARFEgGUgZ2aWRlb3MM/0/0/0/video.3gp'
+				type='video/3gpp' medium='video' expression='full' duration='306'
+				yt:format='6' />
+			<media:description type='plain'>吉本に入るのが遅かったのが功を奏し短い年数で同期に圧倒的な貫録を見せつけたコンビ変なクセwとモノマネと一人一人でも勝負のできるコンビツッコミのほうのアゴを鳴らす技術は素晴らしくとても大きいよい音が出る遅咲きコンビで０７年にNHK上方漫才コンテスト最優秀賞を受賞しているちなみに二位がアジアンで三位が千鳥である
+			</media:description>
+			<media:keywords>お笑い, 漫才, 岩橋良昌, 兼光貴史, クセ</media:keywords>
+			<media:player
+				url='http://www.youtube.com/watch?v=7q16a7Mqptw&amp;feature=youtube_gdata_player' />
+			<media:thumbnail url='http://i.ytimg.com/vi/7q16a7Mqptw/0.jpg'
+				height='360' width='480' time='00:02:33' />
+			<media:thumbnail url='http://i.ytimg.com/vi/7q16a7Mqptw/1.jpg'
+				height='90' width='120' time='00:01:16.500' />
+			<media:thumbnail url='http://i.ytimg.com/vi/7q16a7Mqptw/2.jpg'
+				height='90' width='120' time='00:02:33' />
+			<media:thumbnail url='http://i.ytimg.com/vi/7q16a7Mqptw/3.jpg'
+				height='90' width='120' time='00:03:49.500' />
+			<media:title type='plain'>プラスマイナス</media:title>
+			<yt:duration seconds='306' />
+		</media:group>
+		<gd:rating average='4.6' max='5' min='1' numRaters='10'
+			rel='http://schemas.google.com/g/2005#overall' />
+		<yt:statistics favoriteCount='8' viewCount='35725' />
+	</entry>
+</feed>

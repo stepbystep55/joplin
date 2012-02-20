@@ -1,7 +1,7 @@
 package com.ippoippo.joplin.controller;
 
 import java.io.IOException;
-import java.net.URL;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -18,11 +18,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.google.gdata.client.youtube.YouTubeQuery;
-import com.google.gdata.client.youtube.YouTubeService;
-import com.google.gdata.data.youtube.VideoEntry;
-import com.google.gdata.data.youtube.VideoFeed;
-import com.google.gdata.util.ServiceException;
+import com.google.api.client.googleapis.GoogleHeaders;
+import com.google.api.client.googleapis.json.JsonCParser;
+import com.google.api.client.http.GenericUrl;
+import com.google.api.client.http.HttpRequest;
+import com.google.api.client.http.HttpRequestFactory;
+import com.google.api.client.http.HttpRequestInitializer;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson.JacksonFactory;
+import com.google.api.client.util.Key;
 import com.ippoippo.joplin.dto.UserDisplay;
 import com.ippoippo.joplin.util.UserCookieForTemporaryGenerator;
 
@@ -76,28 +82,50 @@ public class HomeController {
 		}
 	}
 
-	public static final String YOUTUBE_GDATA_SERVER = "http://gdata.youtube.com";
-	public static final String VIDEOS_FEED = YOUTUBE_GDATA_SERVER + "/feeds/api/videos";
+	public static class VideoFeed {
+		@Key List<Video> items;
+	}
 
-	private void searchFeed() throws IOException, ServiceException {
-		YouTubeService myService = new YouTubeService("gdataSample-YouTube-1");
-		
-		YouTubeQuery query = new YouTubeQuery(new URL(VIDEOS_FEED));
-		// order results by the number of views (most viewed first)
-		query.setOrderBy(YouTubeQuery.OrderBy.VIEW_COUNT);
+	public static class Video {
+		@Key String title;
+		@Key String description;
+		@Key Player player;
+	}
 
-		// do not exclude restricted content from the search results 
-		// (by default, it is excluded) 
-		query.setSafeSearch(YouTubeQuery.SafeSearch.NONE);
+	public static class Player {
+		@Key("default") String defaultUrl;
+	}
 
-		String searchTerms = "adele";
+	public static class YouTubeUrl extends GenericUrl {
+		@Key final String alt = "jsonc";
+		@Key String author;
+		@Key("max-results") Integer maxResults;
 
-		query.setFullTextQuery(searchTerms);
+		YouTubeUrl(String url) {
+			super(url);
+		}
+	}
 
-		logger.info("Running Search for '" + searchTerms + "'");
-		VideoFeed videoFeed = myService.query(query, VideoFeed.class);
-		for (VideoEntry ve : videoFeed.getEntries()) {
-			logger.info("title="+ve.getTitle()+", summary="+ve.getSummary());
+	@Inject
+	private HttpRequestFactory gdataRequestFactory;
+
+	private void searchFeed() throws IOException {
+		// build the YouTube URL
+		YouTubeUrl url = new YouTubeUrl("https://gdata.youtube.com/feeds/api/videos");
+		url.author = "searchstories";
+		url.maxResults = 2;
+		// build the HTTP GET request
+		HttpRequest request = gdataRequestFactory.buildGetRequest(url);
+		JsonCParser parser = new JsonCParser(new JacksonFactory());
+		request.addParser(parser);
+		logger.info("req url="+request.getUrl());
+		logger.info("req method="+request.getMethod());
+		// execute the request and the parse video feed
+		VideoFeed feed = request.execute().parseAs(VideoFeed.class);
+		for (Video video : feed.items) {
+			logger.info("Video title: " + video.title);
+			logger.info("Description: " + video.description);
+			logger.info("Play URL: " + video.player.defaultUrl);
 		}
 	}
 

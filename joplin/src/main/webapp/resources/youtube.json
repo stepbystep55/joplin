@@ -1,0 +1,269 @@
+{
+	"encoding": "UTF-8", 
+	"feed": {
+		"author": [
+			{
+				"name": {
+					"$t": "YouTube"
+				}, 
+				"uri": {
+					"$t": "http://www.youtube.com/"
+				}
+			}
+		], 
+		"category": [
+			{
+				"scheme": "http://schemas.google.com/g/2005#kind", 
+				"term": "http://gdata.youtube.com/schemas/2007#video"
+			}
+		], 
+		"entry": [
+			{
+				"author": [
+					{
+						"name": {
+							"$t": "modorevt"
+						}, 
+						"uri": {
+							"$t": "http://gdata.youtube.com/feeds/api/users/modorevt"
+						}
+					}
+				], 
+				"category": [
+					{
+						"scheme": "http://schemas.google.com/g/2005#kind", 
+						"term": "http://gdata.youtube.com/schemas/2007#video"
+					}, 
+					{
+						"label": "コメディー", 
+						"scheme": "http://gdata.youtube.com/schemas/2007/categories.cat", 
+						"term": "Comedy"
+					}, 
+					{
+						"scheme": "http://gdata.youtube.com/schemas/2007/keywords.cat", 
+						"term": "お笑い"
+					}, 
+					{
+						"scheme": "http://gdata.youtube.com/schemas/2007/keywords.cat", 
+						"term": "漫才"
+					}, 
+					{
+						"scheme": "http://gdata.youtube.com/schemas/2007/keywords.cat", 
+						"term": "岩橋良昌"
+					}, 
+					{
+						"scheme": "http://gdata.youtube.com/schemas/2007/keywords.cat", 
+						"term": "兼光貴史"
+					}, 
+					{
+						"scheme": "http://gdata.youtube.com/schemas/2007/keywords.cat", 
+						"term": "クセ"
+					}
+				], 
+				"content": {
+					"$t": "吉本に入るのが遅かったのが功を奏し短い年数で同期に圧倒的な貫録を見せつけたコンビ変なクセwとモノマネと一人一人でも勝負のできるコンビツッコミのほうのアゴを鳴らす技術は素晴らしくとても大きいよい音が出る遅咲きコンビで０７年にNHK上方漫才コンテスト最優秀賞を受賞しているちなみに二位がアジアンで三位が千鳥である", 
+					"type": "text"
+				}, 
+				"gd$comments": {
+					"gd$feedLink": {
+						"countHint": 1, 
+						"href": "http://gdata.youtube.com/feeds/api/videos/7q16a7Mqptw/comments", 
+						"rel": "http://gdata.youtube.com/schemas/2007#comments"
+					}
+				}, 
+				"gd$rating": {
+					"average": 4.6, 
+					"max": 5, 
+					"min": 1, 
+					"numRaters": 10, 
+					"rel": "http://schemas.google.com/g/2005#overall"
+				}, 
+				"id": {
+					"$t": "http://gdata.youtube.com/feeds/api/videos/7q16a7Mqptw"
+				}, 
+				"link": [
+					{
+						"href": "http://www.youtube.com/watch?v=7q16a7Mqptw&feature=youtube_gdata", 
+						"rel": "alternate", 
+						"type": "text/html"
+					}, 
+					{
+						"href": "http://gdata.youtube.com/feeds/api/videos/7q16a7Mqptw/responses", 
+						"rel": "http://gdata.youtube.com/schemas/2007#video.responses", 
+						"type": "application/atom+xml"
+					}, 
+					{
+						"href": "http://gdata.youtube.com/feeds/api/videos/7q16a7Mqptw/related", 
+						"rel": "http://gdata.youtube.com/schemas/2007#video.related", 
+						"type": "application/atom+xml"
+					}, 
+					{
+						"href": "http://m.youtube.com/details?v=7q16a7Mqptw", 
+						"rel": "http://gdata.youtube.com/schemas/2007#mobile", 
+						"type": "text/html"
+					}, 
+					{
+						"href": "http://gdata.youtube.com/feeds/api/videos/7q16a7Mqptw", 
+						"rel": "self", 
+						"type": "application/atom+xml"
+					}
+				], 
+				"media$group": {
+					"media$category": [
+						{
+							"$t": "Comedy", 
+							"label": "コメディー", 
+							"scheme": "http://gdata.youtube.com/schemas/2007/categories.cat"
+						}
+					], 
+					"media$content": [
+						{
+							"duration": 306, 
+							"expression": "full", 
+							"isDefault": "true", 
+							"medium": "video", 
+							"type": "application/x-shockwave-flash", 
+							"url": "http://www.youtube.com/v/7q16a7Mqptw?version=3&f=videos&app=youtube_gdata", 
+							"yt$format": 5
+						}, 
+						{
+							"duration": 306, 
+							"expression": "full", 
+							"medium": "video", 
+							"type": "video/3gpp", 
+							"url": "rtsp://v1.cache2.c.youtube.com/CiILENy73wIaGQncpiqza3qt7hMYDSANFEgGUgZ2aWRlb3MM/0/0/0/video.3gp", 
+							"yt$format": 1
+						}, 
+						{
+							"duration": 306, 
+							"expression": "full", 
+							"medium": "video", 
+							"type": "video/3gpp", 
+							"url": "rtsp://v7.cache1.c.youtube.com/CiILENy73wIaGQncpiqza3qt7hMYESARFEgGUgZ2aWRlb3MM/0/0/0/video.3gp", 
+							"yt$format": 6
+						}
+					], 
+					"media$description": {
+						"$t": "吉本に入るのが遅かったのが功を奏し短い年数で同期に圧倒的な貫録を見せつけたコンビ変なクセwとモノマネと一人一人でも勝負のできるコンビツッコミのほうのアゴを鳴らす技術は素晴らしくとても大きいよい音が出る遅咲きコンビで０７年にNHK上方漫才コンテスト最優秀賞を受賞しているちなみに二位がアジアンで三位が千鳥である", 
+						"type": "plain"
+					}, 
+					"media$keywords": {
+						"$t": "お笑い, 漫才, 岩橋良昌, 兼光貴史, クセ"
+					}, 
+					"media$player": [
+						{
+							"url": "http://www.youtube.com/watch?v=7q16a7Mqptw&feature=youtube_gdata_player"
+						}
+					], 
+					"media$thumbnail": [
+						{
+							"height": 360, 
+							"time": "00:02:33", 
+							"url": "http://i.ytimg.com/vi/7q16a7Mqptw/0.jpg", 
+							"width": 480
+						}, 
+						{
+							"height": 90, 
+							"time": "00:01:16.500", 
+							"url": "http://i.ytimg.com/vi/7q16a7Mqptw/1.jpg", 
+							"width": 120
+						}, 
+						{
+							"height": 90, 
+							"time": "00:02:33", 
+							"url": "http://i.ytimg.com/vi/7q16a7Mqptw/2.jpg", 
+							"width": 120
+						}, 
+						{
+							"height": 90, 
+							"time": "00:03:49.500", 
+							"url": "http://i.ytimg.com/vi/7q16a7Mqptw/3.jpg", 
+							"width": 120
+						}
+					], 
+					"media$title": {
+						"$t": "プラスマイナス", 
+						"type": "plain"
+					}, 
+					"yt$duration": {
+						"seconds": "306"
+					}
+				}, 
+				"published": {
+					"$t": "2011-11-02T16:55:50.000Z"
+				}, 
+				"title": {
+					"$t": "プラスマイナス", 
+					"type": "text"
+				}, 
+				"updated": {
+					"$t": "2012-01-31T12:28:32.000Z"
+				}, 
+				"yt$statistics": {
+					"favoriteCount": "8", 
+					"viewCount": "35725"
+				}
+			}
+		], 
+		"generator": {
+			"$t": "YouTube data API", 
+			"uri": "http://gdata.youtube.com", 
+			"version": "2.1"
+		}, 
+		"id": {
+			"$t": "http://gdata.youtube.com/feeds/api/videos"
+		}, 
+		"link": [
+			{
+				"href": "http://www.youtube.com", 
+				"rel": "alternate", 
+				"type": "text/html"
+			}, 
+			{
+				"href": "http://gdata.youtube.com/feeds/api/videos", 
+				"rel": "http://schemas.google.com/g/2005#feed", 
+				"type": "application/atom+xml"
+			}, 
+			{
+				"href": "http://gdata.youtube.com/feeds/api/videos/batch", 
+				"rel": "http://schemas.google.com/g/2005#batch", 
+				"type": "application/atom+xml"
+			}, 
+			{
+				"href": "http://gdata.youtube.com/feeds/api/videos?alt=json&start-index=1&max-results=1&vq=%E3%83%97%E3%83%A9%E3%82%B9%E3%83%9E%E3%82%A4%E3%83%8A%E3%82%B9&orderby=relevance", 
+				"rel": "self", 
+				"type": "application/atom+xml"
+			}, 
+			{
+				"href": "http://gdata.youtube.com/feeds/api/videos?alt=json&start-index=2&max-results=1&vq=%E3%83%97%E3%83%A9%E3%82%B9%E3%83%9E%E3%82%A4%E3%83%8A%E3%82%B9&orderby=relevance", 
+				"rel": "next", 
+				"type": "application/atom+xml"
+			}
+		], 
+		"logo": {
+			"$t": "http://www.youtube.com/img/pic_youtubelogo_123x63.gif"
+		}, 
+		"openSearch$itemsPerPage": {
+			"$t": 1
+		}, 
+		"openSearch$startIndex": {
+			"$t": 1
+		}, 
+		"openSearch$totalResults": {
+			"$t": 707
+		}, 
+		"title": {
+			"$t": "YouTube Videos matching query: プラスマイナス", 
+			"type": "text"
+		}, 
+		"updated": {
+			"$t": "2012-02-20T09:52:01.891Z"
+		}, 
+		"xmlns": "http://www.w3.org/2005/Atom", 
+		"xmlns$gd": "http://schemas.google.com/g/2005", 
+		"xmlns$media": "http://search.yahoo.com/mrss/", 
+		"xmlns$openSearch": "http://a9.com/-/spec/opensearchrss/1.0/", 
+		"xmlns$yt": "http://gdata.youtube.com/schemas/2007"
+	}, 
+	"version": "1.0"
+}

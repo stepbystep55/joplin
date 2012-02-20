@@ -1,0 +1,58 @@
+// https://gdata.youtube.com/feeds/api/videos?q=%E3%83%97%E3%83%A9%E3%82%B9%E3%83%9E%E3%82%A4%E3%83%8A%E3%82%B9&start-index=1&max-results=1&orderby=relevance&alt=jsonc&v=2
+{
+	"apiVersion": "2.1", 
+	"data": {
+		"items": [
+			{
+				"accessControl": {
+					"autoPlay": "allowed", 
+					"comment": "allowed", 
+					"commentVote": "allowed", 
+					"embed": "allowed", 
+					"list": "allowed", 
+					"rate": "allowed", 
+					"syndicate": "allowed", 
+					"videoRespond": "moderated"
+				}, 
+				"category": "Comedy", 
+				"commentCount": 1, 
+				"content": {
+					"1": "rtsp://v1.cache2.c.youtube.com/CiILENy73wIaGQncpiqza3qt7hMYDSANFEgGUgZ2aWRlb3MM/0/0/0/video.3gp", 
+					"5": "https://www.youtube.com/v/7q16a7Mqptw?version=3&f=videos&app=youtube_gdata", 
+					"6": "rtsp://v7.cache1.c.youtube.com/CiILENy73wIaGQncpiqza3qt7hMYESARFEgGUgZ2aWRlb3MM/0/0/0/video.3gp"
+				}, 
+				"description": "吉本に入るのが遅かったのが功を奏し短い年数で同期に圧倒的な貫録を見せつけたコンビ変なクセwとモノマネと一人一人でも勝負のできるコンビツッコミのほうのアゴを鳴らす技術は素晴らしくとても大きいよい音が出る遅咲きコンビで０７年にNHK上方漫才コンテスト最優秀賞を受賞しているちなみに二位がアジアンで三位が千鳥である", 
+				"duration": 306, 
+				"favoriteCount": 8, 
+				"id": "7q16a7Mqptw", 
+				"likeCount": "9", 
+				"player": {
+					"default": "https://www.youtube.com/watch?v=7q16a7Mqptw&feature=youtube_gdata_player", 
+					"mobile": "https://m.youtube.com/details?v=7q16a7Mqptw"
+				}, 
+				"rating": 4.6, 
+				"ratingCount": 10, 
+				"tags": [
+					"お笑い", 
+					"漫才", 
+					"岩橋良昌", 
+					"兼光貴史", 
+					"クセ"
+				], 
+				"thumbnail": {
+					"hqDefault": "http://i.ytimg.com/vi/7q16a7Mqptw/hqdefault.jpg", 
+					"sqDefault": "http://i.ytimg.com/vi/7q16a7Mqptw/default.jpg"
+				}, 
+				"title": "プラスマイナス", 
+				"updated": "2012-01-31T12:28:32.000Z", 
+				"uploaded": "2011-11-02T16:55:50.000Z", 
+				"uploader": "modorevt", 
+				"viewCount": 35725
+			}
+		], 
+		"itemsPerPage": 1, 
+		"startIndex": 1, 
+		"totalItems": 707, 
+		"updated": "2012-02-20T10:51:18.991Z"
+	}
+}

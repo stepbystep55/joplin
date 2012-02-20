@@ -212,6 +212,7 @@
 			<version>1.6</version>
 		</dependency>
 		<!-- youtube -->
+		<!--
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mailapi</artifactId>
@@ -227,13 +228,12 @@
 			<artifactId>guava</artifactId>
 			<version>11.0.1</version>
 		</dependency>
-		<!--
+		-->
 		<dependency>
 			<groupId>com.google.api-client</groupId>
 			<artifactId>google-api-client</artifactId>
 			<version>1.6.0-beta</version>
 		</dependency>
-		-->
 
 	</dependencies>
 
