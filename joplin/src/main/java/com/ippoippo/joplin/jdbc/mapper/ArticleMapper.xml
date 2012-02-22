@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ippoippo.joplin.jdbc.mapper.ArticleMapper">
+
+	<resultMap id="article" type="com.ippoippo.joplin.dto.Article">
+		<id property="id" column="ID"/>
+		<result property="subject" column="SUBJECT"/>
+	</resultMap>
+
+	<select id="newId" resultType="Integer">
+		SELECT SEQ_ARTICLE.NEXTVAL
+	</select>
+
+	<select id="getById" parameterType="String" resultMap="article">
+		SELECT
+			ID,
+			SUBJECT
+		FROM
+			ARTICLE
+		WHERE
+			ID = #{id}
+	</select>
+
+	<select id="listLatest" parameterType="map" resultMap="article">
+		SELECT
+			ID,
+			SUBJECT
+		FROM
+			ARTICLE
+		ORDER BY
+			ID DESC
+		LIMIT #{length} OFFSET #{start}
+	</select>
+
+	<insert id="create" parameterType="com.ippoippo.joplin.dto.Article">
+		INSERT INTO ARTICLE
+		(
+			ID,
+			SUBJECT
+		)
+		VALUES
+		(
+			#{id},
+			#{subject}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.ippoippo.joplin.dto.Article">
+		UPDATE ARTICLE
+			SET
+				SUBJECT = #{subject}
+			WHERE
+				ID = #{id}
+	</update>
+
+	<delete id="delete" parameterType="String">
+		DELETE FROM 
+			ARTICLE
+		WHERE 
+			ID = #{id}
+	</delete>
+</mapper>

@@ -1,5 +1,6 @@
 package com.ippoippo.joplin.controller;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -14,6 +15,9 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+	@Inject
+	UserCookieForTemporaryGenerator userCookieForTemporaryGenerator;
+
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
@@ -23,15 +27,13 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 		} else if (handler instanceof HomeController) {
 			return true;
 
-			/*
 		} else {
-			Integer authUserId = userCookieGenerator.getUserId(request);
-			if (authUserId == null) {
+			String userId = userCookieForTemporaryGenerator.getUserId(request);
+			if (userId == null) {
 				logger.info("Access without session: " + request.getRequestURI());
-				new RedirectView("/login", true).render(null, request, response);
+				new RedirectView("/", true).render(null, request, response);
 				return false;
 			}
-			*/
 		}
 		return true;
 	}

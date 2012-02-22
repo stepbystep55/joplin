@@ -14,7 +14,7 @@ import com.google.api.client.http.javanet.NetHttpTransport;
  * HTTP Client for only gdata Configuration.
  */
 @Configuration
-public class HttpClientConfig {
+public class GdataClientConfig {
 
 	@Bean
 	public HttpRequestInitializer gdataRequestInitializer() {

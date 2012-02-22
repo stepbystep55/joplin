@@ -3,27 +3,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Top</title>
-	<%@ include file="_head_base.jsp"%>
+	<title>top</title>
+	<%@ include file="_headBase.jsp"%>
 </head>
 <body>
 
 <div id="header">
-	<h1>Viva Joplin!</h1>
-	<div id="user_info">
-	<a href="${userDisplay.profileUrl}">
-		<img alt="profile image" src="${userDisplay.imageUrl}">
-		<c:out value="${userDisplay.name}"/>
-	</a>
-	</div>
+	<c:import url="${request.contextPath}/header" />
 </div>
 
 <div id="body">
-	<h2>VS</h2>
+	<h2>top</h2>
 </div>
 
 <div id="footer">
-	&copy;ippoippo
+	<jsp:include page="_footer.jsp"/>
 </div>
 
 </body>
