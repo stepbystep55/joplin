@@ -1,5 +1,7 @@
 package com.ippoippo.joplin.youtube;
 
+import java.util.List;
+
 import com.google.api.client.util.Key;
 
 public class Video {
@@ -12,4 +14,7 @@ public class Video {
 	
 	@Key
 	public Integer viewCount;
+	
+	@Key
+	public Thumbnail thumbnail;
 }

@@ -32,6 +32,9 @@ public class GdataClientConfig {
 				headers.setApplicationName("joplin/1.0");
 				headers.gdataVersion = "2";
 				request.setHeaders(headers);
+				// set timeout
+				request.setConnectTimeout(3000);
+				request.setReadTimeout(3000);
 			}
 		};
 	}

@@ -16,11 +16,33 @@
 
 <div id="body">
 	<h2>item new</h2>
-	<form:form modelAttribute="item" action="create" method="post">
+	<h3>videos</h3>
+	<form:form modelAttribute="youtubeSearchForm" action="searchItem" method="post">
 		<form:hidden path="articleId" />
-		<br/>
-		<input type="submit" value="add" />
+		<form:hidden path="startIndex" />
+		<form:hidden path="listSize" />
+		<form:input path="searchText" size="32" maxlength="128"/>
+		<input type="submit" value="search" />
+		<spring:hasBindErrors name="youtubeSearchForm"><form:errors path="searchText" cssStyle="color:red" /></spring:hasBindErrors>
 	</form:form>
+	<c:if test="${(youtubeItems != null) && !(empty youtubeItems)}">
+	<ol>
+		<c:forEach items="${youtubeItems}" var="youtubeItem" varStatus="status">
+		<li>
+			<span class="colVal">
+				<iframe width="360" height="202" src="http://www.youtube.com/embed/${youtubeItem.videoId}?rel=0" frameborder="0" allowfullscreen></iframe>
+			</span>
+			<span class="colVal">
+				<form id="${status.index}form" action="addItem" method="post">
+					<input type="hidden" name="articleId" value="${youtubeItem.articleId}" />
+					<input type="hidden" name="videoId" value="${youtubeItem.videoId}" />
+					<input type="submit" id="${videoId}" class="addItemBtn" value="add" />
+				</form>
+			</span>
+		</li>
+		</c:forEach>
+	</ol>
+	</c:if>
 
 </div>
 
@@ -28,5 +50,17 @@
 	<jsp:include page="../_footer.jsp"/>
 </div>
 
+<script type="text/javascript">
+<!--
+/*
+$(function(){
+	$('.addItemBtn').click(function(){
+		$('#youtubeItem #videoId').val($(this).attr('id'));
+		return true;
+	});
+});
+*/
+// -->
+</script>
 </body>
 </html>

@@ -20,7 +20,6 @@
 		subject:
 		<form:input path="subject" size="32" maxlength="128"/>
 		<spring:hasBindErrors name="article"><form:errors path="subject" cssStyle="color:red" /></spring:hasBindErrors>
-		<br/>
 		<input type="submit" />
 	</form:form>
 

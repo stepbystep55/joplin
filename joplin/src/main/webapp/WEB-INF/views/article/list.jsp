@@ -24,10 +24,10 @@
 	<ol>
 		<c:forEach items="${articles}" var="article">
 		<li>
-			<span class="col_id">
+			<span class="colId">
 				<a href="<%= request.getContextPath() %>/article/edit/${article.id}"><fmt:formatNumber value="${article.id}" pattern="00000000"/></a>
 			</span>
-			<span class="col_sub"><c:out value="${article.subject}"></c:out></span>
+			<span class="colVal"><c:out value="${article.subject}"></c:out></span>
 		</li>
 		</c:forEach>
 	</ol>

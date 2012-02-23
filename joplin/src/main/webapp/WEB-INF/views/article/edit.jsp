@@ -27,7 +27,6 @@
 		subject:
 		<form:input path="subject" size="32" maxlength="128"/>
 		<spring:hasBindErrors name="article"><form:errors path="subject" cssStyle="color:red" /></spring:hasBindErrors>
-		<br/>
 		<input type="submit" value="update" />
 	</form:form>
 	<form:form modelAttribute="article" action="delete" method="post">
@@ -40,11 +39,11 @@
 	<ol>
 		<c:forEach items="${items}" var="item">
 		<li>
-			<span class="col_id">
+			<span class="colId">
 				<fmt:formatNumber value="${item.id}" pattern="000"/>
 			</span>
-			<span class="col_sub">
-				<iframe width="120" height="67.5" src="http://www.youtube.com/embed/${item.videoId}&rel=0" frameborder="0" allowfullscreen></iframe>
+			<span class="colVal">
+				<iframe width="360" height="202" src="http://www.youtube.com/embed/${item.videoId}?rel=0" frameborder="0" allowfullscreen></iframe>
 			</span>
 		</li>
 		</c:forEach>

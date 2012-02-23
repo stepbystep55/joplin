@@ -24,6 +24,7 @@ import com.google.api.client.http.HttpRequestFactory;
 import com.google.api.client.json.jackson.JacksonFactory;
 import com.ippoippo.joplin.dto.Article;
 import com.ippoippo.joplin.dto.YoutubeItem;
+import com.ippoippo.joplin.dto.YoutubeSearchForm;
 import com.ippoippo.joplin.exception.IllegalRequestException;
 import com.ippoippo.joplin.jdbc.mapper.ArticleMapper;
 import com.ippoippo.joplin.jdbc.mapper.YoutubeItemMapper;
@@ -154,38 +155,64 @@ public class ArticleController {
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "/newItem", method = {RequestMethod.GET,RequestMethod.POST})
-	public ModelAndView createItem(
-			@RequestParam("articleId") String articleId
-			, @RequestParam("searchText") String searchText)
-					throws IllegalRequestException, IOException {
+	public ModelAndView createItem(@RequestParam("articleId") String articleId) throws IllegalRequestException, IOException {
 
 		validateAccess(articleId);
 
-		YoutubeItem item = new YoutubeItem();
-		item.setArticleId(articleId);
-
-		List<String> videoIds = new ArrayList<String>(0);
-		if (searchText != null && !searchText.isEmpty()) videoIds = this.searchYoutube(searchText);
+		YoutubeSearchForm form = new YoutubeSearchForm();
+		form.setArticleId(articleId);
+		
 
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("item", item);
-		modelAndView.addObject("videoIds", videoIds);
+		modelAndView.addObject("youtubeSearchForm", form);
+		modelAndView.setViewName("article/newItem");
+		return modelAndView;
+	}
+	
+	@Transactional(rollbackForClassName="java.lang.Exception")
+	@RequestMapping(value = "/searchItem", method = {RequestMethod.GET,RequestMethod.POST})
+	public ModelAndView searchItem(
+			@Valid YoutubeSearchForm youtubeSearchForm, BindingResult result) throws IllegalRequestException, IOException {
+		
+		validateAccess(youtubeSearchForm.getArticleId());
+
+		if (result.hasErrors()) {
+			ModelAndView modelAndView = new ModelAndView();
+			modelAndView.addObject("youtubeSearchForm", youtubeSearchForm);
+			modelAndView.setViewName("article/newItem");
+			return modelAndView;
+		}
+		List<String> videoIds = this.searchYoutube(youtubeSearchForm.getSearchText(), youtubeSearchForm.getStartIndex(), youtubeSearchForm.getListSize());
+		List<YoutubeItem> items = new ArrayList<YoutubeItem>(videoIds.size());
+		for (String videoId : videoIds) {
+			YoutubeItem item = new YoutubeItem();
+			item.setArticleId(youtubeSearchForm.getArticleId());
+			item.setVideoId(videoId);
+			items.add(item);
+		}
+
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("youtubeSearchForm", youtubeSearchForm);
+		modelAndView.addObject("youtubeItems", items);
 		modelAndView.setViewName("article/newItem");
 		return modelAndView;
 	}
 
 	private static final Integer MAX_RESULTS = 10;
 
-	public List<String> searchYoutube(String searchText) throws IOException {
+	public List<String> searchYoutube(String searchText, Integer startIndex, Integer listSize) throws IOException {
 
 		// build the YouTube URL
 		YouTubeSearchUrl url = new YouTubeSearchUrl();
 		url.searchText = searchText;
-		url.maxResults = MAX_RESULTS;
+		url.startIndex = startIndex;
+		url.maxResults = listSize;
 
 		// build the HTTP GET request
 		HttpRequest request = gdataRequestFactory.buildGetRequest(url);
 		request.addParser(new JsonCParser(new JacksonFactory()));
+
+		logger.info("request url: " + request.getUrl().toString());
 
 		// execute the request and the parse video feed
 		VideoFeed feed = request.execute().parseAs(VideoFeed.class);
@@ -198,18 +225,15 @@ public class ArticleController {
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "/createItem", method = RequestMethod.POST)
-	public ModelAndView createItem(@Valid YoutubeItem item, BindingResult result) throws IllegalRequestException {
+	@RequestMapping(value = "/addItem", method = RequestMethod.POST)
+	public ModelAndView addItem(
+			@RequestParam("articleId") String articleId, @RequestParam("videoId") String videoId) throws IllegalRequestException {
 
-		validateAccess(item.getArticleId());
+		validateAccess(articleId);
 
-		if (result.hasErrors()) {
-			ModelAndView modelAndView = new ModelAndView();
-			modelAndView.addObject("item", item);
-			modelAndView.setViewName("article/newItem");
-			return modelAndView;
-		}
-		
+		YoutubeItem item = new YoutubeItem();
+		Integer newId = youtubeItemMapper.newId();
+		item.setId(newId.toString());
 		youtubeItemMapper.create(item);
 		
 		ModelAndView modelAndView = new ModelAndView();

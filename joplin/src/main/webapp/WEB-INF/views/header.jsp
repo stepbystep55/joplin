@@ -1,12 +1,12 @@
 <%@ page language="java" session="false" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-	<div id="header_menu">
+	<div id="headerMenu">
 		<ul>
 			<li><a href="<%= request.getContextPath() %>/">top</a></li>
 			<li><a href="<%= request.getContextPath() %>/article/">article</a></li>
 		</ul>
 	</div>
-	<div id="header_userinfo">
+	<div id="headerUserinfo">
 		<c:choose>
 		<c:when test="${userDisplay != null}">
 			<a href="${userDisplay.profileUrl}">

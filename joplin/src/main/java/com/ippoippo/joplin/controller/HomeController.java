@@ -76,7 +76,7 @@ public class HomeController {
 	
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "/header", method = {RequestMethod.GET,RequestMethod.POST})
-	public ModelAndView header(HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView header(HttpServletRequest request) {
 
 		try {
 			String userId = userCookieForTemporaryGenerator.getUserId(request);
