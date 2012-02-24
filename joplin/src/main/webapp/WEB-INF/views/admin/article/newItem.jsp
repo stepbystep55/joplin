@@ -6,24 +6,26 @@
 <html>
 <head>
 	<title>item new</title>
-	<%@ include file="../_headBase.jsp"%>
+	<%@ include file="../../_headBase.jsp"%>
 </head>
 <body>
 
 <div id="header">
-	<c:import url="${request.contextPath}/header" />
+	<jsp:include page="../header.jsp"/>
 </div>
 
 <div id="body">
-	<h2>item new</h2>
-	<h3>videos</h3>
+	<h1>item new</h1>
+	<h2>videos</h2>
 	<form:form modelAttribute="youtubeSearchForm" action="searchItem" method="post">
-		<form:hidden path="articleId" />
 		<form:hidden path="startIndex" />
 		<form:hidden path="listSize" />
 		<form:input path="searchText" size="32" maxlength="128"/>
-		<input type="submit" value="search" />
+		<input type="submit" name="command" value="search" />
 		<spring:hasBindErrors name="youtubeSearchForm"><form:errors path="searchText" cssStyle="color:red" /></spring:hasBindErrors>
+		<br/>
+		<input type="submit" name="command" value="prev" />
+		<input type="submit" name="command" value="next" />
 	</form:form>
 	<c:if test="${(youtubeItems != null) && !(empty youtubeItems)}">
 	<ol>
@@ -34,7 +36,6 @@
 			</span>
 			<span class="colVal">
 				<form id="${status.index}form" action="addItem" method="post">
-					<input type="hidden" name="articleId" value="${youtubeItem.articleId}" />
 					<input type="hidden" name="videoId" value="${youtubeItem.videoId}" />
 					<input type="submit" id="${videoId}" class="addItemBtn" value="add" />
 				</form>
@@ -43,23 +44,18 @@
 		</c:forEach>
 	</ol>
 	</c:if>
+	<a href="edit">return</a>
 
 </div>
 
 <div id="footer">
-	<jsp:include page="../_footer.jsp"/>
+	<jsp:include page="../../_footer.jsp"/>
 </div>
 
 <script type="text/javascript">
 <!--
-/*
 $(function(){
-	$('.addItemBtn').click(function(){
-		$('#youtubeItem #videoId').val($(this).attr('id'));
-		return true;
-	});
 });
-*/
 // -->
 </script>
 </body>

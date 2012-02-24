@@ -6,6 +6,7 @@
 	<resultMap id="article" type="com.ippoippo.joplin.dto.Article">
 		<id property="id" column="ID"/>
 		<result property="subject" column="SUBJECT"/>
+		<result property="active" column="ACTIVE"/>
 	</resultMap>
 
 	<select id="newId" resultType="Integer">
@@ -15,7 +16,8 @@
 	<select id="getById" parameterType="String" resultMap="article">
 		SELECT
 			ID,
-			SUBJECT
+			SUBJECT,
+			ACTIVE
 		FROM
 			ARTICLE
 		WHERE
@@ -25,7 +27,8 @@
 	<select id="listLatest" parameterType="map" resultMap="article">
 		SELECT
 			ID,
-			SUBJECT
+			SUBJECT,
+			ACTIVE
 		FROM
 			ARTICLE
 		ORDER BY
@@ -49,7 +52,8 @@
 	<update id="update" parameterType="com.ippoippo.joplin.dto.Article">
 		UPDATE ARTICLE
 			SET
-				SUBJECT = #{subject}
+				SUBJECT = #{subject},
+				ACTIVE = #{active}
 			WHERE
 				ID = #{id}
 	</update>

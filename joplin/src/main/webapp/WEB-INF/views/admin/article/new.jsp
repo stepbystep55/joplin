@@ -6,16 +6,16 @@
 <html>
 <head>
 	<title>article new</title>
-	<%@ include file="../_headBase.jsp"%>
+	<%@ include file="../../_headBase.jsp"%>
 </head>
 <body>
 
 <div id="header">
-	<c:import url="${request.contextPath}/header" />
+	<jsp:include page="../header.jsp"/>
 </div>
 
 <div id="body">
-	<h2>article new</h2>
+	<h1>article new</h1>
 	<form:form modelAttribute="article" action="create" method="post">
 		subject:
 		<form:input path="subject" size="32" maxlength="128"/>
@@ -26,7 +26,7 @@
 </div>
 
 <div id="footer">
-	<jsp:include page="../_footer.jsp"/>
+	<jsp:include page="../../_footer.jsp"/>
 </div>
 
 </body>

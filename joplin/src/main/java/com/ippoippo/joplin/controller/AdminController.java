@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
@@ -28,6 +30,7 @@ import com.ippoippo.joplin.dto.YoutubeSearchForm;
 import com.ippoippo.joplin.exception.IllegalRequestException;
 import com.ippoippo.joplin.jdbc.mapper.ArticleMapper;
 import com.ippoippo.joplin.jdbc.mapper.YoutubeItemMapper;
+import com.ippoippo.joplin.util.StringUtils;
 import com.ippoippo.joplin.youtube.Video;
 import com.ippoippo.joplin.youtube.VideoFeed;
 import com.ippoippo.joplin.youtube.YouTubeSearchUrl;
@@ -36,10 +39,15 @@ import com.ippoippo.joplin.youtube.YouTubeSearchUrl;
  * Handles requests for articles.
  */
 @Controller
-@RequestMapping("/article")
-public class ArticleController {
+@RequestMapping("/admin")
+public class AdminController {
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+	@Value("${admin.password.md5}")
+	private String adminPasswordMD5;
+
+	public static final String SESSION_KEY_AUTH = "loginAsAdmin";
 
 	@Inject
 	ArticleMapper articleMapper;
@@ -52,37 +60,55 @@ public class ArticleController {
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView top() {
-		return list();
+		
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("admin/login");
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public ModelAndView login(@RequestParam("password") String password, HttpServletRequest request) {
+		
+		if (StringUtils.hashMD5(password).equals(adminPasswordMD5)) {
+			request.getSession().setAttribute(SESSION_KEY_AUTH, true);
+			ModelAndView modelAndView = new ModelAndView();
+			modelAndView.setViewName("redirect:article/list");
+			return modelAndView;
+		}
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("failed", true);
+		modelAndView.setViewName("admin/login");
+		return modelAndView;
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "/list", method = {RequestMethod.GET,RequestMethod.POST})
+	@RequestMapping(value = "/article/list", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView list() {
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("articles", articleMapper.listLatest(0, 10));
-		modelAndView.setViewName("article/list");
+		modelAndView.setViewName("admin/article/list");
 		return modelAndView;
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "/new", method = RequestMethod.POST)
+	@RequestMapping(value = "/article/new", method = RequestMethod.POST)
 	public ModelAndView create() {
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("article", new Article());
-		modelAndView.setViewName("article/new");
+		modelAndView.setViewName("admin/article/new");
 		return modelAndView;
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "/create", method = RequestMethod.POST)
+	@RequestMapping(value = "/article/create", method = RequestMethod.POST)
 	public ModelAndView create(@Valid Article article, BindingResult result) {
 
 		if (result.hasErrors()) {
 			ModelAndView modelAndView = new ModelAndView();
 			modelAndView.addObject("article", article);
-			modelAndView.setViewName("article/new");
+			modelAndView.setViewName("admin/article/new");
 			return modelAndView;
 		}
 
@@ -92,7 +118,7 @@ public class ArticleController {
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("created", true);
-		modelAndView.setViewName("forward:edit/"+newId);
+		modelAndView.setViewName("redirect:"+newId+"/edit");
 		return modelAndView;
 	}
 
@@ -103,7 +129,7 @@ public class ArticleController {
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "/edit/{id}", method = {RequestMethod.GET,RequestMethod.POST})
+	@RequestMapping(value = "/article/{id}/edit", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView edit(@PathVariable String id) throws IllegalRequestException {
 
 		validateAccess(id);
@@ -113,34 +139,35 @@ public class ArticleController {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("article", article);
 		modelAndView.addObject("items", youtubeItemMapper.listByArticleId(article.getId()));
-		modelAndView.setViewName("article/edit");
+		modelAndView.setViewName("admin/article/edit");
 		return modelAndView;
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public ModelAndView update(@Valid Article article, BindingResult result) throws IllegalRequestException {
+	@RequestMapping(value = "/article/{id}/update", method = RequestMethod.POST)
+	public ModelAndView update(@PathVariable String id, @Valid Article article, BindingResult result) throws IllegalRequestException {
 
-		validateAccess(article.getId());
+		validateAccess(id);
 
 		if (result.hasErrors()) {
 			ModelAndView modelAndView = new ModelAndView();
 			modelAndView.addObject("article", article);
 			modelAndView.addObject("items", youtubeItemMapper.listByArticleId(article.getId()));
-			modelAndView.setViewName("article/edit");
+			modelAndView.setViewName("admin/article/edit");
 			return modelAndView;
 		}
 
+		article.setId(id);
 		articleMapper.update(article);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("updated", true);
-		modelAndView.setViewName("forward:edit/"+article.getId());
+		modelAndView.setViewName("forward:edit");
 		return modelAndView;
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "/delete/{id}", method = {RequestMethod.GET,RequestMethod.POST})
+	@RequestMapping(value = "/article/{id}/delete", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView delete(@PathVariable String id) throws IllegalRequestException {
 		
 		validateAccess(id);
@@ -149,44 +176,54 @@ public class ArticleController {
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("deleted", true);
-		modelAndView.setViewName("forward:list");
+		modelAndView.setViewName("redirect:/admin/article/list");
 		return modelAndView;
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "/newItem", method = {RequestMethod.GET,RequestMethod.POST})
-	public ModelAndView createItem(@RequestParam("articleId") String articleId) throws IllegalRequestException, IOException {
+	@RequestMapping(value = "/article/{id}/newItem", method = RequestMethod.POST)
+	public ModelAndView createItem(@PathVariable String id) throws IllegalRequestException, IOException {
 
-		validateAccess(articleId);
+		validateAccess(id);
 
 		YoutubeSearchForm form = new YoutubeSearchForm();
-		form.setArticleId(articleId);
-		
+		form.setArticleId(id);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("youtubeSearchForm", form);
-		modelAndView.setViewName("article/newItem");
+		modelAndView.setViewName("admin/article/newItem");
 		return modelAndView;
 	}
 	
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "/searchItem", method = {RequestMethod.GET,RequestMethod.POST})
+	@RequestMapping(value = "/article/{id}/searchItem", method = RequestMethod.POST)
 	public ModelAndView searchItem(
-			@Valid YoutubeSearchForm youtubeSearchForm, BindingResult result) throws IllegalRequestException, IOException {
+			@PathVariable String id
+			, @RequestParam("command") String command
+			, @Valid YoutubeSearchForm youtubeSearchForm
+			, BindingResult result
+			) throws IllegalRequestException, IOException {
 		
-		validateAccess(youtubeSearchForm.getArticleId());
+		validateAccess(id);
 
 		if (result.hasErrors()) {
 			ModelAndView modelAndView = new ModelAndView();
 			modelAndView.addObject("youtubeSearchForm", youtubeSearchForm);
-			modelAndView.setViewName("article/newItem");
+			modelAndView.setViewName("admin/article/newItem");
 			return modelAndView;
 		}
-		List<String> videoIds = this.searchYoutube(youtubeSearchForm.getSearchText(), youtubeSearchForm.getStartIndex(), youtubeSearchForm.getListSize());
+		if (command.equals("prev")) {
+			youtubeSearchForm.prev();
+		} else if (command.equals("next")) {
+			youtubeSearchForm.next();
+		}
+		List<String> videoIds
+			= this.searchYoutube(
+					youtubeSearchForm.getSearchText(), youtubeSearchForm.getStartIndex(), youtubeSearchForm.getListSize());
 		List<YoutubeItem> items = new ArrayList<YoutubeItem>(videoIds.size());
 		for (String videoId : videoIds) {
 			YoutubeItem item = new YoutubeItem();
-			item.setArticleId(youtubeSearchForm.getArticleId());
+			item.setArticleId(id);
 			item.setVideoId(videoId);
 			items.add(item);
 		}
@@ -194,11 +231,9 @@ public class ArticleController {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("youtubeSearchForm", youtubeSearchForm);
 		modelAndView.addObject("youtubeItems", items);
-		modelAndView.setViewName("article/newItem");
+		modelAndView.setViewName("admin/article/newItem");
 		return modelAndView;
 	}
-
-	private static final Integer MAX_RESULTS = 10;
 
 	public List<String> searchYoutube(String searchText, Integer startIndex, Integer listSize) throws IOException {
 
@@ -225,20 +260,26 @@ public class ArticleController {
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "/addItem", method = RequestMethod.POST)
+	@RequestMapping(value = "/article/{id}/addItem", method = RequestMethod.POST)
 	public ModelAndView addItem(
-			@RequestParam("articleId") String articleId, @RequestParam("videoId") String videoId) throws IllegalRequestException {
+			@PathVariable String id, @RequestParam("videoId") String videoId)
+					throws IllegalRequestException {
 
-		validateAccess(articleId);
+		validateAccess(id);
 
-		YoutubeItem item = new YoutubeItem();
-		Integer newId = youtubeItemMapper.newId();
-		item.setId(newId.toString());
-		youtubeItemMapper.create(item);
-		
+		if (youtubeItemMapper.countByArticleIdAndVideoId(id, videoId) > 0) {
+			logger.info("The video for articldId="+id+", videoId="+videoId+" already exists.");
+		} else {
+			YoutubeItem item = new YoutubeItem();
+			Integer newItemId = youtubeItemMapper.newId();
+			item.setId(newItemId.toString());
+			item.setArticleId(id);
+			item.setVideoId(videoId);
+			youtubeItemMapper.create(item);
+		}
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("updated", true);
-		modelAndView.setViewName("forward:edit/"+item.getArticleId());
+		modelAndView.setViewName("forward:edit");
 		return modelAndView;
 	}
 }

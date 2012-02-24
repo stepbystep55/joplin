@@ -13,7 +13,7 @@
 </div>
 
 <div id="body">
-	<h2>top</h2>
+	<h1>top</h1>
 </div>
 
 <div id="footer">

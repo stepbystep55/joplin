@@ -6,12 +6,12 @@
 <html>
 <head>
 	<title>article list</title>
-	<%@ include file="../_headBase.jsp"%>
+	<%@ include file="../../_headBase.jsp"%>
 </head>
 <body>
 
 <div id="header">
-	<c:import url="${request.contextPath}/header" />
+	<jsp:include page="../header.jsp"/>
 </div>
 
 <div id="body">
@@ -19,15 +19,20 @@
 		<c:if test="${deleted}"><span class="confirm"><spring:message code="result.deleted" /></span></c:if>
 	</h3>
 
-	<h2>article list</h2>
+	<h1>article list</h1>
 	<c:if test="${(articles != null) && !(empty articles)}">
 	<ol>
 		<c:forEach items="${articles}" var="article">
 		<li>
 			<span class="colId">
-				<a href="<%= request.getContextPath() %>/article/edit/${article.id}"><fmt:formatNumber value="${article.id}" pattern="00000000"/></a>
+				<a href="${article.id}/edit"><fmt:formatNumber value="${article.id}" pattern="00000000"/></a>
 			</span>
 			<span class="colVal"><c:out value="${article.subject}"></c:out></span>
+			<span class="colVal">
+				<c:choose>
+					<c:when test="${article.active}">実施中</c:when><c:otherwise>停止</c:otherwise>
+				</c:choose>
+			</span>
 		</li>
 		</c:forEach>
 	</ol>
@@ -42,7 +47,7 @@
 </div>
 
 <div id="footer">
-	<jsp:include page="../_footer.jsp"/>
+	<jsp:include page="../../_footer.jsp"/>
 </div>
 
 </body>

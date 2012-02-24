@@ -24,6 +24,16 @@
 			ID = #{id}
 	</select>
 
+	<select id="countByArticleIdAndVideoId" parameterType="map" resultType="Integer">
+		SELECT
+			COUNT(ID)
+		FROM
+			YOUTUBE_ITEM
+		WHERE
+			ARTICLE_ID = #{articleId}
+			AND VIDEO_ID = #{videoId}
+	</select>
+
 	<select id="listByArticleId" parameterType="String" resultMap="youtubeItem">
 		SELECT
 			ID,

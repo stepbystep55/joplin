@@ -10,6 +10,8 @@ public class Article {
 	@NotEmpty
 	@Length(max=256)
 	private String subject;
+	
+	private boolean active;
 
 	public String getId() {
 		return id;
@@ -26,5 +28,11 @@ public class Article {
 	@Override
 	public String toString() {
 		return "Article [id=" + id + ", subject=" + subject + "]";
+	}
+	public boolean getActive() {
+		return active;
+	}
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 }

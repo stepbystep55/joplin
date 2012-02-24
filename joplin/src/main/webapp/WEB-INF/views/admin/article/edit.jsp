@@ -7,12 +7,12 @@
 <html>
 <head>
 	<title>article edit</title>
-	<%@ include file="../_headBase.jsp"%>
+	<%@ include file="../../_headBase.jsp"%>
 </head>
 <body>
 
 <div id="header">
-	<c:import url="${request.contextPath}/header" />
+	<jsp:include page="../header.jsp"/>
 </div>
 
 <div id="body">
@@ -21,20 +21,21 @@
 		<c:if test="${updated}"><span class="confirm"><spring:message code="result.updated" /></span></c:if>
 	</h3>
 
-	<h2>article edit</h2>
-	<form:form modelAttribute="article" action="update" method="post">
-		<form:hidden path="id" />
-		subject:
-		<form:input path="subject" size="32" maxlength="128"/>
-		<spring:hasBindErrors name="article"><form:errors path="subject" cssStyle="color:red" /></spring:hasBindErrors>
-		<input type="submit" value="update" />
-	</form:form>
+	<h1>article edit</h1>
 	<form:form modelAttribute="article" action="delete" method="post">
 		<form:hidden path="id" />
 		<input type="submit" value="delete" />
 	</form:form>
+	<form:form modelAttribute="article" action="update" method="post">
+		subject:
+		<form:input path="subject" size="32" maxlength="128"/>
+		<form:radiobutton path="active" value="true"/>active
+		<form:radiobutton path="active" value="false"/>inactive
+		<input type="submit" value="update" />
+		<spring:hasBindErrors name="article"><form:errors path="subject" cssStyle="color:red" /></spring:hasBindErrors>
+	</form:form>
 
-	<h2>item list</h2>
+	<h1>item list</h1>
 	<c:if test="${(items != null) && !(empty items)}">
 	<ol>
 		<c:forEach items="${items}" var="item">
@@ -52,8 +53,6 @@
 	<ul>
 		<li>
 			<form action="newItem" method="post">
-				<input type="hidden" name="articleId" value="${article.id}" />
-				<input type="hidden" name="searchText" value="" />
 				<input type="submit" value="new item" />
 			</form>
 		</li>
@@ -62,7 +61,7 @@
 </div>
 
 <div id="footer">
-	<jsp:include page="../_footer.jsp"/>
+	<jsp:include page="../../_footer.jsp"/>
 </div>
 
 </body>

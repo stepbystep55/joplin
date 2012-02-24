@@ -6,7 +6,7 @@
 <html>
 <head>
 	<%@ include file="_headBase.jsp"%>
-	<title>Login</title>
+	<title>Sign in</title>
 </head>
 <body>
 
@@ -14,13 +14,13 @@
 </div>
 
 <div id="body">
-	<h2>Sign in</h2>
-	<h3>with Facebook</h3>
+	<h1>Sign in</h1>
+	<h2>with Facebook</h2>
 	<form:form action="signin/facebook" method="post">
 		<input type="hidden" name="scope" value="user_likes,publish_stream,offline_access" />
 		<input type="submit" name="connectFacebook" value="connect" />
 	</form:form>
-	<h3>with Twitter</h3>
+	<h2>with Twitter</h2>
 	<form:form action="signin/twitter" method="post">
 		<input type="submit" name="connectTwitter" value="connect" />
 	</form:form>

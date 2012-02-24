@@ -1,13 +1,9 @@
 package com.ippoippo.joplin.dto;
 
-import java.util.List;
-
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
 
 public class YoutubeSearchForm extends PagenatedForm {
 
-	@NotEmpty
 	private String articleId;
 	
 	@Length(min=1,max=128)
