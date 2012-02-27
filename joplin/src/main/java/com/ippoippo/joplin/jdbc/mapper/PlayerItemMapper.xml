@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ippoippo.joplin.jdbc.mapper.PlayerItemMapper">
+
+	<resultMap id="playerItem" type="com.ippoippo.joplin.dto.PlayerItem">
+		<id property="id" column="ID"/>
+		<result property="userId" column="USER_ID"/>
+		<result property="articleId" column="ARTICLE_ID"/>
+		<result property="videoId" column="VIDEO_ID"/>
+	</resultMap>
+
+	<select id="newSelectedId" resultType="Integer">
+		SELECT SEQ_SELECTED_ITEM.NEXTVAL
+	</select>
+
+	<select id="newDiscardId" resultType="Integer">
+		SELECT SEQ_DISCARD_ITEM.NEXTVAL
+	</select>
+
+	<select id="getLatestSelectedByUserIdAndArticleId" parameterType="map" resultMap="playerItem">
+		SELECT
+			ID
+			,USER_ID
+			,ARTICLE_ID
+			,VIDEO_ID
+		FROM
+			SELECTED_ITEM
+		WHERE
+			SELECTED_AT = (
+				SELECT
+					MAX(SELECTED_AT)
+				FROM
+					SELECTED_ITEM
+				WHERE
+					USER_ID = #{userId}
+					AND ARTICLE_ID = #{articleId}
+			)
+	</select>
+
+	<select id="listCandidate" parameterType="map" resultMap="playerItem">
+		SELECT
+			VIDEO_ID
+		FROM
+			YOUTUBE_ITEM YI
+		WHERE
+			NOT EXISTS
+			(
+				SELECT
+				FROM
+					DISCARD_ITEM DI
+				WHERE
+					YI.ARTICLE_ID = DI.ARTICLE_ID
+					YI.VIDEO_ID = DI.VIDEO_ID
+					DI.USER_ID = #{userId}
+			)
+	</select>
+
+	<insert id="createSelected" parameterType="com.ippoippo.joplin.dto.PlayerItem">
+		INSERT INTO SELECTED_ITEM
+		(
+			ID
+			,USER_ID
+			,ARTICLE_ID
+			,SELECTED_ID
+			,VIDEO_ID
+		)
+		VALUES
+		(
+			#{id}
+			,#{userId}
+			,#{articleId}
+			,(SELECT
+				IFNULL(MAX(SELECTED_ID) + 1, 1)
+			FROM
+				SELECTED_ITEM
+			WHERE
+				USER_ID = #{userId}
+				AND ARTICLE_ID = #{articleId}
+			)
+			,#{videoId}
+		)
+	</insert>
+
+	<insert id="createDiscard" parameterType="com.ippoippo.joplin.dto.PlayerItem">
+		INSERT INTO DISCARD_ITEM
+		(
+			ID
+			,USER_ID
+			,ARTICLE_ID
+			,VIDEO_ID
+		)
+		VALUES
+		(
+			#{id}
+			,#{userId}
+			,#{articleId}
+			,#{videoId}
+		)
+	</insert>
+</mapper>
