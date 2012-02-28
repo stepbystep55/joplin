@@ -22,24 +22,26 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-		String requestUri = request.getRequestURI();
+		String servletPath = request.getServletPath();
 
-		if (requestUri.equals(request.getContextPath()+"/")) {
+		if (servletPath.equals("/")) {
 			return true;
 
-		} else if (requestUri.startsWith(request.getContextPath()+"/signin")) {
+		} else if (servletPath.startsWith("/resources")) {
 			return true;
 
-		} else if (requestUri.startsWith(request.getContextPath()+"/admin")) {
-			if (requestUri.equals(request.getContextPath()+"/admin/")
-					|| requestUri.equals(request.getContextPath()+"/admin/login")) {
+		} else if (servletPath.startsWith("/signin")) {
+			return true;
+
+		} else if (servletPath.startsWith("/admin")) {
+
+			if (servletPath.equals("/admin/") || servletPath.equals("/admin/login")) {
 				return true;
 			}
 			HttpSession session = request.getSession(false);
 			if (session != null && session.getAttribute(AdminController.SESSION_KEY_AUTH) != null) {
 				return true;
 			}
-
 			logger.info("Access without session as admin: " + request.getRequestURI());
 			new RedirectView("/admin/", true).render(null, request, response);
 			return false;

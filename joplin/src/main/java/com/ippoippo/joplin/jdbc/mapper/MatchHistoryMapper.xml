@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.ippoippo.joplin.jdbc.mapper.PlayerItemMapper">
+<mapper namespace="com.ippoippo.joplin.jdbc.mapper.MatchHistoryMapper">
 
-	<resultMap id="playerItem" type="com.ippoippo.joplin.dto.PlayerItem">
+	<resultMap id="matchItem" type="com.ippoippo.joplin.dto.MatchItem">
 		<id property="id" column="ID"/>
 		<result property="userId" column="USER_ID"/>
 		<result property="articleId" column="ARTICLE_ID"/>
@@ -11,34 +11,34 @@
 	</resultMap>
 
 	<select id="newSelectedId" resultType="Integer">
-		SELECT SEQ_SELECTED_ITEM.NEXTVAL
+		SELECT SEQ_MATCH_HISTORY.NEXTVAL
 	</select>
 
 	<select id="newDiscardId" resultType="Integer">
-		SELECT SEQ_DISCARD_ITEM.NEXTVAL
+		SELECT SEQ_MATCH_HISTORY.NEXTVAL
 	</select>
 
-	<select id="getLatestSelectedByUserIdAndArticleId" parameterType="map" resultMap="playerItem">
+	<select id="getLatestSelectedByUserIdAndArticleId" parameterType="map" resultMap="matchItem">
 		SELECT
 			ID
 			,USER_ID
 			,ARTICLE_ID
 			,VIDEO_ID
 		FROM
-			SELECTED_ITEM
+			MATCH_HISTORY
 		WHERE
-			SELECTED_AT = (
+			RANK = (
 				SELECT
-					MAX(SELECTED_AT)
+					MAX(RANK)
 				FROM
-					SELECTED_ITEM
+					MATCH_HISTORY
 				WHERE
 					USER_ID = #{userId}
 					AND ARTICLE_ID = #{articleId}
 			)
 	</select>
 
-	<select id="listCandidate" parameterType="map" resultMap="playerItem">
+	<select id="listCandidate" parameterType="map" resultMap="matchItem">
 		SELECT
 			VIDEO_ID
 		FROM
@@ -48,32 +48,35 @@
 			(
 				SELECT
 				FROM
-					DISCARD_ITEM DI
+					MATCH_HISTORY MH
 				WHERE
-					YI.ARTICLE_ID = DI.ARTICLE_ID
-					YI.VIDEO_ID = DI.VIDEO_ID
-					DI.USER_ID = #{userId}
+					YI.ARTICLE_ID = MH.ARTICLE_ID
+					YI.VIDEO_ID = MH.VIDEO_ID
+					MH.USER_ID = #{userId}
 			)
 	</select>
 
-	<insert id="createSelected" parameterType="com.ippoippo.joplin.dto.PlayerItem">
-		INSERT INTO SELECTED_ITEM
+	<insert id="createSelected" parameterType="com.ippoippo.joplin.dto.MatchItem">
+		MERGE INTO MATCH_HISTORY
 		(
 			ID
 			,USER_ID
 			,ARTICLE_ID
-			,SELECTED_ID
+			,RANK
 			,VIDEO_ID
 		)
+		KEY {
+			ID
+		}
 		VALUES
 		(
 			#{id}
 			,#{userId}
 			,#{articleId}
 			,(SELECT
-				IFNULL(MAX(SELECTED_ID) + 1, 1)
+				IFNULL(MAX(RANK) + 1, 1)
 			FROM
-				SELECTED_ITEM
+				MATCH_HISTORY
 			WHERE
 				USER_ID = #{userId}
 				AND ARTICLE_ID = #{articleId}
@@ -82,14 +85,17 @@
 		)
 	</insert>
 
-	<insert id="createDiscard" parameterType="com.ippoippo.joplin.dto.PlayerItem">
-		INSERT INTO DISCARD_ITEM
+	<insert id="createDiscard" parameterType="com.ippoippo.joplin.dto.MatchItem">
+		MERGE INTO MATCH_HISTORY
 		(
 			ID
 			,USER_ID
 			,ARTICLE_ID
 			,VIDEO_ID
 		)
+		KEY {
+			ID
+		}
 		VALUES
 		(
 			#{id}

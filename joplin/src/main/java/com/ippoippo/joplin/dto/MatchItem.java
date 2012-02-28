@@ -2,7 +2,7 @@ package com.ippoippo.joplin.dto;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-public class PlayerItem {
+public class MatchItem {
 
 	private String id;
 	
