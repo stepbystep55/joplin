@@ -32,7 +32,7 @@
 		<c:forEach items="${youtubeItems}" var="youtubeItem" varStatus="status">
 		<li>
 			<span class="colVal">
-				<iframe width="360" height="202" src="http://www.youtube.com/embed/${youtubeItem.videoId}?rel=0" frameborder="0" allowfullscreen></iframe>
+				<iframe width="360" height="213" src="http://www.youtube.com/embed/${youtubeItem.videoId}?rel=0" frameborder="0" allowfullscreen></iframe>
 			</span>
 			<span class="colVal">
 				<form id="${status.index}form" action="addItem" method="post">

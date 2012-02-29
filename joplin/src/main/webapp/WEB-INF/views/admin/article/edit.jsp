@@ -44,7 +44,7 @@
 				<fmt:formatNumber value="${item.id}" pattern="000"/>
 			</span>
 			<span class="colVal">
-				<iframe width="360" height="202" src="http://www.youtube.com/embed/${item.videoId}?rel=0" frameborder="0" allowfullscreen></iframe>
+				<iframe width="360" height="213" src="http://www.youtube.com/embed/${item.videoId}?rel=0" frameborder="0" allowfullscreen></iframe>
 			</span>
 		</li>
 		</c:forEach>

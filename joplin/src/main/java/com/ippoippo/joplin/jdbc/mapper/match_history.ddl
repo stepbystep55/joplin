@@ -5,5 +5,5 @@ CREATE TABLE MATCH_HISTORY (
 	VIDEO_ID varchar(256) not null,
 	RANK integer not null default 0,
 	primary key (ID),
-	unique (USER_ID, ARTICLE_ID, VIDEO_ID)
+	unique (USER_ID, ARTICLE_ID, VIDEO_ID, RANK)
 	);

@@ -15,6 +15,7 @@
 		<jdbc:script location="classpath:/com/ippoippo/joplin/jdbc/mapper/user_master.ddl" />
 		<jdbc:script location="classpath:/com/ippoippo/joplin/jdbc/mapper/article.ddl" />
 		<jdbc:script location="classpath:/com/ippoippo/joplin/jdbc/mapper/youtube_item.ddl" />
+		<jdbc:script location="classpath:/com/ippoippo/joplin/jdbc/mapper/match_history.ddl" />
 	</jdbc:embedded-database>	
 	-->
 
@@ -30,6 +31,7 @@
 		<jdbc:script location="classpath:/com/ippoippo/joplin/jdbc/mapper/user_master.ddl" />
 		<jdbc:script location="classpath:/com/ippoippo/joplin/jdbc/mapper/article.ddl" />
 		<jdbc:script location="classpath:/com/ippoippo/joplin/jdbc/mapper/youtube_item.ddl" />
+		<jdbc:script location="classpath:/com/ippoippo/joplin/jdbc/mapper/match_history.ddl" />
 	</jdbc:initialize-database>
 
 	<!-- Local, JDBC-based TransactionManager -->

@@ -10,15 +10,11 @@
 		<result property="videoId" column="VIDEO_ID"/>
 	</resultMap>
 
-	<select id="newSelectedId" resultType="Integer">
+	<select id="newdId" resultType="Integer">
 		SELECT SEQ_MATCH_HISTORY.NEXTVAL
 	</select>
 
-	<select id="newDiscardId" resultType="Integer">
-		SELECT SEQ_MATCH_HISTORY.NEXTVAL
-	</select>
-
-	<select id="getLatestSelectedByUserIdAndArticleId" parameterType="map" resultMap="matchItem">
+	<select id="getLatestChosenByUserIdAndArticleId" parameterType="map" resultMap="matchItem">
 		SELECT
 			ID
 			,USER_ID
@@ -38,7 +34,7 @@
 			)
 	</select>
 
-	<select id="listCandidate" parameterType="map" resultMap="matchItem">
+	<select id="listRestObjectId" parameterType="map" resultType="String">
 		SELECT
 			VIDEO_ID
 		FROM
@@ -47,32 +43,32 @@
 			NOT EXISTS
 			(
 				SELECT
+					*
 				FROM
 					MATCH_HISTORY MH
 				WHERE
 					YI.ARTICLE_ID = MH.ARTICLE_ID
-					YI.VIDEO_ID = MH.VIDEO_ID
-					MH.USER_ID = #{userId}
+					AND YI.VIDEO_ID = MH.VIDEO_ID
+					AND MH.USER_ID = #{userId}
+					AND MH.ARTICLE_ID = #{articleId}
 			)
 	</select>
 
-	<insert id="createSelected" parameterType="com.ippoippo.joplin.dto.MatchItem">
-		MERGE INTO MATCH_HISTORY
+	<insert id="createChosen" parameterType="com.ippoippo.joplin.dto.MatchItem">
+		INSERT INTO MATCH_HISTORY
 		(
 			ID
 			,USER_ID
 			,ARTICLE_ID
-			,RANK
 			,VIDEO_ID
+			,RANK
 		)
-		KEY {
-			ID
-		}
 		VALUES
 		(
 			#{id}
 			,#{userId}
 			,#{articleId}
+			,#{videoId}
 			,(SELECT
 				IFNULL(MAX(RANK) + 1, 1)
 			FROM
@@ -81,27 +77,25 @@
 				USER_ID = #{userId}
 				AND ARTICLE_ID = #{articleId}
 			)
-			,#{videoId}
 		)
 	</insert>
 
 	<insert id="createDiscard" parameterType="com.ippoippo.joplin.dto.MatchItem">
-		MERGE INTO MATCH_HISTORY
+		INSERT INTO MATCH_HISTORY
 		(
 			ID
 			,USER_ID
 			,ARTICLE_ID
 			,VIDEO_ID
+			,RANK
 		)
-		KEY {
-			ID
-		}
 		VALUES
 		(
 			#{id}
 			,#{userId}
 			,#{articleId}
 			,#{videoId}
+			,0
 		)
 	</insert>
 </mapper>

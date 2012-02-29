@@ -24,6 +24,19 @@
 			ID = #{id}
 	</select>
 
+	<select id="getActive" resultMap="article">
+		SELECT
+			ID,
+			SUBJECT,
+			ACTIVE
+		FROM
+			ARTICLE
+		WHERE
+			ACTIVE = true
+		ORDER BY
+			ID DESC
+	</select>
+
 	<select id="listLatest" parameterType="map" resultMap="article">
 		SELECT
 			ID,

@@ -12,6 +12,8 @@ public interface ArticleMapper {
 
 	public Article getById(String id);
 	
+	public List<Article> getActive();
+	
 	public List<Article> listLatest(@Param("start") Integer start, @Param("length") Integer length);
 
 	public void create(Article article);

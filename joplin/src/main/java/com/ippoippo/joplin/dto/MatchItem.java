@@ -13,7 +13,7 @@ public class MatchItem {
 	private String articleId;
 
 	@NotEmpty
-	private String videoId;
+	private String objectId;
 	
 	public String getId() {
 		return id;
@@ -31,12 +31,12 @@ public class MatchItem {
 		this.articleId = articleId;
 	}
 
-	public String getVideoId() {
-		return videoId;
+	public String getObjectId() {
+		return objectId;
 	}
 
-	public void setVideoId(String videoId) {
-		this.videoId = videoId;
+	public void setObjectId(String objectId) {
+		this.objectId = objectId;
 	}
 
 	public String getUserId() {
