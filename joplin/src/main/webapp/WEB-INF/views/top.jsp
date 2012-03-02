@@ -17,16 +17,16 @@
 	<h1>top</h1>
 	<form id="vsForm" action="vs" method="post">
 		<input type="hidden" name="articleId" value="${articleId}" />
-		<input type="hidden" id="chosenObjectId" name="chosenObjectId" value="" />
-		<input type="hidden" id="discardObjectId" name="discardObjectId" value="" />
+		<input type="hidden" id="chosenItemId" name="chosenItemId" value="" />
+		<input type="hidden" id="discardItemId" name="discardItemId" value="" />
 		<span class="colVal">
-			<iframe width="360" height="213" src="http://www.youtube.com/embed/${chosenObjectId}?rel=0" frameborder="0" allowfullscreen></iframe>
-			<input type="button" id="chosenBtn" name="chosenBtn" value="chose this" />
+			<iframe width="360" height="213" src="http://www.youtube.com/embed/${firstItem.videoId}?rel=0" frameborder="0" allowfullscreen></iframe>
+			<input type="button" id="firstBtn" name="firstBtn" value="chose this" />
 		</span>
 		&nbsp;
 		<span class="colVal">
-			<iframe width="360" height="213" src="http://www.youtube.com/embed/${competitorObjectId}?rel=0" frameborder="0" allowfullscreen></iframe>
-			<input type="button" id="competitorBtn" name="competitorBtn" value="chose this" />
+			<iframe width="360" height="213" src="http://www.youtube.com/embed/${secondItem.videoId}?rel=0" frameborder="0" allowfullscreen></iframe>
+			<input type="button" id="secondBtn" name="secondBtn" value="chose this" />
 		</span>
 	</form>
 </div>
@@ -38,16 +38,16 @@
 <script type="text/javascript">
 <!--
 $(function(){
-	$(input[name='chosenBtn']).click(function(){
-		doChoose('${chosenObjectId}', '${competitorObjectId}');
+	$(input[name='firstBtn']).click(function(){
+		doVs('${firstItem.id}', '${secondItem.id}');
 	});
-	$(input[name='chosenBtn']).click(function(){
-		doChoose('${competitorObjectId}', '${chosenObjectId}');
+	$(input[name='secondBtn']).click(function(){
+		doVs('${secondItem.id}', '${firstItem.id}');
 	});
 });
-function doVs(chosenObjectId, discardObjectId) {
-	$(input[name='chosenObjectId']).val(chosenObjectId);
-	$(input[name='discardObjectId']).val(discardObjectId);
+function doVs(chosenItemId, discardItemId) {
+	$(input[name='chosenItemId']).val(chosenItemId);
+	$(input[name='discardItemId']).val(discardItemId);
 	$('#vsForm').submit();
 	
 }

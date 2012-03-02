@@ -1,5 +1,6 @@
 package com.ippoippo.joplin.controller;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -17,11 +18,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ippoippo.joplin.dto.Article;
-import com.ippoippo.joplin.dto.MatchItem;
 import com.ippoippo.joplin.dto.UserDisplay;
+import com.ippoippo.joplin.dto.YoutubeItem;
 import com.ippoippo.joplin.jdbc.mapper.ArticleMapper;
-import com.ippoippo.joplin.jdbc.mapper.MatchHistoryMapper;
 import com.ippoippo.joplin.jdbc.mapper.UserMasterMapper;
+import com.ippoippo.joplin.jdbc.mapper.YoutubeItemMapper;
 import com.ippoippo.joplin.util.UserCookieForTemporaryGenerator;
 
 /**
@@ -43,12 +44,12 @@ public class HomeController {
 	ArticleMapper articleMapper;
 
 	@Inject
-	MatchHistoryMapper matchHistoryMapper;
-	
+	YoutubeItemMapper youtubeItemMapper;
+
 	@Inject
 	UsersConnectionRepository usersConnectionRepository;
 
-	@Transactional(rollbackForClassName="java.lang.Exception")
+	@Transactional(rollbackForClassName="java.leng.Exception")
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView home(HttpServletRequest request, HttpServletResponse response) {
 		
@@ -104,9 +105,7 @@ public class HomeController {
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "/top", method = {RequestMethod.GET,RequestMethod.POST})
-	public ModelAndView top(HttpServletRequest request) {
-
-		String userId = userCookieForTemporaryGenerator.getUserId(request);
+	public ModelAndView top() {
 
 		String articleId = null;
 		List<Article> articles = articleMapper.getActive();
@@ -116,18 +115,43 @@ public class HomeController {
 			//TODO
 		}
 
-		MatchItem chosenItem = matchHistoryMapper.getLatestChosenByUserIdAndArticleId(userId, articleId);
-		List<String> restObjectIds = matchHistoryMapper.listRestObjectId(userId, articleId);
-		String chosenObjectId = (chosenItem != null) ? chosenItem.getObjectId() :  restObjectIds.remove(0);
-		if (restObjectIds.size() == 0) {
-			//TODO
+		List<YoutubeItem> items = youtubeItemMapper.listByArticleId(articleId);
+		Collections.shuffle(items);
+		if (items.size() <= 1) {
+			// TODO
 		}
-		String competitorObjectId = restObjectIds.remove(0);
+		YoutubeItem firstItem = items.get(0);
+		YoutubeItem secondItem = items.get(0);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("articleId", articleId);
-		modelAndView.addObject("chosenObjectId", chosenObjectId);
-		modelAndView.addObject("competitorObjectId", competitorObjectId);
+		modelAndView.addObject("firstItem", firstItem);
+		modelAndView.addObject("secondItem", secondItem);
+		modelAndView.setViewName("top");
+		return modelAndView;
+	}
+
+	@Transactional(rollbackForClassName="java.lang.Exception")
+	@RequestMapping(value = "/vs", method = {RequestMethod.GET,RequestMethod.POST})
+	public ModelAndView vs(HttpServletRequest request) {
+		String articleId = (String)request.getParameter("articleId");
+		String chosenItemId = (String)request.getParameter("chosenItemId");
+		String discardItemId = (String)request.getParameter("discardItemId");
+		
+		youtubeItemMapper.rate(articleId, chosenItemId, discardItemId);
+		
+		List<YoutubeItem> items = youtubeItemMapper.listByArticleId(articleId);
+		Collections.shuffle(items);
+		if (items.size() <= 1) {
+			// TODO
+		}
+		YoutubeItem firstItem = items.get(0);
+		YoutubeItem secondItem = items.get(0);
+
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("articleId", articleId);
+		modelAndView.addObject("firstItem", firstItem);
+		modelAndView.addObject("secondItem", secondItem);
 		modelAndView.setViewName("top");
 		return modelAndView;
 	}

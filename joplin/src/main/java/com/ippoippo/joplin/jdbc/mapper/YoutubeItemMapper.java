@@ -15,6 +15,8 @@ public interface YoutubeItemMapper {
 	public Integer countByArticleIdAndVideoId(@Param("articleId") String articleId, @Param("videoId") String videoId);
 
 	public List<YoutubeItem> listByArticleId(String articleId);
+	
+	public void rate(String articleId, String chosenItemId, String discardItemId);
 
 	public void create(YoutubeItem youtubeItem);
 
