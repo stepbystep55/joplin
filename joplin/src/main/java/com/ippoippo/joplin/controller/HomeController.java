@@ -1,5 +1,6 @@
 package com.ippoippo.joplin.controller;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ippoippo.joplin.dto.Article;
+import com.ippoippo.joplin.dto.Match;
 import com.ippoippo.joplin.dto.UserDisplay;
 import com.ippoippo.joplin.dto.YoutubeItem;
 import com.ippoippo.joplin.jdbc.mapper.ArticleMapper;
@@ -115,44 +117,42 @@ public class HomeController {
 			//TODO
 		}
 
-		List<YoutubeItem> items = youtubeItemMapper.listByArticleId(articleId);
-		Collections.shuffle(items);
-		if (items.size() <= 1) {
-			// TODO
-		}
-		YoutubeItem firstItem = items.get(0);
-		YoutubeItem secondItem = items.get(0);
+		Match match = this.newMatch(articleId);
 
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("articleId", articleId);
-		modelAndView.addObject("firstItem", firstItem);
-		modelAndView.addObject("secondItem", secondItem);
+		modelAndView.addObject("match", match);
 		modelAndView.setViewName("top");
 		return modelAndView;
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "/vs", method = {RequestMethod.GET,RequestMethod.POST})
-	public ModelAndView vs(HttpServletRequest request) {
-		String articleId = (String)request.getParameter("articleId");
-		String chosenItemId = (String)request.getParameter("chosenItemId");
-		String discardItemId = (String)request.getParameter("discardItemId");
+	public ModelAndView vs(Match match) {
 		
-		youtubeItemMapper.rate(articleId, chosenItemId, discardItemId);
+		youtubeItemMapper.updateRate(match);
+		
+		match = this.newMatch(match.getArticleId());
+
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("match", match);
+		modelAndView.setViewName("top");
+		return modelAndView;
+	}
+	
+	private Match newMatch(String articleId) {
 		
 		List<YoutubeItem> items = youtubeItemMapper.listByArticleId(articleId);
-		Collections.shuffle(items);
 		if (items.size() <= 1) {
 			// TODO
 		}
-		YoutubeItem firstItem = items.get(0);
-		YoutubeItem secondItem = items.get(0);
+		List<YoutubeItem> copyItems = new ArrayList<YoutubeItem>(items.size());
+		Collections.copy(copyItems, items);
+		Collections.shuffle(copyItems);
 
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("articleId", articleId);
-		modelAndView.addObject("firstItem", firstItem);
-		modelAndView.addObject("secondItem", secondItem);
-		modelAndView.setViewName("top");
-		return modelAndView;
+		Match match = new Match();
+		match.setArticleId(articleId);
+		match.setFirstItem(copyItems.get(0));
+		match.setSecondItem(copyItems.get(1));
+		return match;
 	}
 }

@@ -17,7 +17,8 @@
 		SELECT
 			ID,
 			ARTICLE_ID,
-			VIDEO_ID
+			VIDEO_ID,
+			RATE
 		FROM
 			YOUTUBE_ITEM
 		WHERE
@@ -38,7 +39,8 @@
 		SELECT
 			ID,
 			ARTICLE_ID,
-			VIDEO_ID
+			VIDEO_ID,
+			RATE
 		FROM
 			YOUTUBE_ITEM
 		WHERE
@@ -60,7 +62,7 @@
 		)
 	</insert>
 
-	<update id="update" parameterType="com.ippoippo.joplin.dto.YoutubeItem">
+	<update id="updateVideoId" parameterType="map">
 		UPDATE YOUTUBE_ITEM
 			SET
 				VIDEO_ID = #{videoId}
@@ -74,4 +76,18 @@
 		WHERE 
 			ID = #{id}
 	</delete>
+
+	<update id="updateRate" parameterType="com.ippoippo.joplin.dto.Match">
+		UPDATE YOUTUBE_ITEM
+			SET
+				RATE = (winnerItem.newRate)
+			WHERE
+				ID = #{winnerItem.id};
+		UPDATE YOUTUBE_ITEM
+			SET
+				RATE = (loserItem.newRate)
+			WHERE
+				ID = #{loserItem.id};
+	</update>
+
 </mapper>

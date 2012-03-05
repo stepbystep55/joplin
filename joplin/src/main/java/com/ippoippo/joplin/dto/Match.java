@@ -1,21 +1,16 @@
 package com.ippoippo.joplin.dto;
 
-import org.hibernate.validator.constraints.NotEmpty;
+
 
 public class Match {
 
-	@NotEmpty
 	private String articleId;
 
-	private String chosenObjectId;
+	private YoutubeItem firstItem;
 
-	private String competitorObjectId;
+	private YoutubeItem secondItem;
 
-	@NotEmpty
-	private String newChosenObjectId;
-
-	@NotEmpty
-	private String discardObjectId;
+	private String winnerItemId;
 
 	public String getArticleId() {
 		return articleId;
@@ -25,35 +20,54 @@ public class Match {
 		this.articleId = articleId;
 	}
 
-	public String getChosenObjectId() {
-		return chosenObjectId;
+	public YoutubeItem getFirstItem() {
+		return firstItem;
 	}
 
-	public void setChosenObjectId(String chosenObjectId) {
-		this.chosenObjectId = chosenObjectId;
+	public void setFirstItem(YoutubeItem firstItem) {
+		this.firstItem = firstItem;
 	}
 
-	public String getCompetitorObjectId() {
-		return competitorObjectId;
+	public YoutubeItem getSecondItem() {
+		return secondItem;
 	}
 
-	public void setCompetitorObjectId(String competitorObjectId) {
-		this.competitorObjectId = competitorObjectId;
+	public void setSecondItem(YoutubeItem secondItem) {
+		this.secondItem = secondItem;
 	}
 
-	public String getNewChosenObjectId() {
-		return newChosenObjectId;
+	public YoutubeItem winnerItem;
+	public YoutubeItem loserItem;
+
+	public String getChosenItemId() {
+		return winnerItemId;
 	}
 
-	public void setNewChosenObjectId(String newChosenObjectId) {
-		this.newChosenObjectId = newChosenObjectId;
+	public void setWinnerItemId(String winnerItemId) {
+		this.winnerItemId = winnerItemId;
+
+		if (this.firstItem.getId().equals(this.winnerItemId)) {
+			this.winnerItem = this.firstItem;
+			this.winnerItem.calcNewRate(true, this.secondItem.getRate());
+			this.loserItem = this.secondItem;
+			this.loserItem.calcNewRate(false, this.firstItem.getRate());
+
+		} else if (this.secondItem.getId().equals(this.winnerItemId)) {
+			this.winnerItem = this.secondItem;
+			this.winnerItem.calcNewRate(true, this.firstItem.getRate());
+			this.loserItem = this.firstItem;
+			this.loserItem.calcNewRate(false, this.secondItem.getRate());
+
+		} else {
+			throw new RuntimeException("Illegal requested winnerItemId.");
+		}
+	}
+	
+	public YoutubeItem getWinnerItem() {
+		return this.winnerItem;
 	}
 
-	public String getDiscardObjectId() {
-		return discardObjectId;
-	}
-
-	public void setDiscardObjectId(String discardObjectId) {
-		this.discardObjectId = discardObjectId;
+	public YoutubeItem getLoserItem() {
+		return this.loserItem;
 	}
 }
