@@ -1,12 +1,19 @@
 package com.ippoippo.joplin.dto;
 
+import java.io.Serializable;
+
 import javax.inject.Inject;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.ippoippo.joplin.util.Encryptor;
 
-public class YoutubeItem {
+public class YoutubeItem implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2365995103355938584L;
 
 	@Inject
 	private Encryptor encryptor;
@@ -70,19 +77,22 @@ public class YoutubeItem {
 	}
 
 	private static final double WINNER_POINT = 1;
-	private static final double LOSER_POINT = 1;
+	private static final double LOSER_POINT = 0;
 	private static final double TOURNAMENT_LEVEL = 32;
 
-	private double newRate;
+	/**
+	 * 対決後のrate変動量
+	 */
+	private double rateVaried;
 
-	public void calcNewRate(boolean win, double opponentRate) {
+	public void calcRateVaried(boolean win, double opponentRate) {
 		double point = (win) ? WINNER_POINT : LOSER_POINT;
 		double winProbability = 1 / (1 + Math.pow(10, (opponentRate - this.rate) / 400));
-		this.newRate = rate + TOURNAMENT_LEVEL * (point - winProbability);
+		this.rateVaried = TOURNAMENT_LEVEL * (point - winProbability);
 	}
 
-	public double getNewRate() {
-		return this.newRate;
+	public double getRateVaried() {
+		return this.rateVaried;
 	}
 
 	@Override
@@ -108,5 +118,12 @@ public class YoutubeItem {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "YoutubeItem [encryptor=" + encryptor + ", id=" + id
+				+ ", articleId=" + articleId + ", videoId=" + videoId
+				+ ", rate=" + rate + ", rateVaried=" + rateVaried + "]";
 	}
 }

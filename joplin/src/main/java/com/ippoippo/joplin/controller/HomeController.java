@@ -16,15 +16,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ippoippo.joplin.dto.Article;
-import com.ippoippo.joplin.dto.Match;
 import com.ippoippo.joplin.dto.UserDisplay;
 import com.ippoippo.joplin.dto.YoutubeItem;
 import com.ippoippo.joplin.jdbc.mapper.ArticleMapper;
 import com.ippoippo.joplin.jdbc.mapper.UserMasterMapper;
 import com.ippoippo.joplin.jdbc.mapper.YoutubeItemMapper;
+import com.ippoippo.joplin.util.IOUtil;
 import com.ippoippo.joplin.util.UserCookieForTemporaryGenerator;
 
 /**
@@ -117,42 +118,62 @@ public class HomeController {
 			//TODO
 		}
 
-		Match match = this.newMatch(articleId);
+		List<YoutubeItem> items = this.newMatch(articleId);
 
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("match", match);
+		modelAndView.addObject("articleId", articleId);
+		modelAndView.addObject("firstItem", items.get(0));
+		modelAndView.addObject("secondItem", items.get(1));
 		modelAndView.setViewName("top");
 		return modelAndView;
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "/vs", method = {RequestMethod.GET,RequestMethod.POST})
-	public ModelAndView vs(Match match) {
+	@RequestMapping(value = "/vs", method = RequestMethod.POST)
+	public ModelAndView vs(
+			@RequestParam("articleId") String articleId
+			, @RequestParam("firstItemId") String firstItemId
+			, @RequestParam("secondItemId") String secondItemId
+			, @RequestParam("winnerItemId") String winnerItemId
+			) {
 		
-		youtubeItemMapper.updateRate(match);
+		List<String> ids = new ArrayList<String>(2);
+		ids.add(firstItemId);
+		ids.add(secondItemId);
+		List<YoutubeItem> winnerAndLoser = youtubeItemMapper.listByIds(ids);
+		YoutubeItem winnerItem = null;
+		YoutubeItem loserItem = null;
+		for (YoutubeItem item : winnerAndLoser) {
+			if (item.getId().equals(winnerItemId)) {
+				winnerItem = item;
+			} else {
+				loserItem = item;
+			}
+		}
+		winnerItem.calcRateVaried(true, loserItem.getRate());
+		loserItem.calcRateVaried(false, winnerItem.getRate());
+
+		youtubeItemMapper.updateRate(winnerItem.getId(), winnerItem.getRateVaried());
+		youtubeItemMapper.updateRate(loserItem.getId(), loserItem.getRateVaried());
 		
-		match = this.newMatch(match.getArticleId());
+		List<YoutubeItem> items = this.newMatch(articleId);
 
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("match", match);
+		modelAndView.addObject("articleId", articleId);
+		modelAndView.addObject("firstItem", items.get(0));
+		modelAndView.addObject("secondItem", items.get(1));
 		modelAndView.setViewName("top");
 		return modelAndView;
 	}
 	
-	private Match newMatch(String articleId) {
+	private List<YoutubeItem> newMatch(String articleId) {
 		
 		List<YoutubeItem> items = youtubeItemMapper.listByArticleId(articleId);
 		if (items.size() <= 1) {
 			// TODO
 		}
-		List<YoutubeItem> copyItems = new ArrayList<YoutubeItem>(items.size());
-		Collections.copy(copyItems, items);
-		Collections.shuffle(copyItems);
+		Collections.shuffle(items);
 
-		Match match = new Match();
-		match.setArticleId(articleId);
-		match.setFirstItem(copyItems.get(0));
-		match.setSecondItem(copyItems.get(1));
-		return match;
+		return items.subList(0, 2);
 	}
 }

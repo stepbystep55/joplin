@@ -25,6 +25,21 @@
 			ID = #{id}
 	</select>
 
+	<select id="listByIds" parameterType="list" resultMap="youtubeItem">
+		SELECT
+			ID,
+			ARTICLE_ID,
+			VIDEO_ID,
+			RATE
+		FROM
+			YOUTUBE_ITEM
+		WHERE
+			ID IN
+			<foreach collection="list" item="id" index="idx" open="(" close=")" separator=",">
+				#{id}
+			</foreach>
+	</select>
+
 	<select id="countByArticleIdAndVideoId" parameterType="map" resultType="Integer">
 		SELECT
 			COUNT(ID)
@@ -77,17 +92,12 @@
 			ID = #{id}
 	</delete>
 
-	<update id="updateRate" parameterType="com.ippoippo.joplin.dto.Match">
+	<update id="updateRate" parameterType="map">
 		UPDATE YOUTUBE_ITEM
 			SET
-				RATE = (winnerItem.newRate)
+				RATE = RATE + #{rateVaried}
 			WHERE
-				ID = #{winnerItem.id};
-		UPDATE YOUTUBE_ITEM
-			SET
-				RATE = (loserItem.newRate)
-			WHERE
-				ID = #{loserItem.id};
+				ID = #{id}
 	</update>
 
 </mapper>

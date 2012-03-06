@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.ippoippo.joplin.dto.Match;
 import com.ippoippo.joplin.dto.YoutubeItem;
 
 public interface YoutubeItemMapper {
@@ -12,6 +11,8 @@ public interface YoutubeItemMapper {
 	public Integer newId();
 
 	public YoutubeItem getById(String id);
+
+	public List<YoutubeItem> listByIds(List<String> ids);
 
 	public Integer countByArticleIdAndVideoId(@Param("articleId") String articleId, @Param("videoId") String videoId);
 
@@ -23,5 +24,5 @@ public interface YoutubeItemMapper {
 
 	public void delete(String id);
 
-	public void updateRate(Match match);
+	public void updateRate(@Param("id") String id, @Param("rateVaried") double rateVaried);
 }

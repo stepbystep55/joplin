@@ -16,9 +16,10 @@
 <div id="body">
 	<h1>top</h1>
 	<form id="vsForm" action="vs" method="post">
-		<input type="hidden" name="articleId" value="${articleId}" />
-		<input type="hidden" id="chosenItemId" name="chosenItemId" value="" />
-		<input type="hidden" id="discardItemId" name="discardItemId" value="" />
+		<input type="hidden" id="articleId" name="articleId" value="${articleId}" />
+		<input type="hidden" id="firstItemId" name="firstItemId" value="${firstItem.id}" />
+		<input type="hidden" id="secondItemId" name="secondItemId" value="${secondItem.id}" />
+		<input type="hidden" id="winnerItemId" name="winnerItemId" value="" />
 		<span class="colVal">
 			<iframe width="360" height="213" src="http://www.youtube.com/embed/${firstItem.videoId}?rel=0" frameborder="0" allowfullscreen></iframe>
 			<input type="button" id="firstBtn" name="firstBtn" value="chose this" />
@@ -38,16 +39,15 @@
 <script type="text/javascript">
 <!--
 $(function(){
-	$(input[name='firstBtn']).click(function(){
+	$('input[name="firstBtn"]').click(function(){
 		doVs('${firstItem.id}', '${secondItem.id}');
 	});
-	$(input[name='secondBtn']).click(function(){
+	$('input[name="secondBtn"]').click(function(){
 		doVs('${secondItem.id}', '${firstItem.id}');
 	});
 });
 function doVs(chosenItemId, discardItemId) {
-	$(input[name='chosenItemId']).val(chosenItemId);
-	$(input[name='discardItemId']).val(discardItemId);
+	$('input[name="winnerItemId"]').val(chosenItemId);
 	$('#vsForm').submit();
 	
 }

@@ -1,9 +1,16 @@
 package com.ippoippo.joplin.dto;
 
+import java.io.Serializable;
+
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
-public class Article {
+public class Article implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1080392128618430698L;
 
 	private String id;
 
