@@ -45,6 +45,7 @@
 	</beans:bean>
 
 	<beans:import resource="datasrc.xml" />
+	<beans:import resource="cache.xml" />
 	<!--
 	<beans:import resource="mongo.xml" />
 	-->

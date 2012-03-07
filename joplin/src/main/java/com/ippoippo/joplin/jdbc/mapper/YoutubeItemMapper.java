@@ -3,6 +3,7 @@ package com.ippoippo.joplin.jdbc.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
+import org.springframework.cache.annotation.Cacheable;
 
 import com.ippoippo.joplin.dto.YoutubeItem;
 
@@ -16,6 +17,7 @@ public interface YoutubeItemMapper {
 
 	public Integer countByArticleIdAndVideoId(@Param("articleId") String articleId, @Param("videoId") String videoId);
 
+	@Cacheable("searchCache")
 	public List<YoutubeItem> listByArticleId(String articleId);
 	
 	public void create(YoutubeItem youtubeItem);

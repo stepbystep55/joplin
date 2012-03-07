@@ -167,8 +167,9 @@ public class HomeController {
 	}
 	
 	private List<YoutubeItem> newMatch(String articleId) {
-		
+
 		List<YoutubeItem> items = youtubeItemMapper.listByArticleId(articleId);
+		logger.info("items="+items);
 		if (items.size() <= 1) {
 			// TODO
 		}

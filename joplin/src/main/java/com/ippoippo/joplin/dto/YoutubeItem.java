@@ -15,9 +15,6 @@ public class YoutubeItem implements Serializable {
 	 */
 	private static final long serialVersionUID = -2365995103355938584L;
 
-	@Inject
-	private Encryptor encryptor;
-
 	private String id;
 	
 	@NotEmpty
@@ -58,22 +55,6 @@ public class YoutubeItem implements Serializable {
 
 	public void setRate(double rate) {
 		this.rate = rate;
-	}
-
-	/**
-	 * get the encrypted rate value for hidden input
-	 * @return
-	 */
-	public String getErate() {
-		return encryptor.encrypt(""+this.rate);
-	}
-	
-	/**
-	 * set the encrypted rate value for hidden input
-	 * @return
-	 */
-	public void setErate(String erate) {
-		this.rate = new Double(encryptor.decrypt(erate));
 	}
 
 	private static final double WINNER_POINT = 1;
@@ -122,7 +103,7 @@ public class YoutubeItem implements Serializable {
 
 	@Override
 	public String toString() {
-		return "YoutubeItem [encryptor=" + encryptor + ", id=" + id
+		return "YoutubeItem [id=" + id
 				+ ", articleId=" + articleId + ", videoId=" + videoId
 				+ ", rate=" + rate + ", rateVaried=" + rateVaried + "]";
 	}
