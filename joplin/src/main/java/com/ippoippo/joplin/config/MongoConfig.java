@@ -7,7 +7,8 @@ import org.springframework.data.mongodb.core.MongoFactoryBean;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
-import com.ippoippo.joplin.mongo.operations.MongoConnectionOperations;
+import com.ippoippo.joplin.mongo.operations.ArticleOperations;
+import com.ippoippo.joplin.mongo.operations.YoutubeItemOperations;
 
 /**
  * MongoDB Configuration.
@@ -34,9 +35,14 @@ public class MongoConfig {
 	//public MongoTemplate mongoTemplate() throws Exception {
 		return new MongoTemplate(mongo().getObject(), "joplin");
 	}
+
+	@Bean
+	public ArticleOperations articleOperations() throws Exception {
+		return new ArticleOperations(mongoOperations());
+	}
 	
 	@Bean
-	public MongoConnectionOperations mongoConnectionOperations() throws Exception {
-		return new MongoConnectionOperations(mongoOperations());
+	public YoutubeItemOperations youtubeItemOperations() throws Exception {
+		return new YoutubeItemOperations(mongoOperations());
 	}
 }

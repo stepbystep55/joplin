@@ -41,7 +41,8 @@
 		<c:forEach items="${items}" var="item">
 		<li>
 			<span class="colId">
-				<fmt:formatNumber value="${item.id}" pattern="000"/>
+			<%-- <fmt:formatNumber value="${item.id}" pattern="000"/> --%>
+				<c:out value="${item.id}" />
 			</span>
 			<span class="colVal">
 				<iframe width="360" height="213" src="http://www.youtube.com/embed/${item.videoId}?rel=0" frameborder="0" allowfullscreen></iframe>

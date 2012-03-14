@@ -22,17 +22,18 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ippoippo.joplin.dto.Article;
 import com.ippoippo.joplin.dto.UserDisplay;
 import com.ippoippo.joplin.dto.YoutubeItem;
+import com.ippoippo.joplin.jdbc.mapper.ArticleMapper;
 import com.ippoippo.joplin.jdbc.mapper.UserMasterMapper;
-import com.ippoippo.joplin.mongo.operations.ArticleOperations;
-import com.ippoippo.joplin.mongo.operations.YoutubeItemOperations;
+import com.ippoippo.joplin.jdbc.mapper.YoutubeItemMapper;
+import com.ippoippo.joplin.util.IOUtil;
 import com.ippoippo.joplin.util.UserCookieForTemporaryGenerator;
 
 /**
  * Handles requests for the application home page.
  */
 @Controller
-@RequestMapping("/")
-public class HomeController {
+@RequestMapping("/forrdb")
+public class HomeController4rdb {
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -43,10 +44,10 @@ public class HomeController {
 	UserMasterMapper userMasterMapper;
 
 	@Inject
-	ArticleOperations articleOperations;
+	ArticleMapper articleMapper;
 
 	@Inject
-	YoutubeItemOperations youtubeItemOperations;
+	YoutubeItemMapper youtubeItemMapper;
 
 	@Inject
 	UsersConnectionRepository usersConnectionRepository;
@@ -110,7 +111,7 @@ public class HomeController {
 	public ModelAndView top() {
 
 		String articleId = null;
-		List<Article> articles = articleOperations.getActive();
+		List<Article> articles = articleMapper.getActive();
 		if (articles != null && articles.size() > 0) {
 			articleId = articles.get(0).getId();
 		} else {
@@ -139,7 +140,7 @@ public class HomeController {
 		List<String> ids = new ArrayList<String>(2);
 		ids.add(firstItemId);
 		ids.add(secondItemId);
-		List<YoutubeItem> winnerAndLoser = youtubeItemOperations.listByIds(ids);
+		List<YoutubeItem> winnerAndLoser = youtubeItemMapper.listByIds(ids);
 		YoutubeItem winnerItem = null;
 		YoutubeItem loserItem = null;
 		for (YoutubeItem item : winnerAndLoser) {
@@ -152,8 +153,8 @@ public class HomeController {
 		winnerItem.calcRateVaried(true, loserItem.getRate());
 		loserItem.calcRateVaried(false, winnerItem.getRate());
 
-		youtubeItemOperations.updateRate(winnerItem.getId(), winnerItem.getRateVaried());
-		youtubeItemOperations.updateRate(loserItem.getId(), loserItem.getRateVaried());
+		youtubeItemMapper.updateRate(winnerItem.getId(), winnerItem.getRateVaried());
+		youtubeItemMapper.updateRate(loserItem.getId(), loserItem.getRateVaried());
 		
 		List<YoutubeItem> items = this.newMatch(articleId);
 
@@ -167,7 +168,8 @@ public class HomeController {
 	
 	private List<YoutubeItem> newMatch(String articleId) {
 
-		List<YoutubeItem> items = youtubeItemOperations.listByArticleId(articleId);
+		List<YoutubeItem> items = youtubeItemMapper.listByArticleId(articleId);
+		logger.info("items="+items);
 		if (items.size() <= 1) {
 			// TODO
 		}

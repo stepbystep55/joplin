@@ -25,9 +25,12 @@
 		<c:forEach items="${articles}" var="article">
 		<li>
 			<span class="colId">
-				<a href="${article.id}/edit"><fmt:formatNumber value="${article.id}" pattern="00000000"/></a>
+				<a href="${article.id}/edit">
+					<%-- <fmt:formatNumber value="${article.id}" pattern="00000000"/> --%>
+					<c:out value="${article.id}" />
+				</a>
 			</span>
-			<span class="colVal"><c:out value="${article.subject}"></c:out></span>
+			<span class="colVal"><c:out value="${article.subject}" /></span>
 			<span class="colVal">
 				<c:choose>
 					<c:when test="${article.active}">実施中</c:when><c:otherwise>停止</c:otherwise>

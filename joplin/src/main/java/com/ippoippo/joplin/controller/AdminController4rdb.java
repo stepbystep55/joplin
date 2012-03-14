@@ -28,8 +28,8 @@ import com.ippoippo.joplin.dto.Article;
 import com.ippoippo.joplin.dto.YoutubeItem;
 import com.ippoippo.joplin.dto.YoutubeSearchForm;
 import com.ippoippo.joplin.exception.IllegalRequestException;
-import com.ippoippo.joplin.mongo.operations.ArticleOperations;
-import com.ippoippo.joplin.mongo.operations.YoutubeItemOperations;
+import com.ippoippo.joplin.jdbc.mapper.ArticleMapper;
+import com.ippoippo.joplin.jdbc.mapper.YoutubeItemMapper;
 import com.ippoippo.joplin.util.StringUtils;
 import com.ippoippo.joplin.youtube.Video;
 import com.ippoippo.joplin.youtube.VideoFeed;
@@ -39,8 +39,8 @@ import com.ippoippo.joplin.youtube.YouTubeSearchUrl;
  * Handles requests for articles.
  */
 @Controller
-@RequestMapping("/admin")
-public class AdminController {
+@RequestMapping("/adminforrb")
+public class AdminController4rdb {
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -50,10 +50,10 @@ public class AdminController {
 	public static final String SESSION_KEY_AUTH = "loginAsAdmin";
 
 	@Inject
-	ArticleOperations articleOperations;
+	ArticleMapper articleMapper;
 
 	@Inject
-	YoutubeItemOperations youtubeItemOperations;
+	YoutubeItemMapper youtubeItemMapper;
 
 	@Inject
 	private HttpRequestFactory gdataRequestFactory;
@@ -86,7 +86,7 @@ public class AdminController {
 	public ModelAndView list() {
 
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("articles", articleOperations.listLatest(0, 10));
+		modelAndView.addObject("articles", articleMapper.listLatest(0, 10));
 		modelAndView.setViewName("admin/article/list");
 		return modelAndView;
 	}
@@ -112,8 +112,9 @@ public class AdminController {
 			return modelAndView;
 		}
 
-		articleOperations.create(article);
-		String newId = article.getId();
+		Integer newId = articleMapper.newId();
+		article.setId(newId.toString());
+		articleMapper.create(article);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("created", true);
@@ -123,7 +124,7 @@ public class AdminController {
 
 	private void validateAccess(String articleId) throws IllegalRequestException {
 		
-		Article article = articleOperations.getById(articleId);
+		Article article = articleMapper.getById(articleId);
 		if (article == null) throw new IllegalRequestException();
 	}
 
@@ -133,11 +134,11 @@ public class AdminController {
 
 		validateAccess(id);
 
-		Article article = articleOperations.getById(id);
+		Article article = articleMapper.getById(id);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("article", article);
-		modelAndView.addObject("items", youtubeItemOperations.listByArticleId(id));
+		modelAndView.addObject("items", youtubeItemMapper.listByArticleId(article.getId()));
 		modelAndView.setViewName("admin/article/edit");
 		return modelAndView;
 	}
@@ -151,13 +152,13 @@ public class AdminController {
 		if (result.hasErrors()) {
 			ModelAndView modelAndView = new ModelAndView();
 			modelAndView.addObject("article", article);
-			modelAndView.addObject("items", youtubeItemOperations.listByArticleId(id));
+			modelAndView.addObject("items", youtubeItemMapper.listByArticleId(article.getId()));
 			modelAndView.setViewName("admin/article/edit");
 			return modelAndView;
 		}
 
 		article.setId(id);
-		articleOperations.updateSubjectAndActive(article);
+		articleMapper.update(article);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("updated", true);
@@ -171,7 +172,7 @@ public class AdminController {
 		
 		validateAccess(id);
 
-		articleOperations.delete(id);
+		articleMapper.delete(id);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("deleted", true);
@@ -266,13 +267,15 @@ public class AdminController {
 
 		validateAccess(id);
 
-		if (youtubeItemOperations.countByArticleIdAndVideoId(id, videoId) > 0) {
+		if (youtubeItemMapper.countByArticleIdAndVideoId(id, videoId) > 0) {
 			logger.info("The video for articldId="+id+", videoId="+videoId+" already exists.");
 		} else {
 			YoutubeItem item = new YoutubeItem();
+			Integer newItemId = youtubeItemMapper.newId();
+			item.setId(newItemId.toString());
 			item.setArticleId(id);
 			item.setVideoId(videoId);
-			youtubeItemOperations.create(item);
+			youtubeItemMapper.create(item);
 		}
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("updated", true);
