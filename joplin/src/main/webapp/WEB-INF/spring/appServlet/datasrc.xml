@@ -28,8 +28,6 @@
 		<jdbc:script location="classpath:/org/springframework/social/connect/jdbc/JdbcUsersConnectionRepository.sql" />
 		<jdbc:script location="classpath:/com/ippoippo/joplin/jdbc/mapper/sequence.ddl" />
 		<jdbc:script location="classpath:/com/ippoippo/joplin/jdbc/mapper/user_master.ddl" />
-		<jdbc:script location="classpath:/com/ippoippo/joplin/jdbc/mapper/article.ddl" />
-		<jdbc:script location="classpath:/com/ippoippo/joplin/jdbc/mapper/youtube_item.ddl" />
 	</jdbc:initialize-database>
 
 	<!-- Local, JDBC-based TransactionManager -->
