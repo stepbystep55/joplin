@@ -10,24 +10,46 @@
 </head>
 <body>
 
-<div id="header">
-</div>
+	<div class="navbar navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container">
+				<a class="btn btn-navbar" data-toggle="collapse" data-target="nav-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</a>
+				<a class="brand" href="#">VivaJoplin</a>
+			</div>
+		</div>
+	</div>
 
-<div id="body">
-	<h3>
-		<c:if test="${failed}"><span class="confirm"><spring:message code="login.failed" /></span></c:if>
-	</h3>
+	<div class="container">
 
-	<h1>Admin login</h1>
-	<form action="login" method="post">
-		<input type="password" name="password" size="16" maxlength="32" />
-		<input type="submit" name="login" value="login" />
-	</form>
-</div>
+		<ul class="breadcrumb" id="brdCrmb">
+			<li></li>
+		</ul>
 
-<div id="footer">
-	<jsp:include page="../_footer.jsp"/>
-</div>
+		<header class="header">
+			<h1>Admin login</h1>
+		</header>
 
+		<section id="login">
+			<div class="row">
+				<div class="span12">
+					<form action="login" method="post">
+					<div class="control-group<c:if test='${failed}'> error</c:if>">
+						<input type="password" name="password" size="16" maxlength="32" />
+						<input type="submit" name="login" value="login" />
+						<c:if test='${failed}'><span class="help-inline">&nbsp;<spring:message code="login.failed" /></span></c:if>
+					</div>
+					</form>
+				</div>
+			</div>
+		</section>
+
+		<jsp:include page="../_footer.jsp"/>
+	</div>
+
+<%@ include file="../_footBase.jsp"%>
 </body>
 </html>

@@ -81,6 +81,15 @@ public class AdminController {
 		return modelAndView;
 	}
 
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public ModelAndView logout(HttpServletRequest request) {
+		request.getSession().removeAttribute(SESSION_KEY_AUTH);
+
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("redirect:/admin/");
+		return modelAndView;
+	}
+
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "/article/list", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView list() {

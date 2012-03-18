@@ -1,0 +1,22 @@
+@CHARSET "UTF-8";
+.header {
+	margin-top: 30px;
+}
+.footer {
+	margin-top: 45px;
+	padding: 15px 0 36px;
+	border-top: 1px solid #e5e5e5;
+}
+section {
+	padding-top: 60px;
+}
+#brdCrmb {
+	margin-top: 40px;
+}
+.confirm {
+	color: #FFA500;
+}
+#logo {
+	margin-top: 65px;
+	
+}

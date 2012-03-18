@@ -10,10 +10,6 @@
 </head>
 <body>
 
-<div id="header">
-</div>
-
-<div id="body">
 	<div class="navbar navbar-fixed-top">
 		<div class="navbar-inner">
 			<div class="container">
@@ -23,43 +19,44 @@
 					<span class="icon-bar"></span>
 				</a>
 				<a class="brand" href="#">VivaJoplin</a>
-				<div class="nav-collapse">
-					<ul class="nav">
-						<li class="active"><a href="#">Home</a></li>
-						<li><a href="#about">About</a></li>
-						<li><a href="#contact">Contact</a></li>
-					</ul>
-				</div><!--/.nav-collapse -->
 			</div>
 		</div>
-
-	</div>
-	<h1>Sign in</h1>
-
-	<div class="row">
-		<div class="span8 offset4">
-			<h2>with Facebook</h2>
-			<form:form action="signin/facebook" method="post">
-				<input type="hidden" name="scope" value="user_likes,publish_stream,offline_access" />
-				<input type="submit" name="connectFacebook" value="connect" />
-			</form:form>
-		</div>
-	</div>
-	<div class="row">
-		<div class="span8 offset4">
-			<h2>with Twitter</h2>
-			<form:form action="signin/twitter" method="post">
-				<input type="submit" name="connectTwitter" value="connect" />
-			</form:form>
-		</div>
 	</div>
 
-</div>
+	<div class="container">
 
-<div id="footer">
-	<jsp:include page="_footer.jsp"/>
-</div>
+		<header class="header" style="text-align:center">
+			<img id="logo" alt="logo" src="<%= request.getContextPath() %>/resources/img/all_icons_png/square/image200.png" />
+		</header>
 
-	<%@ include file="_headBase.jsp"%>
+		<section id="login">
+			<div class="row">
+				<div class="span7 offset5">
+					<form:form action="signin/facebook" method="post">
+					<div class="control-group">
+						<input type="hidden" name="scope" value="user_likes,publish_stream,offline_access" />
+						<input type="submit" class="btn-large" name="connectFacebook" value="connect" />
+						<span class="help-inline"><strong>with Facebook</strong></span>
+					</div>
+					</form:form>
+				</div>
+			</div>
+			<div class="row">
+				<div class="span7 offset5">
+					<div class="control-group">
+						<form:form action="signin/twitter" method="post">
+							<input type="submit" class="btn-large" name="connectTwitter" value="connect" />
+							<span class="help-inline"><strong>with Twitter</strong></span>
+						</form:form>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<jsp:include page="_footer.jsp"/>
+	</div>
+
+
+<%@ include file="_footBase.jsp"%>
 </body>
 </html>

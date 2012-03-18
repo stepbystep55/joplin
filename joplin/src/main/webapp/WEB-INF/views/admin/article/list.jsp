@@ -5,53 +5,86 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>article list</title>
 	<%@ include file="../../_headBase.jsp"%>
+	<title>Articles</title>
 </head>
 <body>
 
-<div id="header">
-	<jsp:include page="../header.jsp"/>
-</div>
-
-<div id="body">
-	<h3>
-		<c:if test="${deleted}"><span class="confirm"><spring:message code="result.deleted" /></span></c:if>
-	</h3>
-
-	<h1>article list</h1>
-	<c:if test="${(articles != null) && !(empty articles)}">
-	<ol>
-		<c:forEach items="${articles}" var="article">
-		<li>
-			<span class="colId">
-				<a href="${article.id}/edit">
-					<%-- <fmt:formatNumber value="${article.id}" pattern="00000000"/> --%>
-					<c:out value="${article.id}" />
+	<div class="navbar navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container">
+				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
 				</a>
-			</span>
-			<span class="colVal"><c:out value="${article.subject}" /></span>
-			<span class="colVal">
-				<c:choose>
-					<c:when test="${article.active}">実施中</c:when><c:otherwise>停止</c:otherwise>
-				</c:choose>
-			</span>
-		</li>
-		</c:forEach>
-	</ol>
-	</c:if>
-	<ul>
-		<li>
-			<form action="new" method="post">
-				<input type="submit" value="new article" />
-			</form>
-		</li>
-	</ul>
-</div>
+				<a class="brand" href="#">VivaJoplin</a>
+				<div class="nav-collapse">
+					<ul class="nav pull-right">
+						<li><a href="<%= request.getContextPath() %>/admin/logout">Logout</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
 
-<div id="footer">
-	<jsp:include page="../../_footer.jsp"/>
-</div>
+	<div class="container">
 
+		<ul class="breadcrumb" id="brdCrmb">
+			<li class="active">Articles</li>
+		</ul>
+
+		<header class="header">
+			<h1>Articles</h1>
+		</header>
+
+		<section id="articles">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Subject</th>
+						<th>Active</th>
+					</tr>
+				</thead>
+				<c:if test="${(articles != null) && !(empty articles)}">
+				<tbody>
+					<tr>
+						<c:forEach items="${articles}" var="article">
+						<td>
+							<a href="${article.id}/edit"><c:out value="${article.id}" /></a>
+						</td>
+						<td>
+							<c:out value="${article.subject}" />
+						</td>
+						<td>
+							<c:choose>
+								<c:when test="${article.active}">Active</c:when>
+								<c:otherwise>Suspend</c:otherwise>
+							</c:choose>
+						</td>
+						</c:forEach>
+					</tr>
+				</tbody>
+				</c:if>
+			</table>
+		</section>
+
+		<section id="newArticle">
+			<div class="row">
+				<div class="span12">
+					<div class="control-group">
+						<form action="new" method="post">
+							<input type="submit" value="New article" />
+						</form>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<jsp:include page="../../_footer.jsp"/>
+	</div>
+
+<%@ include file="../../_footBase.jsp"%>
 </body>
 </html>

@@ -243,15 +243,16 @@
 		</dependency>
 
 		<!-- JavaMelody -->
+		<!--
 		<dependency>
 			<groupId>net.bull.javamelody</groupId>
 			<artifactId>javamelody-core</artifactId>
 			<version>1.33.0</version>
 		</dependency>
+		-->
 	</dependencies>
 
 	<repositories>
-		<!-- For Spring Framework -->
 		<repository>
 			<id>com.springsource.repository.bundles.release</id>
 			<name>EBR Spring Release Repository</name>
