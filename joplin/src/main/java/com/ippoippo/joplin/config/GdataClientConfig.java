@@ -30,7 +30,7 @@ public class GdataClientConfig {
 				// set up the Google headers
 				GoogleHeaders headers = new GoogleHeaders();
 				headers.setApplicationName("joplin/1.0");
-				headers.gdataVersion = "2";
+				headers.gdataVersion = "2"; // or add the parameter, "v=2" to URL
 				request.setHeaders(headers);
 				// set timeout
 				request.setConnectTimeout(3000);

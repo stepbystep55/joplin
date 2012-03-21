@@ -25,13 +25,13 @@
 
 	<div class="container">
 
-		<header class="header" style="text-align:center">
+		<header class="header centering">
 			<img id="logo" alt="logo" src="<%= request.getContextPath() %>/resources/img/all_icons_png/square/image200.png" />
 		</header>
 
 		<section id="login">
 			<div class="row">
-				<div class="span7 offset5">
+				<div class="offset5 span7">
 					<form:form action="signin/facebook" method="post">
 					<div class="control-group">
 						<input type="hidden" name="scope" value="user_likes,publish_stream,offline_access" />
@@ -42,7 +42,7 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="span7 offset5">
+				<div class="offset5 span7">
 					<div class="control-group">
 						<form:form action="signin/twitter" method="post">
 							<input type="submit" class="btn-large" name="connectTwitter" value="connect" />

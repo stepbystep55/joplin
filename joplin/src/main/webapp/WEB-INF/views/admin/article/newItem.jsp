@@ -2,55 +2,114 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
 <head>
-	<title>item new</title>
 	<%@ include file="../../_headBase.jsp"%>
+	<title>New item</title>
 </head>
 <body>
 
-<div id="header">
-	<jsp:include page="../header.jsp"/>
-</div>
+	<div class="navbar navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container">
+				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</a>
+				<a class="brand" href="#">VivaJoplin</a>
+				<div class="nav-collapse">
+					<ul class="nav pull-right">
+						<li><a href="<%= request.getContextPath() %>/admin/logout">Logout</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
 
-<div id="body">
-	<h1>item new</h1>
-	<h2>videos</h2>
-	<form:form modelAttribute="youtubeSearchForm" action="searchItem" method="post">
-		<form:hidden path="startIndex" />
-		<form:hidden path="listSize" />
-		<form:input path="searchText" size="32" maxlength="128"/>
-		<input type="submit" name="command" value="search" />
-		<spring:hasBindErrors name="youtubeSearchForm"><form:errors path="searchText" cssStyle="color:red" /></spring:hasBindErrors>
-		<br/>
-		<input type="submit" name="command" value="prev" />
-		<input type="submit" name="command" value="next" />
-	</form:form>
-	<c:if test="${(youtubeItems != null) && !(empty youtubeItems)}">
-	<ol>
-		<c:forEach items="${youtubeItems}" var="youtubeItem" varStatus="status">
-		<li>
-			<span class="colVal">
-				<iframe width="360" height="213" src="http://www.youtube.com/embed/${youtubeItem.videoId}?rel=0" frameborder="0" allowfullscreen></iframe>
-			</span>
-			<span class="colVal">
-				<form id="${status.index}form" action="addItem" method="post">
-					<input type="hidden" name="videoId" value="${youtubeItem.videoId}" />
-					<input type="submit" id="${videoId}" class="addItemBtn" value="add" />
-				</form>
-			</span>
-		</li>
-		</c:forEach>
-	</ol>
-	</c:if>
-	<a href="edit">return</a>
+	<div class="container">
 
-</div>
+		<header class="header">
+			<h1>New item</h1>
+		</header>
 
-<div id="footer">
-	<jsp:include page="../../_footer.jsp"/>
-</div>
+		<ul class="breadcrumb" id="brdCrmb">
+			<li><a href="../list">Articles</a> <span class="divider">/</span></li>
+			<li><a href="edit">Edit Article</a> <span class="divider">/</span></li>
+			<li class="active">New item</li>
+		</ul>
+
+		<section id="items">
+			<h2>Search form</h2>
+			<form:form modelAttribute="youtubeSearchForm" action="searchItem" method="post" cssClass="well form-search">
+				<form:hidden path="startIndex" />
+				<form:hidden path="listSize" />
+				<fieldset>
+					<div class="control-group">
+						<label class="control-label" for="subject">Subject</label>
+						<div class="controls">
+							<form:input path="searchText" maxlength="128" cssClass="input-xlarge search-query"/>
+							<spring:hasBindErrors name="youtubeSearchForm">
+								<span class="help-inline"><form:errors path="searchText" cssStyle="color:red" /></span>
+							</spring:hasBindErrors>
+						</div>
+					</div>
+				</fieldset>
+				<div class="form-actions">
+					<input type="submit" name="command" value="search" />
+				</div>
+				<div class="form-actions">
+					<input type="submit" name="command" value="prev" />
+					<input type="submit" name="command" value="next" />
+				</div>
+			</form:form>
+
+			<h2>Search result</h2>
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Movie</th>
+						<th>&nbsp;</th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:choose>
+						<c:when test="${(items != null) && (fn:length(items) != 0)}">
+							<c:forEach items="${items}" var="item" varStatus="status">
+							<tr>
+								<td>
+									<iframe
+										width="360" height="213"
+										src="http://www.youtube.com/embed/${item.videoId}?rel=0"
+										frameborder="0" allowfullscreen>
+									</iframe>
+								</td>
+								<td>
+									<form id="${status.index}form" action="addItem" method="post">
+										<input type="hidden" name="videoId" value="${item.videoId}" />
+										<input type="submit" id="${videoId}" class="addItemBtn" value="add" />
+									</form>
+								</td>
+							</tr>
+							</c:forEach>
+						</c:when>
+					</c:choose>
+				</tbody>
+			</table>
+
+			<div class="row">
+				<div class="span12 centering">
+					<a href="edit">return</a>
+				</div>
+			</div>
+		</section>
+
+		<jsp:include page="../../_footer.jsp"/>
+	</div>
+
+<%@ include file="../../_footBase.jsp"%>
 
 <script type="text/javascript">
 <!--

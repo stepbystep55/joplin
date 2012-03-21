@@ -16,7 +16,8 @@ public class YouTubeSearchUrl extends GoogleUrl {
 	public static final String ORDERBY_VIEWCOUNT = "viewCount";
 	public static final String ORDERBY_RATING = "rating";
 	
-	static final String BASE_URL = "https://gdata.youtube.com/feeds/api/videos";
+	private static final String BASE_URL = "https://gdata.youtube.com/feeds/api/videos";
+	private static final Integer VERSION = 2;
 
 	@Key("q")
 	public String searchText;
@@ -30,6 +31,9 @@ public class YouTubeSearchUrl extends GoogleUrl {
 	@Key("orderby")
 	public String orderby = ORDERBY_RELEVANCE;
 	
+	@Key("v")
+	public Integer version = VERSION;
+
 	public YouTubeSearchUrl() {
 		super(BASE_URL);
 		this.alt = "jsonc";

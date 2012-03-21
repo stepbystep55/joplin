@@ -5,7 +5,7 @@
 <html>
 <head>
 	<%@ include file="_headBase.jsp"%>
-	<title>top</title>
+	<title>VS</title>
 </head>
 <body>
 
@@ -20,38 +20,49 @@
 				<a class="brand" href="#">VivaJoplin</a>
 				<div class="nav-collapse">
 					<ul class="nav">
-						<li class="active"><a href="#">Home</a></li>
-						<li><a href="#about">About</a></li>
-						<li><a href="#contact">Contact</a></li>
+						<li class="active"><a href="#">VS</a></li>
+						<li><a href="ranking">Ranking</a></li>
 					</ul>
 				</div>
 			</div>
 		</div>
 	</div>
 
-<div id="body">
-	<h1>top</h1>
-	<form id="vsForm" action="vs" method="post">
-		<input type="hidden" id="articleId" name="articleId" value="${articleId}" />
-		<input type="hidden" id="firstItemId" name="firstItemId" value="${firstItem.id}" />
-		<input type="hidden" id="secondItemId" name="secondItemId" value="${secondItem.id}" />
-		<input type="hidden" id="winnerItemId" name="winnerItemId" value="" />
-		<span class="colVal">
-			<iframe width="360" height="213" src="http://www.youtube.com/embed/${firstItem.videoId}?rel=0" frameborder="0" allowfullscreen></iframe>
-			<input type="button" id="firstBtn" name="firstBtn" value="chose this" />
-		</span>
-		&nbsp;
-		<span class="colVal">
-			<iframe width="360" height="213" src="http://www.youtube.com/embed/${secondItem.videoId}?rel=0" frameborder="0" allowfullscreen></iframe>
-			<input type="button" id="secondBtn" name="secondBtn" value="chose this" />
-		</span>
-	</form>
-</div>
+	<div class="container">
 
-<div id="footer">
-	<jsp:include page="_footer.jsp"/>
-</div>
+		<header class="header">
+			<h1>VS</h1>
+		</header>
 
+		<section id="vs">
+			<form id="vsForm" action="vs" method="post">
+				<input type="hidden" id="articleId" name="articleId" value="${articleId}" />
+				<input type="hidden" id="firstItemId" name="firstItemId" value="${firstItem.id}" />
+				<input type="hidden" id="secondItemId" name="secondItemId" value="${secondItem.id}" />
+				<input type="hidden" id="winnerItemId" name="winnerItemId" value="" />
+				<div class="row">
+					<div class="span6 centering">
+						<iframe width="400" height="233" src="http://www.youtube.com/embed/${firstItem.videoId}?rel=0" frameborder="0" allowfullscreen></iframe>
+					</div>
+					<div class="span6 centering">
+						<iframe width="400" height="233" src="http://www.youtube.com/embed/${secondItem.videoId}?rel=0" frameborder="0" allowfullscreen></iframe>
+					</div>
+				</div>
+				<div class="row">
+					<div class="span6 centering">
+						<input type="button" id="firstBtn" class="btn-large" name="firstBtn" value="Good!" />
+					</div>
+					<div class="span6 centering">
+						<input type="button" id="secondBtn" class="btn-large" name="secondBtn" value="Good!" />
+					</div>
+				</div>
+			</form>
+		</section>
+
+		<jsp:include page="_footer.jsp"/>
+	</div>
+
+<%@ include file="_footBase.jsp"%>
 <script type="text/javascript">
 <!--
 $(function(){

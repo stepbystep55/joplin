@@ -30,15 +30,20 @@
 
 	<div class="container">
 
-		<ul class="breadcrumb" id="brdCrmb">
-			<li class="active">Articles</li>
-		</ul>
-
 		<header class="header">
 			<h1>Articles</h1>
 		</header>
 
+		<ul class="breadcrumb" id="brdCrmb">
+			<li class="active">Articles</li>
+		</ul>
+
 		<section id="articles">
+			<div class="control-group">
+				<form action="new" method="post">
+					<input type="submit" value="New article" />
+				</form>
+			</div>
 			<table class="table table-striped">
 				<thead>
 					<tr>
@@ -49,8 +54,8 @@
 				</thead>
 				<c:if test="${(articles != null) && !(empty articles)}">
 				<tbody>
+					<c:forEach items="${articles}" var="article">
 					<tr>
-						<c:forEach items="${articles}" var="article">
 						<td>
 							<a href="${article.id}/edit"><c:out value="${article.id}" /></a>
 						</td>
@@ -63,23 +68,15 @@
 								<c:otherwise>Suspend</c:otherwise>
 							</c:choose>
 						</td>
-						</c:forEach>
 					</tr>
+					</c:forEach>
 				</tbody>
 				</c:if>
 			</table>
 		</section>
 
 		<section id="newArticle">
-			<div class="row">
-				<div class="span12">
-					<div class="control-group">
-						<form action="new" method="post">
-							<input type="submit" value="New article" />
-						</form>
-					</div>
-				</div>
-			</div>
+
 		</section>
 
 		<jsp:include page="../../_footer.jsp"/>

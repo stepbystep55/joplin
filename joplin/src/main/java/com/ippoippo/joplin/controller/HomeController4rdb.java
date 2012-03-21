@@ -7,6 +7,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,12 +21,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ippoippo.joplin.dto.Article;
+import com.ippoippo.joplin.dto.User;
 import com.ippoippo.joplin.dto.UserDisplay;
 import com.ippoippo.joplin.dto.YoutubeItem;
 import com.ippoippo.joplin.jdbc.mapper.ArticleMapper;
 import com.ippoippo.joplin.jdbc.mapper.UserMasterMapper;
 import com.ippoippo.joplin.jdbc.mapper.YoutubeItemMapper;
-import com.ippoippo.joplin.util.IOUtil;
 import com.ippoippo.joplin.util.UserCookieForTemporaryGenerator;
 
 /**
@@ -60,9 +61,13 @@ public class HomeController4rdb {
 			String userId = userCookieForTemporaryGenerator.getUserId(request);
 			if (userId == null) throw new NotSigninException();
 
-			if (userMasterMapper.getById(userId) == null) throw new NotSigninException();
+			User user = userMasterMapper.getById(userId);
+			if (user == null) throw new NotSigninException();
 
-			userCookieForTemporaryGenerator.addUserId(response, userId); // renew cookie for extending maxage
+			HttpSession session = request.getSession();
+			session.setAttribute(user.getClass().getName(), user);
+
+			userCookieForTemporaryGenerator.addUserId(response, userId); // for renew maxAge
 			ModelAndView modelAndView = new ModelAndView();
 			modelAndView.setViewName("forward:/top");
 			return modelAndView;

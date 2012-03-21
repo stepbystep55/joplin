@@ -235,10 +235,9 @@ public class AdminController {
 			item.setVideoId(videoId);
 			items.add(item);
 		}
-
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("youtubeSearchForm", youtubeSearchForm);
-		modelAndView.addObject("youtubeItems", items);
+		modelAndView.addObject("items", items);
 		modelAndView.setViewName("admin/article/newItem");
 		return modelAndView;
 	}

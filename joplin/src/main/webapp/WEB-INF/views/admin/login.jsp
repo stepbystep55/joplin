@@ -25,13 +25,13 @@
 
 	<div class="container">
 
-		<ul class="breadcrumb" id="brdCrmb">
-			<li></li>
-		</ul>
-
 		<header class="header">
 			<h1>Admin login</h1>
 		</header>
+
+		<ul class="breadcrumb" id="brdCrmb">
+			<li></li>
+		</ul>
 
 		<section id="login">
 			<div class="row">

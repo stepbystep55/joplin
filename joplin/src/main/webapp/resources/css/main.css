@@ -1,6 +1,6 @@
 @CHARSET "UTF-8";
 .header {
-	margin-top: 30px;
+	margin-top: 60px;
 }
 .footer {
 	margin-top: 45px;
@@ -11,12 +11,21 @@ section {
 	padding-top: 60px;
 }
 #brdCrmb {
-	margin-top: 40px;
+	margin-top: 20px;
 }
 .confirm {
 	color: #FFA500;
 }
 #logo {
-	margin-top: 65px;
+	margin-top: 35px;
 	
+}
+.righten {
+	text-align: right;
+}
+.centering {
+	text-align: center;
+}
+.middlen {
+	vertical-align: middle;
 }

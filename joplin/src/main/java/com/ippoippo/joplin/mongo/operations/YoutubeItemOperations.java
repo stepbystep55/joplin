@@ -2,6 +2,8 @@ package com.ippoippo.joplin.mongo.operations;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -10,6 +12,8 @@ import org.springframework.data.mongodb.core.query.Update;
 import com.ippoippo.joplin.dto.YoutubeItem;
 
 public class YoutubeItemOperations extends AbstractOperations {
+
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	public YoutubeItemOperations(MongoOperations mongoOperations) {
 		super(mongoOperations);

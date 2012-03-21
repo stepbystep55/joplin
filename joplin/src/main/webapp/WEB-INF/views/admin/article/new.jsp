@@ -30,14 +30,14 @@
 
 	<div class="container">
 
+		<header class="header">
+			<h1>New Article</h1>
+		</header>
+
 		<ul class="breadcrumb" id="brdCrmb">
 			<li><a href="list">Articles</a> <span class="divider">/</span></li>
 			<li class="active">New Article</li>
 		</ul>
-
-		<header class="header">
-			<h1>New Article</h1>
-		</header>
 
 		<section id="newArticle">
 			<div class="row">
@@ -48,7 +48,7 @@
 						<div class="controls">
 							<form:input path="subject" size="32" maxlength="128"/>
 							<spring:hasBindErrors name="article"><form:errors path="subject" cssStyle="color:red" /></spring:hasBindErrors>
-							<input type="submit" value="Create" />
+							<input type="submit" id="newArticleBtn" value="New" />
 						</div>
 					</div>
 					</form:form>
@@ -60,5 +60,15 @@
 	</div>
 
 <%@ include file="../../_footBase.jsp"%>
+
+<script type="text/javascript">
+<!--
+$(function(){
+	$('newArticleBtn').click(function() {
+		return confirm('Are you sure?');
+	});
+});
+// -->
+</script>
 </body>
 </html>
