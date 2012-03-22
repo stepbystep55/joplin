@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Order;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
@@ -31,6 +32,13 @@ public class YoutubeItemOperations extends AbstractOperations {
 
 	public List<YoutubeItem> listByArticleId(String articleId) {
 		Query query = Query.query(Criteria.where("articleId").in(articleId));
+		return mongoOperations().find(query, YoutubeItem.class, YoutubeItem.class.getSimpleName());
+	}
+	
+	public List<YoutubeItem> listTopRate(String articleId, Integer limit) {
+		Query query = Query.query(Criteria.where("articleId").is(articleId));
+		query.sort().on("rate", Order.DESCENDING);
+		query.limit(limit);
 		return mongoOperations().find(query, YoutubeItem.class, YoutubeItem.class.getSimpleName());
 	}
 	

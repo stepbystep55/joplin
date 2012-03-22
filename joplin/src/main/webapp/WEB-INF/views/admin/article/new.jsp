@@ -64,7 +64,7 @@
 <script type="text/javascript">
 <!--
 $(function(){
-	$('newArticleBtn').click(function() {
+	$('#newArticleBtn').click(function() {
 		return confirm('Are you sure?');
 	});
 });

@@ -105,7 +105,7 @@
 							</td>
 							<td>
 								<form action="deleteItem" method="post">
-									<form:hidden path="id" />
+									<input type="hidden" name="itemId" value="${item.id}" />
 									<input type="submit" id="deleteItemBtn" value="delete" />
 								</form>
 							</td>
@@ -130,10 +130,10 @@
 <script type="text/javascript">
 <!--
 $(function(){
-	$('deleteArticleBtn').click(function() {
+	$('#deleteArticleBtn').click(function() {
 		return confirm('Are you sure?');
 	});
-	$('deleteItemBtn').click(function() {
+	$('#deleteItemBtn').click(function() {
 		return confirm('Are you sure?');
 	});
 });

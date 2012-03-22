@@ -1,6 +1,7 @@
 <%@ page language="java" session="false" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <!DOCTYPE html>
 <html>
@@ -52,7 +53,7 @@
 						<th>Active</th>
 					</tr>
 				</thead>
-				<c:if test="${(articles != null) && !(empty articles)}">
+				<c:if test="${(articles != null) && (fn:length(articles) != 0)}">
 				<tbody>
 					<c:forEach items="${articles}" var="article">
 					<tr>

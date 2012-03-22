@@ -29,7 +29,7 @@
 			<h1>Admin login</h1>
 		</header>
 
-		<ul class="breadcrumb" id="brdCrmb">
+		<ul class="breadcrumb" id="brdCrmb" style="visibility:hidden;">
 			<li></li>
 		</ul>
 

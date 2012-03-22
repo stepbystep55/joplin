@@ -137,35 +137,35 @@ public class AdminController {
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "/article/{id}/edit", method = {RequestMethod.GET,RequestMethod.POST})
-	public ModelAndView edit(@PathVariable String id) throws IllegalRequestException {
+	@RequestMapping(value = "/article/{articleId}/edit", method = {RequestMethod.GET,RequestMethod.POST})
+	public ModelAndView edit(@PathVariable String articleId) throws IllegalRequestException {
 
-		validateAccess(id);
+		validateAccess(articleId);
 
-		Article article = articleOperations.getById(id);
+		Article article = articleOperations.getById(articleId);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("article", article);
-		modelAndView.addObject("items", youtubeItemOperations.listByArticleId(id));
+		modelAndView.addObject("items", youtubeItemOperations.listByArticleId(articleId));
 		modelAndView.setViewName("admin/article/edit");
 		return modelAndView;
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "/article/{id}/update", method = RequestMethod.POST)
-	public ModelAndView update(@PathVariable String id, @Valid Article article, BindingResult result) throws IllegalRequestException {
+	@RequestMapping(value = "/article/{articleId}/update", method = RequestMethod.POST)
+	public ModelAndView update(@PathVariable String articleId, @Valid Article article, BindingResult result) throws IllegalRequestException {
 
-		validateAccess(id);
+		validateAccess(articleId);
 
 		if (result.hasErrors()) {
 			ModelAndView modelAndView = new ModelAndView();
 			modelAndView.addObject("article", article);
-			modelAndView.addObject("items", youtubeItemOperations.listByArticleId(id));
+			modelAndView.addObject("items", youtubeItemOperations.listByArticleId(articleId));
 			modelAndView.setViewName("admin/article/edit");
 			return modelAndView;
 		}
 
-		article.setId(id);
+		article.setId(articleId);
 		articleOperations.updateSubjectAndActive(article);
 
 		ModelAndView modelAndView = new ModelAndView();
@@ -175,12 +175,12 @@ public class AdminController {
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "/article/{id}/delete", method = {RequestMethod.GET,RequestMethod.POST})
-	public ModelAndView delete(@PathVariable String id) throws IllegalRequestException {
+	@RequestMapping(value = "/article/{articleId}/delete", method = {RequestMethod.GET,RequestMethod.POST})
+	public ModelAndView delete(@PathVariable String articleId) throws IllegalRequestException {
 		
-		validateAccess(id);
+		validateAccess(articleId);
 
-		articleOperations.delete(id);
+		articleOperations.delete(articleId);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("deleted", true);
@@ -189,13 +189,13 @@ public class AdminController {
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "/article/{id}/newItem", method = RequestMethod.POST)
-	public ModelAndView createItem(@PathVariable String id) throws IllegalRequestException, IOException {
+	@RequestMapping(value = "/article/{articleId}/newItem", method = RequestMethod.POST)
+	public ModelAndView createItem(@PathVariable String articleId) throws IllegalRequestException, IOException {
 
-		validateAccess(id);
+		validateAccess(articleId);
 
 		YoutubeSearchForm form = new YoutubeSearchForm();
-		form.setArticleId(id);
+		form.setArticleId(articleId);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("youtubeSearchForm", form);
@@ -204,15 +204,15 @@ public class AdminController {
 	}
 	
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "/article/{id}/searchItem", method = RequestMethod.POST)
+	@RequestMapping(value = "/article/{articleId}/searchItem", method = RequestMethod.POST)
 	public ModelAndView searchItem(
-			@PathVariable String id
+			@PathVariable String articleId
 			, @RequestParam("command") String command
 			, @Valid YoutubeSearchForm youtubeSearchForm
 			, BindingResult result
 			) throws IllegalRequestException, IOException {
 		
-		validateAccess(id);
+		validateAccess(articleId);
 
 		if (result.hasErrors()) {
 			ModelAndView modelAndView = new ModelAndView();
@@ -231,7 +231,7 @@ public class AdminController {
 		List<YoutubeItem> items = new ArrayList<YoutubeItem>(videoIds.size());
 		for (String videoId : videoIds) {
 			YoutubeItem item = new YoutubeItem();
-			item.setArticleId(id);
+			item.setArticleId(articleId);
 			item.setVideoId(videoId);
 			items.add(item);
 		}
@@ -267,18 +267,18 @@ public class AdminController {
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "/article/{id}/addItem", method = RequestMethod.POST)
+	@RequestMapping(value = "/article/{articleId}/addItem", method = RequestMethod.POST)
 	public ModelAndView addItem(
-			@PathVariable String id, @RequestParam("videoId") String videoId)
+			@PathVariable String articleId, @RequestParam("videoId") String videoId)
 					throws IllegalRequestException {
 
-		validateAccess(id);
+		validateAccess(articleId);
 
-		if (youtubeItemOperations.countByArticleIdAndVideoId(id, videoId) > 0) {
-			logger.info("The video for articldId="+id+", videoId="+videoId+" already exists.");
+		if (youtubeItemOperations.countByArticleIdAndVideoId(articleId, videoId) > 0) {
+			logger.info("The video for articldId="+articleId+", videoId="+videoId+" already exists.");
 		} else {
 			YoutubeItem item = new YoutubeItem();
-			item.setArticleId(id);
+			item.setArticleId(articleId);
 			item.setVideoId(videoId);
 			youtubeItemOperations.create(item);
 		}
@@ -287,4 +287,21 @@ public class AdminController {
 		modelAndView.setViewName("forward:edit");
 		return modelAndView;
 	}
+
+	@Transactional(rollbackForClassName="java.lang.Exception")
+	@RequestMapping(value = "/article/{articleId}/deleteItem", method = RequestMethod.POST)
+	public ModelAndView removeItem(
+			@PathVariable String articleId
+			, @RequestParam("itemId") String itemId) throws IllegalRequestException {
+
+		validateAccess(articleId);
+
+		youtubeItemOperations.delete(itemId);
+
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("updated", true);
+		modelAndView.setViewName("forward:edit");
+		return modelAndView;
+	}
+
 }

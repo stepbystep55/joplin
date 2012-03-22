@@ -18,31 +18,12 @@ import com.mongodb.MongoURI;
 @Configuration
 public class MongoConfig {
 
-	@Value("${mongo.host}")
-	private String mongoHost;
-
-	@Value("${mongo.port}")
-	private int mongoPort;
-/*
-	@Bean
-	public MongoFactoryBean mongo() {
-		MongoFactoryBean mongo = new MongoFactoryBean();
-		mongo.setHost(mongoHost);
-		mongo.setPort(mongoPort);
-		return mongo;
-	}
+	@Value("${mongo.url}")
+	private String mongoUrl;
 
 	@Bean
 	public MongoOperations mongoOperations() throws Exception {
-	//public MongoTemplate mongoTemplate() throws Exception {
-		return new MongoTemplate(mongo().getObject(), "joplin");
-	}
-*/
-
-	@Bean
-	public MongoOperations mongoOperations() throws Exception {
-		//MongoURI mongoURI = new MongoURI("mongodb://joplin:summertime@ds031587.mongolab.com:31587/mongogo");
-		MongoURI mongoURI = new MongoURI("mongodb://localhost:27017/joplin");
+		MongoURI mongoURI = new MongoURI(mongoUrl);
 		MongoDbFactory mongoDbFactory = new SimpleMongoDbFactory(mongoURI);
 		return new MongoTemplate(mongoDbFactory);
 	}
