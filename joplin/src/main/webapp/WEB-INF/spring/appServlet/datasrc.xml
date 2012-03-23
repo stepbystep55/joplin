@@ -18,11 +18,19 @@
 	</jdbc:embedded-database>	
 	-->
 
+	<!--
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="org.h2.Driver" />
 		<property name="url" value="jdbc:h2:tcp://localhost/d:/h2/data" />
 		<property name="username" value="sa" />
 		<property name="password" value="" />
+	</bean>
+	-->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://instance8503.db.xeround.com.:6266/joplin" />
+		<property name="username" value="joplin" />
+		<property name="password" value="summertime" />
 	</bean>
 	<jdbc:initialize-database data-source="dataSource" enabled="${init.db}">
 		<jdbc:script location="classpath:/org/springframework/social/connect/jdbc/JdbcUsersConnectionRepository.sql" />

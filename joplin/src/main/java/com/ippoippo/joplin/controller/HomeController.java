@@ -54,8 +54,8 @@ public class HomeController {
 	UsersConnectionRepository usersConnectionRepository;
 
 	@Transactional(rollbackForClassName="java.leng.Exception")
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ModelAndView home(HttpServletRequest request, HttpServletResponse response) {
+	@RequestMapping(value = "/top", method = RequestMethod.GET)
+	public ModelAndView top(HttpServletRequest request, HttpServletResponse response) {
 		
 		try {
 			String userId = userCookieForTemporaryGenerator.getUserId(request);

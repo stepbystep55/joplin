@@ -24,7 +24,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 
 		String servletPath = request.getServletPath();
 
-		if (servletPath.equals("/")) {
+		if (servletPath.equals("/top")) {
 			return true;
 
 		} else if (servletPath.startsWith("/resources")) {
@@ -50,7 +50,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 			String userId = userCookieForTemporaryGenerator.getUserId(request);
 			if (userId == null) {
 				logger.info("Access without session: " + request.getRequestURI());
-				new RedirectView("/", true).render(null, request, response);
+				new RedirectView("/top", true).render(null, request, response);
 				return false;
 			}
 		}
