@@ -1,10 +1,14 @@
 package com.ippoippo.joplin.dto;
 
-public class PagenatedForm {
+public abstract class PagenatedForm {
 
 	private Integer startIndex = 1;
 
 	private Integer listSize = 5;
+
+	public PagenatedForm(Integer listSize) {
+		this.listSize = listSize;
+	}
 
 	public Integer getStartIndex() {
 		return startIndex;

@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
 
 import com.ippoippo.joplin.mongo.operations.ArticleOperations;
+import com.ippoippo.joplin.mongo.operations.ContributionOperations;
 import com.ippoippo.joplin.mongo.operations.YoutubeItemOperations;
 import com.mongodb.MongoURI;
 
@@ -36,5 +37,10 @@ public class MongoConfig {
 	@Bean
 	public YoutubeItemOperations youtubeItemOperations() throws Exception {
 		return new YoutubeItemOperations(mongoOperations());
+	}
+
+	@Bean
+	public ContributionOperations contributionOperations() throws Exception {
+		return new ContributionOperations(mongoOperations());
 	}
 }

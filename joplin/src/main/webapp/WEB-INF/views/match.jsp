@@ -1,9 +1,10 @@
 <%@ page language="java" session="false" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
 	<%@ include file="_headBase.jsp"%>
-	<title>Match</title>
+	<title>HotOrNot</title>
 </head>
 <body>
 
@@ -18,7 +19,7 @@
 				<a class="brand" href="#">VivaJoplin</a>
 				<div class="nav-collapse">
 					<ul class="nav">
-						<li class="active"><a href="#">Match</a></li>
+						<li class="active"><a href="#">HotOrNot</a></li>
 						<li><a href="rank">Ranking</a></li>
 					</ul>
 				</div>
@@ -29,11 +30,19 @@
 	<div class="container">
 
 		<header class="header">
-			<h1>Match</h1>
+			<h1><c:out value="${article.subject}" /></h1>
 		</header>
 
 		<section id="match">
 		</section>
+
+		<div class="row">
+			<div class="span12">
+				<form id="itemForm" action="item" method="post">
+					<a id="itemLink" href="#">Add yours</a>
+				</form>
+			</div>
+		</div>
 
 		<jsp:include page="_footer.jsp"/>
 	</div>
@@ -49,6 +58,9 @@ $(function(){
 		success: function(html){
 			$("#match").html(html);
 		}
+	});
+	$('#itemLink').click(function() {
+		$('#itemForm').submit();
 	});
 });
 // -->

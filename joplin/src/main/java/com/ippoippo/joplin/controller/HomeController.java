@@ -1,5 +1,6 @@
 package com.ippoippo.joplin.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +16,7 @@ import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,12 +24,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ippoippo.joplin.dto.Article;
+import com.ippoippo.joplin.dto.Contribution;
 import com.ippoippo.joplin.dto.UserDisplay;
 import com.ippoippo.joplin.dto.YoutubeItem;
+import com.ippoippo.joplin.dto.YoutubeSearchForm;
 import com.ippoippo.joplin.exception.IllegalRequestException;
 import com.ippoippo.joplin.jdbc.mapper.UserMasterMapper;
 import com.ippoippo.joplin.mongo.operations.ArticleOperations;
+import com.ippoippo.joplin.mongo.operations.ContributionOperations;
 import com.ippoippo.joplin.mongo.operations.YoutubeItemOperations;
+import com.ippoippo.joplin.service.YoutubeSearchService;
 import com.ippoippo.joplin.util.UserCookieForTemporaryGenerator;
 
 /**
@@ -37,6 +44,9 @@ import com.ippoippo.joplin.util.UserCookieForTemporaryGenerator;
 public class HomeController {
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+	@Inject
+	YoutubeSearchService youtubeSearchService;
 
 	@Inject
 	UserCookieForTemporaryGenerator userCookieForTemporaryGenerator;
@@ -51,10 +61,13 @@ public class HomeController {
 	YoutubeItemOperations youtubeItemOperations;
 
 	@Inject
+	ContributionOperations contributionOperations;
+
+	@Inject
 	UsersConnectionRepository usersConnectionRepository;
 
 	@Transactional(rollbackForClassName="java.leng.Exception")
-	@RequestMapping(value = "/top", method = RequestMethod.GET)
+	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView top(HttpServletRequest request, HttpServletResponse response) {
 		
 		try {
@@ -68,7 +81,7 @@ public class HomeController {
 			if (articles != null && articles.size() > 0) {
 				articleId = articles.get(0).getId();
 			} else {
-				//TODO
+				articleId = Article.ID_FOR_NO_ARTICLE;
 			}
 
 			userCookieForTemporaryGenerator.addUserId(response, userId); // renew cookie for extending maxage
@@ -121,7 +134,10 @@ public class HomeController {
 
 		validateAccess(articleId);
 
+		Article article = (articleId.equals(Article.ID_FOR_NO_ARTICLE)) ? new Article() : articleOperations.getById(articleId);
+
 		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("article", article);
 		modelAndView.setViewName("match");
 		return modelAndView;
 	}
@@ -131,6 +147,11 @@ public class HomeController {
 	public ModelAndView vs(@PathVariable String articleId) throws IllegalRequestException {
 
 		validateAccess(articleId);
+		if (articleId.equals(Article.ID_FOR_NO_ARTICLE)) {
+			ModelAndView modelAndView = new ModelAndView();
+			modelAndView.setViewName("noVs");
+			return modelAndView;
+		}
 
 		List<YoutubeItem> items = this.newVs(articleId);
 
@@ -192,22 +213,106 @@ public class HomeController {
 	}
 
 	private void validateAccess(String articleId) throws IllegalRequestException {
-		
+		if (articleId.equals(Article.ID_FOR_NO_ARTICLE)) return;
 		Article article = articleOperations.getById(articleId);
 		if (article == null) throw new IllegalRequestException();
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "/hon/{articleId}/rank", method = RequestMethod.GET)
-	public ModelAndView rank(@PathVariable String articleId) {
-		
-		Article article = articleOperations.getById(articleId);
+	public ModelAndView rank(@PathVariable String articleId) throws IllegalRequestException {
+
+		validateAccess(articleId);
+
+		Article article = (articleId.equals(Article.ID_FOR_NO_ARTICLE)) ? new Article() : articleOperations.getById(articleId);
 		List<YoutubeItem> items = youtubeItemOperations.listTopRate(articleId, 10);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("article", article);
 		modelAndView.addObject("items", items);
 		modelAndView.setViewName("rank");
+		return modelAndView;
+	}
+
+	@Transactional(rollbackForClassName="java.lang.Exception")
+	@RequestMapping(value = "/hon/{articleId}/item", method = RequestMethod.POST)
+	public ModelAndView item(@PathVariable String articleId) throws IllegalRequestException {
+
+		validateAccess(articleId);
+
+		YoutubeSearchForm form = new YoutubeSearchForm();
+		form.setArticleId(articleId);
+
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("youtubeSearchForm", form);
+		modelAndView.setViewName("/item");
+		return modelAndView;
+	}
+
+	@Transactional(rollbackForClassName="java.lang.Exception")
+	@RequestMapping(value = "/hon/{articleId}/searchItem", method = RequestMethod.POST)
+	public ModelAndView searchItem(
+			@PathVariable String articleId
+			, @RequestParam("command") String command
+			, @Valid YoutubeSearchForm youtubeSearchForm
+			, BindingResult result
+			) throws IllegalRequestException, IOException {
+		
+		validateAccess(articleId);
+
+		if (result.hasErrors()) {
+			ModelAndView modelAndView = new ModelAndView();
+			modelAndView.addObject("youtubeSearchForm", youtubeSearchForm);
+			modelAndView.setViewName("/item");
+			return modelAndView;
+		}
+		if (command.equals("prev")) {
+			youtubeSearchForm.prev();
+		} else if (command.equals("next")) {
+			youtubeSearchForm.next();
+		}
+		List<YoutubeItem> items = youtubeSearchService.searchItems(
+				articleId
+				,youtubeSearchForm.getSearchText()
+				, youtubeSearchForm.getStartIndex()
+				, youtubeSearchForm.getListSize());
+
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("youtubeSearchForm", youtubeSearchForm);
+		modelAndView.addObject("items", items);
+		modelAndView.setViewName("/item");
+		return modelAndView;
+	}
+
+	@Transactional(rollbackForClassName="java.lang.Exception")
+	@RequestMapping(value = "/hon/{articleId}/addItem", method = RequestMethod.POST)
+	public ModelAndView addItem(
+			HttpServletRequest request
+			, @PathVariable String articleId
+			, @RequestParam("videoId") String videoId) throws IllegalRequestException {
+
+		validateAccess(articleId);
+
+		// register video
+		if (youtubeItemOperations.countByArticleIdAndVideoId(articleId, videoId) > 0) {
+			logger.info("The video for articldId="+articleId+", videoId="+videoId+" already exists.");
+		} else {
+			YoutubeItem item = new YoutubeItem();
+			item.setArticleId(articleId);
+			item.setVideoId(videoId);
+			youtubeItemOperations.create(item);
+		}
+		// register contribution
+		String userId = userCookieForTemporaryGenerator.getUserId(request);
+		Contribution contribution = new Contribution();
+		contribution.setArticleId(articleId);
+		contribution.setUserId(userId);
+		contribution.setVideoId(videoId);
+		contributionOperations.create(contribution);
+
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("updated", true);
+		modelAndView.setViewName("forward:match");
 		return modelAndView;
 	}
 }

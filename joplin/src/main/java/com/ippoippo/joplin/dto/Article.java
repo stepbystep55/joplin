@@ -14,9 +14,11 @@ public class Article implements Serializable {
 
 	private String id;
 
+	public static final String ID_FOR_NO_ARTICLE = "noarticle";
+
 	@NotEmpty
 	@Length(max=256)
-	private String subject;
+	private String subject = "";
 	
 	private boolean active;
 

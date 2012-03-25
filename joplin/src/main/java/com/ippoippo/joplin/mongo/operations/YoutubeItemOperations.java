@@ -41,7 +41,7 @@ public class YoutubeItemOperations extends AbstractOperations {
 		query.limit(limit);
 		return mongoOperations().find(query, YoutubeItem.class, YoutubeItem.class.getSimpleName());
 	}
-	
+
 	public void create(YoutubeItem youtubeItem) {
 		mongoOperations().insert(youtubeItem, YoutubeItem.class.getSimpleName());
 	}

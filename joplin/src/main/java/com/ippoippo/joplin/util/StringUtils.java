@@ -52,4 +52,8 @@ public class StringUtils {
 		}
 		return new String(bytes);
 	}
+	
+	public static void main(String[] args) {
+		System.out.println(args[0]+"="+StringUtils.hashMD5(args[0]));
+	}
 }

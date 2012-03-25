@@ -44,10 +44,10 @@ public class SimpleConnectionSignUp implements ConnectionSignUp {
 	public String execute(Connection<?> connection) {
 		
 		User user = new User();
-		String userId = userMasterMapper.newId().toString();
-		user.setId(userId);
+		Integer userId = userMasterMapper.newId();
+		if (userId == null) userId = new Integer(1);
+		user.setId(userId.toString());
 		userMasterMapper.create(user);
-		
 		/*
 		User user = userRepository.save(new User());
 		String userId = user.getId();
@@ -76,6 +76,6 @@ public class SimpleConnectionSignUp implements ConnectionSignUp {
 		*/
 
 		logger.info("Signup with userId=" + userId);
-		return userId;
+		return userId.toString();
 	}
 }

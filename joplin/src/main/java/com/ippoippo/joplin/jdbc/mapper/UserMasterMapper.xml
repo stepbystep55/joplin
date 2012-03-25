@@ -8,8 +8,13 @@
 		<result property="name" column="NAME"/>
 	</resultMap>
 
+	<!--
 	<select id="newId" resultType="Integer">
 		SELECT SEQ_USER.NEXTVAL
+	</select>
+	-->
+	<select id="newId" resultType="Integer">
+		SELECT MAX(ID) + 1 FROM USER_MASTER
 	</select>
 
 	<select id="getById" parameterType="String" resultMap="user">

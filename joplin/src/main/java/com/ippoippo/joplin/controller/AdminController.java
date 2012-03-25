@@ -30,6 +30,7 @@ import com.ippoippo.joplin.dto.YoutubeSearchForm;
 import com.ippoippo.joplin.exception.IllegalRequestException;
 import com.ippoippo.joplin.mongo.operations.ArticleOperations;
 import com.ippoippo.joplin.mongo.operations.YoutubeItemOperations;
+import com.ippoippo.joplin.service.YoutubeSearchService;
 import com.ippoippo.joplin.util.StringUtils;
 import com.ippoippo.joplin.youtube.Video;
 import com.ippoippo.joplin.youtube.VideoFeed;
@@ -50,13 +51,13 @@ public class AdminController {
 	public static final String SESSION_KEY_AUTH = "loginAsAdmin";
 
 	@Inject
+	YoutubeSearchService youtubeSearchService;
+
+	@Inject
 	ArticleOperations articleOperations;
 
 	@Inject
 	YoutubeItemOperations youtubeItemOperations;
-
-	@Inject
-	private HttpRequestFactory gdataRequestFactory;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView top() {
@@ -68,7 +69,6 @@ public class AdminController {
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ModelAndView login(@RequestParam("password") String password, HttpServletRequest request) {
-		
 		if (StringUtils.hashMD5(password).equals(adminPasswordMD5)) {
 			request.getSession().setAttribute(SESSION_KEY_AUTH, true);
 			ModelAndView modelAndView = new ModelAndView();
@@ -152,7 +152,7 @@ public class AdminController {
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "/article/{articleId}/update", method = RequestMethod.POST)
+	@RequestMapping(value = "/article/{articleId}/update", params = {"updateBtn"}, method = RequestMethod.POST)
 	public ModelAndView update(@PathVariable String articleId, @Valid Article article, BindingResult result) throws IllegalRequestException {
 
 		validateAccess(articleId);
@@ -175,7 +175,7 @@ public class AdminController {
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "/article/{articleId}/delete", method = {RequestMethod.GET,RequestMethod.POST})
+	@RequestMapping(value = "/article/{articleId}/update", params = {"deleteBtn"}, method = RequestMethod.POST)
 	public ModelAndView delete(@PathVariable String articleId) throws IllegalRequestException {
 		
 		validateAccess(articleId);
@@ -189,8 +189,8 @@ public class AdminController {
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "/article/{articleId}/newItem", method = RequestMethod.POST)
-	public ModelAndView createItem(@PathVariable String articleId) throws IllegalRequestException, IOException {
+	@RequestMapping(value = "/article/{articleId}/item", method = RequestMethod.POST)
+	public ModelAndView item(@PathVariable String articleId) throws IllegalRequestException, IOException {
 
 		validateAccess(articleId);
 
@@ -199,7 +199,7 @@ public class AdminController {
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("youtubeSearchForm", form);
-		modelAndView.setViewName("admin/article/newItem");
+		modelAndView.setViewName("admin/article/item");
 		return modelAndView;
 	}
 	
@@ -217,7 +217,7 @@ public class AdminController {
 		if (result.hasErrors()) {
 			ModelAndView modelAndView = new ModelAndView();
 			modelAndView.addObject("youtubeSearchForm", youtubeSearchForm);
-			modelAndView.setViewName("admin/article/newItem");
+			modelAndView.setViewName("admin/article/item");
 			return modelAndView;
 		}
 		if (command.equals("prev")) {
@@ -225,45 +225,17 @@ public class AdminController {
 		} else if (command.equals("next")) {
 			youtubeSearchForm.next();
 		}
-		List<String> videoIds
-			= this.searchYoutube(
-					youtubeSearchForm.getSearchText(), youtubeSearchForm.getStartIndex(), youtubeSearchForm.getListSize());
-		List<YoutubeItem> items = new ArrayList<YoutubeItem>(videoIds.size());
-		for (String videoId : videoIds) {
-			YoutubeItem item = new YoutubeItem();
-			item.setArticleId(articleId);
-			item.setVideoId(videoId);
-			items.add(item);
-		}
+		List<YoutubeItem> items = youtubeSearchService.searchItems(
+				articleId
+				,youtubeSearchForm.getSearchText()
+				, youtubeSearchForm.getStartIndex()
+				, youtubeSearchForm.getListSize());
+
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("youtubeSearchForm", youtubeSearchForm);
 		modelAndView.addObject("items", items);
-		modelAndView.setViewName("admin/article/newItem");
+		modelAndView.setViewName("admin/article/item");
 		return modelAndView;
-	}
-
-	public List<String> searchYoutube(String searchText, Integer startIndex, Integer listSize) throws IOException {
-
-		// build the YouTube URL
-		YouTubeSearchUrl url = new YouTubeSearchUrl();
-		url.searchText = searchText;
-		url.startIndex = startIndex;
-		url.maxResults = listSize;
-
-		// build the HTTP GET request
-		HttpRequest request = gdataRequestFactory.buildGetRequest(url);
-		request.addParser(new JsonCParser(new JacksonFactory()));
-
-		logger.info("request url: " + request.getUrl().toString());
-
-		// execute the request and the parse video feed
-		VideoFeed feed = request.execute().parseAs(VideoFeed.class);
-		
-		// extract video ids
-		List<String> videoIds = new ArrayList<String>();
-		for (Video video : feed.items) videoIds.add(video.id);
-
-		return videoIds;
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")

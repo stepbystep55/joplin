@@ -31,23 +31,23 @@
 		<beans:property name="basename" value="messages" />
 	</beans:bean>
 
+<!--
 	<beans:bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<beans:property name="location">
 			<beans:value>classpath:/application.properties</beans:value>
 		</beans:property>
-<!--
 		<beans:property name="properties">
 			<beans:props>
 				<beans:prop key="entry.1">123</beans:prop>
 			</beans:props>
 		</beans:property>
--->
 	</beans:bean>
+-->
 
-	<beans:import resource="datasrc.xml" />
+	<beans:import resource="dev-datasrc.xml" />
 	<!--
 	<beans:import resource="cache.xml" />
-	<beans:import resource="mongo.xml" />
 	-->
+	<beans:import resource="dev-properties.xml" />
 
 </beans:beans>

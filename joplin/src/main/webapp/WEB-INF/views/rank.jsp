@@ -21,7 +21,7 @@
 				<a class="brand" href="#">VivaJoplin</a>
 				<div class="nav-collapse">
 					<ul class="nav">
-						<li><a href="match">Match</a></li>
+						<li><a href="match">HotOrNot</a></li>
 						<li class="active"><a href="rank">Ranking</a></li>
 					</ul>
 				</div>
@@ -32,12 +32,10 @@
 	<div class="container">
 
 		<header class="header">
-			<h1>Ranking</h1>
+			<h1><c:out value="${article.subject}" /></h1>
 		</header>
 
 		<section id="ranking">
-			<h2><c:out value="${article.subject}" /></h2>
-		
 			<table class="table">
 				<thead>
 					<tr>
