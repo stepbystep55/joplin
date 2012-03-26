@@ -21,6 +21,11 @@ public class ContributionOperations extends AbstractOperations {
 		return mongoOperations().count(query, Contribution.class.getSimpleName());
 	}
 
+	public Contribution getByArticleIdAndUserId(String articleId, String userId) {
+		Query query = Query.query(Criteria.where("articleId").is(articleId).and("userId").is(userId));
+		return mongoOperations().findOne(query, Contribution.class, Contribution.class.getSimpleName());
+	}
+
 	public void create(Contribution contribution) {
 		mongoOperations().insert(contribution, Contribution.class.getSimpleName());
 	}

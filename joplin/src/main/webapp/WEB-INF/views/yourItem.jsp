@@ -4,7 +4,7 @@
 <html>
 <head>
 	<%@ include file="_headBase.jsp"%>
-	<title>HotOrNot</title>
+	<title>Your item</title>
 </head>
 <body>
 
@@ -19,7 +19,7 @@
 				<a class="brand" href="#">VivaJoplin</a>
 				<div class="nav-collapse">
 					<ul class="nav">
-						<li class="active"><a href="#">HotOrNot</a></li>
+						<li class="active"><a href="hotOrNot">Battle</a></li>
 						<li><a href="rank">Ranking</a></li>
 					</ul>
 				</div>
@@ -30,19 +30,22 @@
 	<div class="container">
 
 		<header class="header">
-			<h1><c:out value="${article.subject}" /></h1>
 		</header>
 
-		<section id="match">
-		</section>
-
-		<div class="row">
-			<div class="span12">
-				<form id="itemForm" action="item" method="post">
-					<a id="itemLink" href="#">Add yours</a>
-				</form>
+		<section id="video">
+			<div class="row">
+				<div class="span12">
+					<c:if test="${videoId != null}">
+					<iframe
+						width="400" height="233"
+						src="http://www.youtube.com/embed/${videoId}?rel=0"
+						frameborder="0" allowfullscreen>
+					</iframe>
+					<p>You can post only one video for each article.</p>
+					</c:if>
+				</div>
 			</div>
-		</div>
+		</section>
 
 		<jsp:include page="_footer.jsp"/>
 	</div>
@@ -51,17 +54,6 @@
 <script type="text/javascript">
 <!--
 $(function(){
-	$.ajax({
-		type: 'GET',
-		url: 'vs',
-		cache: false,
-		success: function(html){
-			$("#match").html(html);
-		}
-	});
-	$('#itemLink').click(function() {
-		$('#itemForm').submit();
-	});
 });
 // -->
 </script>

@@ -2,11 +2,7 @@ package com.ippoippo.joplin.dto;
 
 import java.io.Serializable;
 
-import javax.inject.Inject;
-
 import org.hibernate.validator.constraints.NotEmpty;
-
-import com.ippoippo.joplin.util.Encryptor;
 
 public class YoutubeItem implements Serializable {
 
@@ -106,5 +102,15 @@ public class YoutubeItem implements Serializable {
 		return "YoutubeItem [id=" + id
 				+ ", articleId=" + articleId + ", videoId=" + videoId
 				+ ", rate=" + rate + ", rateVaried=" + rateVaried + "]";
+	}
+
+	@Override
+	public YoutubeItem clone() {
+		YoutubeItem cloneItem = new YoutubeItem();
+		cloneItem.setId(this.id);
+		cloneItem.setArticleId(this.articleId);
+		cloneItem.setVideoId(this.videoId);
+		cloneItem.setRate(this.rate);
+		return cloneItem;
 	}
 }

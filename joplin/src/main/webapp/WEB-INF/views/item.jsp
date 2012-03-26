@@ -24,7 +24,7 @@
 				<a class="brand" href="#">VivaJoplin</a>
 				<div class="nav-collapse">
 					<ul class="nav">
-						<li class="active"><a href="match">HotOrNot</a></li>
+						<li class="active"><a href="hotOrNot">HotOrNot</a></li>
 						<li><a href="rank">Ranking</a></li>
 					</ul>
 				</div>
@@ -64,7 +64,7 @@
 					<li><a id="nextLink" href="#">Next</a></li>
 				</ul>
 			</c:if>
-			<div id="resultHolder" style="overflow: auto; max-height: 400px;">
+			<div id="resultHolder" style="overflow: auto; max-height: 470px;">
 				<table class="table table-striped">
 					<tbody>
 						<c:choose>

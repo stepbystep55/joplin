@@ -1,8 +1,6 @@
 package com.ippoippo.joplin.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -86,7 +84,7 @@ public class HomeController {
 
 			userCookieForTemporaryGenerator.addUserId(response, userId); // renew cookie for extending maxage
 			ModelAndView modelAndView = new ModelAndView();
-			modelAndView.setViewName("redirect:/hon/" + articleId + "/match");
+			modelAndView.setViewName("redirect:/hon/" + articleId + "/hotOrNot");
 			return modelAndView;
 
 		} catch (NotSigninException e) {
@@ -129,8 +127,8 @@ public class HomeController {
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "/hon/{articleId}/match", method = {RequestMethod.GET,RequestMethod.POST})
-	public ModelAndView match(@PathVariable String articleId) throws IllegalRequestException {
+	@RequestMapping(value = "/hon/{articleId}/hotOrNot", method = {RequestMethod.GET,RequestMethod.POST})
+	public ModelAndView hotOrNot(@PathVariable String articleId) throws IllegalRequestException {
 
 		validateAccess(articleId);
 
@@ -138,7 +136,7 @@ public class HomeController {
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("article", article);
-		modelAndView.setViewName("match");
+		modelAndView.setViewName("hotOrNot");
 		return modelAndView;
 	}
 
@@ -153,7 +151,7 @@ public class HomeController {
 			return modelAndView;
 		}
 
-		List<YoutubeItem> items = this.newVs(articleId);
+		List<YoutubeItem> items = youtubeSearchService.newMatch(articleId);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("firstItem", items.get(0));
@@ -173,43 +171,15 @@ public class HomeController {
 
 		validateAccess(articleId);
 
-		List<String> ids = new ArrayList<String>(2);
-		ids.add(firstItemId);
-		ids.add(secondItemId);
-		List<YoutubeItem> winnerAndLoser = youtubeItemOperations.listByIds(ids);
-		YoutubeItem winnerItem = null;
-		YoutubeItem loserItem = null;
-		for (YoutubeItem item : winnerAndLoser) {
-			if (item.getId().equals(winnerItemId)) {
-				winnerItem = item;
-			} else {
-				loserItem = item;
-			}
-		}
-		winnerItem.calcRateVaried(true, loserItem.getRate());
-		loserItem.calcRateVaried(false, winnerItem.getRate());
+		youtubeSearchService.vote(firstItemId, secondItemId, winnerItemId);
 
-		youtubeItemOperations.updateRate(winnerItem.getId(), winnerItem.getRateVaried());
-		youtubeItemOperations.updateRate(loserItem.getId(), loserItem.getRateVaried());
-		
-		List<YoutubeItem> items = this.newVs(articleId);
+		List<YoutubeItem> items = youtubeSearchService.newMatch(articleId);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("firstItem", items.get(0));
 		modelAndView.addObject("secondItem", items.get(1));
 		modelAndView.setViewName("vs");
 		return modelAndView;
-	}
-	
-	private List<YoutubeItem> newVs(String articleId) {
-
-		List<YoutubeItem> items = youtubeItemOperations.listByArticleId(articleId);
-		if (items.size() <= 1) {
-			// TODO
-		}
-		Collections.shuffle(items);
-
-		return items.subList(0, 2);
 	}
 
 	private void validateAccess(String articleId) throws IllegalRequestException {
@@ -236,9 +206,20 @@ public class HomeController {
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "/hon/{articleId}/item", method = RequestMethod.POST)
-	public ModelAndView item(@PathVariable String articleId) throws IllegalRequestException {
+	public ModelAndView item(HttpServletRequest request, @PathVariable String articleId) throws IllegalRequestException {
 
 		validateAccess(articleId);
+
+		String userId = userCookieForTemporaryGenerator.getUserId(request);
+
+		Contribution contribution = contributionOperations.getByArticleIdAndUserId(articleId, userId);
+		if (articleId.equals(Article.ID_FOR_NO_ARTICLE) || contribution != null) {
+			// already registered (user can post only one video for each article.)
+			ModelAndView modelAndView = new ModelAndView();
+			if (contribution != null) modelAndView.addObject("videoId", contribution.getVideoId());
+			modelAndView.setViewName("/yourItem");
+			return modelAndView;
+		}
 
 		YoutubeSearchForm form = new YoutubeSearchForm();
 		form.setArticleId(articleId);
@@ -271,7 +252,7 @@ public class HomeController {
 		} else if (command.equals("next")) {
 			youtubeSearchForm.next();
 		}
-		List<YoutubeItem> items = youtubeSearchService.searchItems(
+		List<YoutubeItem> items = youtubeSearchService.search(
 				articleId
 				,youtubeSearchForm.getSearchText()
 				, youtubeSearchForm.getStartIndex()
@@ -312,7 +293,7 @@ public class HomeController {
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("updated", true);
-		modelAndView.setViewName("forward:match");
+		modelAndView.setViewName("forward:hotOrNot");
 		return modelAndView;
 	}
 }

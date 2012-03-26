@@ -69,7 +69,7 @@
 					<li><a id="nextLink" href="#">Next</a></li>
 				</ul>
 			</c:if>
-			<div id="resultHolder" style="overflow: auto; max-height: 400px;">
+			<div id="resultHolder" style="overflow: auto; max-height: 470px;">
 				<table class="table table-striped">
 					<tbody>
 						<c:choose>

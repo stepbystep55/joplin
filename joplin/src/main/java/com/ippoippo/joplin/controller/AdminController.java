@@ -225,7 +225,7 @@ public class AdminController {
 		} else if (command.equals("next")) {
 			youtubeSearchForm.next();
 		}
-		List<YoutubeItem> items = youtubeSearchService.searchItems(
+		List<YoutubeItem> items = youtubeSearchService.search(
 				articleId
 				,youtubeSearchForm.getSearchText()
 				, youtubeSearchForm.getStartIndex()

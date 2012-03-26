@@ -1,7 +1,6 @@
 <%@ page language="java" session="false" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
 
-<section id="match">
-	<form id="matchForm" action="vote" method="post">
+	<form id="vsForm" action="vote" method="post">
 		<input type="hidden" id="firstItemId" name="firstItemId" value="${firstItem.id}" />
 		<input type="hidden" id="secondItemId" name="secondItemId" value="${secondItem.id}" />
 		<input type="hidden" id="winnerItemId" name="winnerItemId" value="" />
@@ -20,7 +19,6 @@
 			</div>
 		</div>
 	</form>
-</section>
 
 <div id="shout" style="display:none; z-index:99; position:fixed; width:100%; top:20%; left:45%;"><h1 style="color:red;">どんだけ～！</h1></div>
 
@@ -45,7 +43,7 @@ function vote(firstItemId,secondItemId,winnerItemId) {
 		},
 		cache: false,
 		success: function(html){
-			$("#match").html(html);
+			$("#vs").html(html);
 			$('#shout').show();
 			$('#shout').fadeOut(2000);
 		}

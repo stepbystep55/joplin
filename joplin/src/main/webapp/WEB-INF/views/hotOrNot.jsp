@@ -1,12 +1,10 @@
 <%@ page language="java" session="false" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <!DOCTYPE html>
 <html>
 <head>
 	<%@ include file="_headBase.jsp"%>
-	<title>Ranking</title>
+	<title>Battle</title>
 </head>
 <body>
 
@@ -21,8 +19,8 @@
 				<a class="brand" href="#">VivaJoplin</a>
 				<div class="nav-collapse">
 					<ul class="nav">
-						<li><a href="hotOrNot">Battle</a></li>
-						<li class="active"><a href="#">Ranking</a></li>
+						<li class="active"><a href="#">Battle</a></li>
+						<li><a href="rank">Ranking</a></li>
 					</ul>
 				</div>
 			</div>
@@ -35,30 +33,16 @@
 			<h1><c:out value="${article.subject}" /></h1>
 		</header>
 
-		<section id="ranking">
-			<table class="table">
-				<thead>
-					<tr>
-						<th>Rank</th>
-						<th>Movie</th>
-					</tr>
-				</thead>
-				<c:if test="${(items != null) && (fn:length(items) != 0)}">
-				<tbody>
-					<c:forEach items="${items}" var="item" varStatus="status">
-					<tr>
-						<td>
-							<c:out value="${status.index + 1}" />
-						</td>
-						<td>
-							<iframe width="400" height="233" src="http://www.youtube.com/embed/${item.videoId}?rel=0" frameborder="0" allowfullscreen></iframe>
-						</td>
-					</tr>
-					</c:forEach>
-				</tbody>
-				</c:if>
-			</table>
+		<section id="vs">
 		</section>
+
+		<div class="row">
+			<div class="span12">
+				<form id="itemForm" action="item" method="post">
+					<a id="itemLink" href="javascript:void(0)">Add yours</a>
+				</form>
+			</div>
+		</div>
 
 		<jsp:include page="_footer.jsp"/>
 	</div>
@@ -67,6 +51,18 @@
 <script type="text/javascript">
 <!--
 $(function(){
+	$.ajax({
+		type: 'GET',
+		url: 'vs',
+		cache: false,
+		success: function(html){
+			$("#vs").html(html);
+		}
+	});
+	$('#itemLink').click(function() {
+		$('#itemForm').submit();
+		return false;
+	});
 });
 // -->
 </script>
