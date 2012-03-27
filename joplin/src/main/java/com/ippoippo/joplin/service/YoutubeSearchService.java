@@ -3,6 +3,8 @@ package com.ippoippo.joplin.service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -64,24 +66,31 @@ public class YoutubeSearchService {
 		return items;
 	}
 
-	private Random random = new Random(System.currentTimeMillis());
-
 	public List<YoutubeItem> newMatch(String articleId) {
 
 		List<YoutubeItem> items = this.list(articleId);
 		
 		// get clones of 2 candidates randomly
-		YoutubeItem oneItem = items.get(random.nextInt(items.size())).clone();
-		YoutubeItem anotherItem = items.get(random.nextInt(items.size())).clone();
+		int oneIndex = getIndexRandomly(items.size(), 1);
+		int anotherIndex = (oneIndex == 0) ? items.size() - 1 : oneIndex - 1;
+		YoutubeItem oneItem = items.get(oneIndex).clone();
+		YoutubeItem anotherItem = items.get(anotherIndex).clone();
 
 		List<YoutubeItem> items4match = new ArrayList<YoutubeItem>(2);
 		items4match.add(oneItem);
 		items4match.add(anotherItem);
 		return items4match;
 	}
-
+	
+	private int getIndexRandomly(int size, int seed) {
+		if (seed == 0) return 0;
+		return new Random(System.currentTimeMillis() % seed).nextInt(size);
+	}
+	
 	public List<YoutubeItem> list(String articleId) {
-		return youtubeItemOperations.listByArticleId(articleId);
+		List<YoutubeItem> items = youtubeItemOperations.listByArticleId(articleId);
+		Collections.shuffle(items);
+		return items;
 	}
 	
 	public void vote(String oneId, String anotherId, String winnerId) {

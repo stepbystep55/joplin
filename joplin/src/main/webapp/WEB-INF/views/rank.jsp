@@ -21,7 +21,7 @@
 				<a class="brand" href="#">VivaJoplin</a>
 				<div class="nav-collapse">
 					<ul class="nav">
-						<li><a href="hotOrNot">Battle</a></li>
+						<li><a href="battle">Battle</a></li>
 						<li class="active"><a href="#">Ranking</a></li>
 					</ul>
 				</div>

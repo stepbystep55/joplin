@@ -19,9 +19,6 @@
 			</div>
 		</div>
 	</form>
-
-<div id="shout" style="display:none; z-index:99; position:fixed; width:100%; top:20%; left:45%;"><h1 style="color:red;">どんだけ～！</h1></div>
-
 <script type="text/javascript">
 <!--
 $(function(){
@@ -33,6 +30,7 @@ $(function(){
 	});
 });
 function vote(firstItemId,secondItemId,winnerItemId) {
+	winningRun();
 	$.ajax({
 		type: 'POST',
 		url: 'vote',
@@ -44,8 +42,6 @@ function vote(firstItemId,secondItemId,winnerItemId) {
 		cache: false,
 		success: function(html){
 			$("#vs").html(html);
-			$('#shout').show();
-			$('#shout').fadeOut(2000);
 		}
 	});
 }

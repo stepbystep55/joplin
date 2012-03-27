@@ -84,7 +84,7 @@ public class HomeController {
 
 			userCookieForTemporaryGenerator.addUserId(response, userId); // renew cookie for extending maxage
 			ModelAndView modelAndView = new ModelAndView();
-			modelAndView.setViewName("redirect:/hon/" + articleId + "/hotOrNot");
+			modelAndView.setViewName("redirect:/hon/" + articleId + "/battle");
 			return modelAndView;
 
 		} catch (NotSigninException e) {
@@ -127,8 +127,8 @@ public class HomeController {
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "/hon/{articleId}/hotOrNot", method = {RequestMethod.GET,RequestMethod.POST})
-	public ModelAndView hotOrNot(@PathVariable String articleId) throws IllegalRequestException {
+	@RequestMapping(value = "/hon/{articleId}/battle", method = {RequestMethod.GET,RequestMethod.POST})
+	public ModelAndView battle(@PathVariable String articleId) throws IllegalRequestException {
 
 		validateAccess(articleId);
 
@@ -136,7 +136,7 @@ public class HomeController {
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("article", article);
-		modelAndView.setViewName("hotOrNot");
+		modelAndView.setViewName("battle");
 		return modelAndView;
 	}
 
@@ -293,7 +293,7 @@ public class HomeController {
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("updated", true);
-		modelAndView.setViewName("forward:hotOrNot");
+		modelAndView.setViewName("forward:battle");
 		return modelAndView;
 	}
 }

@@ -19,7 +19,7 @@
 				<a class="brand" href="#">VivaJoplin</a>
 				<div class="nav-collapse">
 					<ul class="nav">
-						<li class="active"><a href="hotOrNot">Battle</a></li>
+						<li class="active"><a href="battle">Battle</a></li>
 						<li><a href="rank">Ranking</a></li>
 					</ul>
 				</div>
@@ -30,6 +30,7 @@
 	<div class="container">
 
 		<header class="header">
+			<h1>&nbsp;</h1>
 		</header>
 
 		<section id="video">

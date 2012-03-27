@@ -47,6 +47,10 @@
 		<jsp:include page="_footer.jsp"/>
 	</div>
 
+<div id="shout" style="display:none; z-index:99; position:fixed; width:100%; top:20%; text-align:center;">
+	<span style="color:blue; font-size:100px;">どんだけ～！</span>
+</div>
+
 <%@ include file="_footBase.jsp"%>
 <script type="text/javascript">
 <!--
@@ -64,6 +68,10 @@ $(function(){
 		return false;
 	});
 });
+function winningRun(){
+	$('#shout').show();
+	$('#shout').fadeOut(1500);
+}
 // -->
 </script>
 </body>
