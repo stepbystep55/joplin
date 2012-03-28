@@ -39,7 +39,7 @@
 		<div class="row">
 			<div class="span12">
 				<form id="itemForm" action="item" method="post">
-					<a id="itemLink" href="javascript:void(0)">Add yours</a>
+					<a id="itemLink" href="javascript:void(0)">Post yours</a>
 				</form>
 			</div>
 		</div>
@@ -47,9 +47,11 @@
 		<jsp:include page="_footer.jsp"/>
 	</div>
 
-<div id="shout" style="display:none; z-index:99; position:fixed; width:100%; top:20%; text-align:center;">
-	<span style="color:blue; font-size:100px;">どんだけ～！</span>
+<%--
+<div id="shout" style="display:none; z-index:99; position:fixed; width:100%; top:10%; text-align:center;">
+	<span style="color:blue; font-size:30px;">どんだけ～！</span>
 </div>
+--%>
 
 <%@ include file="_footBase.jsp"%>
 <script type="text/javascript">
@@ -69,8 +71,11 @@ $(function(){
 	});
 });
 function winningRun(){
-	$('#shout').show();
-	$('#shout').fadeOut(1500);
+	var windiv = '<div id="shout" style="display:none; z-index:99; position:fixed; width:100%; top:10%; text-align:center;"><span style="color:blue; font-size:30px;">どんだけ～！</span></div>';
+	$('body').append(windiv);
+	$('#shout').show().fadeOut(2000, function(){
+		$(this).remove();
+	});
 }
 // -->
 </script>

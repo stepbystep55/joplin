@@ -7,13 +7,46 @@
 		<div class="row">
 			<div class="span6 centering">
 				<div>
-					<iframe width="400" height="233" src="http://www.youtube.com/embed/${firstItem.videoId}?rel=0" frameborder="0" allowfullscreen></iframe>
+					<object width="400" height="233">
+						<param name="movie" value="http://www.youtube.com/v/${firstItem.videoId}?version=3&amp;hl=ja_JP&amp;rel=0"></param>
+						<param name="allowFullScreen" value="true"></param>
+						<param name="allowscriptaccess" value="always"></param>
+						<embed
+							src="http://www.youtube.com/v/${firstItem.videoId}?version=3&amp;hl=ja_JP&amp;rel=0"
+							type="application/x-shockwave-flash" width="400" height="233"
+							allowscriptaccess="always" allowfullscreen="true">
+						</embed>
+					</object>
+					<%--
+					<!-- ajax実行後、IE8で画面がおかしくなるためiframeではなくobject版採用 -->
+					<iframe
+						width="400" height="233"
+						src="http://www.youtube.com/embed/${firstItem.videoId}?rel=0"
+						frameborder="0" allowfullscreen>
+					</iframe>
+					--%>
 				</div>
 				<input type="button" id="firstBtn" class="btn-large" name="firstBtn" value="Good!" />
 			</div>
 			<div class="span6 centering">
+					<object width="400" height="233">
+						<param name="movie" value="http://www.youtube.com/v/${secondItem.videoId}?version=3&amp;hl=ja_JP&amp;rel=0"></param>
+						<param name="allowFullScreen" value="true"></param>
+						<param name="allowscriptaccess" value="always"></param>
+						<embed
+							src="http://www.youtube.com/v/${secondItem.videoId}?version=3&amp;hl=ja_JP&amp;rel=0"
+							type="application/x-shockwave-flash" width="400" height="233"
+							allowscriptaccess="always" allowfullscreen="true">
+						</embed>
+					</object>
 				<div>
-					<iframe width="400" height="233" src="http://www.youtube.com/embed/${secondItem.videoId}?rel=0" frameborder="0" allowfullscreen></iframe>
+					<%--
+					<iframe
+						width="400" height="233"
+						src="http://www.youtube.com/embed/${secondItem.videoId}?rel=0"
+						frameborder="0" allowfullscreen>
+					</iframe>
+					--%>
 				</div>
 				<input type="button" id="secondBtn" class="btn-large" name="secondBtn" value="Good!" />
 			</div>
