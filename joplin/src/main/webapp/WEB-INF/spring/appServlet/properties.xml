@@ -23,7 +23,7 @@
 		<prop key="facebook.clientSecret">5e9b6305d8f015a72ce0c38eaef5262e</prop>
 		<prop key="twitter.clientId">SJIrEWFwTHYrlOyt6QXtMA</prop>
 		<prop key="twitter.clientSecret">w8pgTrrsFuxkHIJWpZy88KOIRTEhhqmaYgzEiTr8LCY</prop>
-		<prop key="post.signin.url">http://joplin-stepbystep55.dotcloud.com/joplin/</prop>
+		<prop key="post.signin.url">http://joplin.cloudfoundry.com/</prop>
 		
 		<!-- rdb -->
 		<prop key="init.db">false</prop>

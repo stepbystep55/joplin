@@ -29,6 +29,7 @@
 				<input type="button" id="firstBtn" class="btn-large" name="firstBtn" value="Good!" />
 			</div>
 			<div class="span6 centering">
+				<div>
 					<object width="400" height="233">
 						<param name="movie" value="http://www.youtube.com/v/${secondItem.videoId}?version=3&amp;hl=ja_JP&amp;rel=0"></param>
 						<param name="allowFullScreen" value="true"></param>
@@ -39,7 +40,6 @@
 							allowscriptaccess="always" allowfullscreen="true">
 						</embed>
 					</object>
-				<div>
 					<%--
 					<iframe
 						width="400" height="233"
