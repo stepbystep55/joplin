@@ -31,6 +31,11 @@
 
 		<header class="header">
 			<h1><c:out value="${article.subject}" /></h1>
+			<div id="shout" style="display:none; z-index:99; position:fixed; width:100%; top:10%; text-align:center;">
+			<%--
+			<span style="color:blue; font-size:30px;">どんだけ～！</span>
+			--%>
+			</div>';
 		</header>
 
 		<section id="vs">

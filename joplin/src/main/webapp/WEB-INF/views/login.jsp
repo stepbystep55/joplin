@@ -41,6 +41,7 @@
 					</form:form>
 				</div>
 			</div>
+			<%--
 			<div class="row">
 				<div class="offset5 span7">
 					<div class="control-group">
@@ -51,6 +52,7 @@
 					</div>
 				</div>
 			</div>
+			--%>
 		</section>
 
 		<jsp:include page="_footer.jsp"/>

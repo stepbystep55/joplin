@@ -30,6 +30,7 @@ import com.ippoippo.joplin.exception.IllegalRequestException;
 import com.ippoippo.joplin.jdbc.mapper.UserMasterMapper;
 import com.ippoippo.joplin.mongo.operations.ArticleOperations;
 import com.ippoippo.joplin.mongo.operations.ContributionOperations;
+import com.ippoippo.joplin.mongo.operations.VoteHistoryOperations;
 import com.ippoippo.joplin.mongo.operations.YoutubeItemOperations;
 import com.ippoippo.joplin.service.YoutubeSearchService;
 import com.ippoippo.joplin.util.UserCookieForTemporaryGenerator;
@@ -167,11 +168,14 @@ public class HomeController {
 			, @RequestParam("firstItemId") String firstItemId
 			, @RequestParam("secondItemId") String secondItemId
 			, @RequestParam("winnerItemId") String winnerItemId
+			, HttpServletRequest request
 			) throws IllegalRequestException {
 
 		validateAccess(articleId);
 
-		youtubeSearchService.vote(firstItemId, secondItemId, winnerItemId);
+		String userId = userCookieForTemporaryGenerator.getUserId(request);
+
+		youtubeSearchService.vote(userId, firstItemId, secondItemId, winnerItemId);
 
 		List<YoutubeItem> items = youtubeSearchService.newMatch(articleId);
 
