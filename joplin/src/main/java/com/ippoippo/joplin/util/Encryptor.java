@@ -13,9 +13,9 @@ public class Encryptor {
 	}
 
 	public String encrypt(String target) {
-		return StringUtils.encrypt(target, encoder);
+		return Utils.encrypt(target, encoder);
 	}
 	public String decrypt(String target) {
-		return StringUtils.decrypt(target, decoder);
+		return Utils.decrypt(target, decoder);
 	}
 }

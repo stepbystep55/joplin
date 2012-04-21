@@ -1,7 +1,6 @@
 package com.ippoippo.joplin.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -20,21 +19,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.google.api.client.googleapis.json.JsonCParser;
-import com.google.api.client.http.HttpRequest;
-import com.google.api.client.http.HttpRequestFactory;
-import com.google.api.client.json.jackson.JacksonFactory;
 import com.ippoippo.joplin.dto.Article;
+import com.ippoippo.joplin.dto.ItemListForm;
 import com.ippoippo.joplin.dto.YoutubeItem;
 import com.ippoippo.joplin.dto.YoutubeSearchForm;
+import com.ippoippo.joplin.exception.IllegalOperationException;
 import com.ippoippo.joplin.exception.IllegalRequestException;
 import com.ippoippo.joplin.mongo.operations.ArticleOperations;
 import com.ippoippo.joplin.mongo.operations.YoutubeItemOperations;
+import com.ippoippo.joplin.service.ArticleService;
 import com.ippoippo.joplin.service.YoutubeSearchService;
-import com.ippoippo.joplin.util.StringUtils;
-import com.ippoippo.joplin.youtube.Video;
-import com.ippoippo.joplin.youtube.VideoFeed;
-import com.ippoippo.joplin.youtube.YouTubeSearchUrl;
+import com.ippoippo.joplin.util.Utils;
 
 /**
  * Handles requests for articles.
@@ -57,6 +52,9 @@ public class AdminController {
 	ArticleOperations articleOperations;
 
 	@Inject
+	ArticleService articleService;
+
+	@Inject
 	YoutubeItemOperations youtubeItemOperations;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
@@ -69,7 +67,7 @@ public class AdminController {
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ModelAndView login(@RequestParam("password") String password, HttpServletRequest request) {
-		if (StringUtils.hashMD5(password).equals(adminPasswordMD5)) {
+		if (Utils.hashMD5(password).equals(adminPasswordMD5)) {
 			request.getSession().setAttribute(SESSION_KEY_AUTH, true);
 			ModelAndView modelAndView = new ModelAndView();
 			modelAndView.setViewName("redirect:article/list");
@@ -143,10 +141,21 @@ public class AdminController {
 		validateAccess(articleId);
 
 		Article article = articleOperations.getById(articleId);
+		/*
+		ItemListForm itemListForm = new ItemListForm();
+		List<YoutubeItem> items
+			= youtubeItemOperations.listByArticleId(
+					articleId
+					, itemListForm.getStartIndex()
+					, itemListForm.getListSize());
+					*/
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("article", article);
-		modelAndView.addObject("items", youtubeItemOperations.listByArticleId(articleId));
+		/*
+		modelAndView.addObject("itemListForm", itemListForm);
+		modelAndView.addObject("items", items);
+		*/
 		modelAndView.setViewName("admin/article/edit");
 		return modelAndView;
 	}
@@ -160,13 +169,21 @@ public class AdminController {
 		if (result.hasErrors()) {
 			ModelAndView modelAndView = new ModelAndView();
 			modelAndView.addObject("article", article);
-			modelAndView.addObject("items", youtubeItemOperations.listByArticleId(articleId));
 			modelAndView.setViewName("admin/article/edit");
 			return modelAndView;
 		}
 
 		article.setId(articleId);
-		articleOperations.updateSubjectAndActive(article);
+		try {
+			articleService.updateSubjectAndActive(article);
+
+		} catch (IllegalOperationException e) {
+			ModelAndView modelAndView = new ModelAndView();
+			modelAndView.addObject("article", article);
+			modelAndView.addObject("errorMessage", e.getMessage());
+			modelAndView.setViewName("admin/article/edit");
+			return modelAndView;
+		}
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("updated", true);
@@ -189,16 +206,35 @@ public class AdminController {
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
+	@RequestMapping(value = "/article/{articleId}/listItem", method = {RequestMethod.POST})
+	public ModelAndView listItem(
+			@PathVariable String articleId
+			, @Valid ItemListForm itemListForm) throws IllegalRequestException {
+
+		validateAccess(articleId);
+
+		itemListForm.update();
+		List<YoutubeItem> items
+			= youtubeItemOperations.listByArticleId(
+					articleId
+					, itemListForm.getStartIndex()
+					, itemListForm.getListSize());
+
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("itemListForm", itemListForm);
+		modelAndView.addObject("items", items);
+		modelAndView.setViewName("admin/article/listItem");
+		return modelAndView;
+	}
+
+	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "/article/{articleId}/item", method = RequestMethod.POST)
 	public ModelAndView item(@PathVariable String articleId) throws IllegalRequestException, IOException {
 
 		validateAccess(articleId);
 
-		YoutubeSearchForm form = new YoutubeSearchForm();
-		form.setArticleId(articleId);
-
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("youtubeSearchForm", form);
+		modelAndView.addObject("youtubeSearchForm", new YoutubeSearchForm());
 		modelAndView.setViewName("admin/article/item");
 		return modelAndView;
 	}
@@ -207,10 +243,8 @@ public class AdminController {
 	@RequestMapping(value = "/article/{articleId}/searchItem", method = RequestMethod.POST)
 	public ModelAndView searchItem(
 			@PathVariable String articleId
-			, @RequestParam("command") String command
 			, @Valid YoutubeSearchForm youtubeSearchForm
-			, BindingResult result
-			) throws IllegalRequestException, IOException {
+			, BindingResult result) throws IllegalRequestException, IOException {
 		
 		validateAccess(articleId);
 
@@ -220,16 +254,9 @@ public class AdminController {
 			modelAndView.setViewName("admin/article/item");
 			return modelAndView;
 		}
-		if (command.equals("prev")) {
-			youtubeSearchForm.prev();
-		} else if (command.equals("next")) {
-			youtubeSearchForm.next();
-		}
-		List<YoutubeItem> items = youtubeSearchService.search(
-				articleId
-				,youtubeSearchForm.getSearchText()
-				, youtubeSearchForm.getStartIndex()
-				, youtubeSearchForm.getListSize());
+
+		youtubeSearchForm.update();
+		List<YoutubeItem> items = youtubeSearchService.search(articleId, youtubeSearchForm);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("youtubeSearchForm", youtubeSearchForm);

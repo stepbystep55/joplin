@@ -36,7 +36,7 @@ public class Article implements Serializable {
 	}
 	@Override
 	public String toString() {
-		return "Article [id=" + id + ", subject=" + subject + "]";
+		return "Article [id=" + id + ", subject=" + subject + ", active=" + active + "]";
 	}
 	public boolean getActive() {
 		return active;

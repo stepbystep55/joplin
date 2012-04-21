@@ -10,6 +10,7 @@ import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.stereotype.Controller;
@@ -30,7 +31,6 @@ import com.ippoippo.joplin.exception.IllegalRequestException;
 import com.ippoippo.joplin.jdbc.mapper.UserMasterMapper;
 import com.ippoippo.joplin.mongo.operations.ArticleOperations;
 import com.ippoippo.joplin.mongo.operations.ContributionOperations;
-import com.ippoippo.joplin.mongo.operations.VoteHistoryOperations;
 import com.ippoippo.joplin.mongo.operations.YoutubeItemOperations;
 import com.ippoippo.joplin.service.YoutubeSearchService;
 import com.ippoippo.joplin.util.UserCookieForTemporaryGenerator;
@@ -44,6 +44,12 @@ public class HomeController {
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+	@Value("${facebook.clientId}")
+	private String facebookClientId;
+	
+	@Value("${home.url}")
+	private String homeUrl;
+	
 	@Inject
 	YoutubeSearchService youtubeSearchService;
 
@@ -85,7 +91,7 @@ public class HomeController {
 
 			userCookieForTemporaryGenerator.addUserId(response, userId); // renew cookie for extending maxage
 			ModelAndView modelAndView = new ModelAndView();
-			modelAndView.setViewName("redirect:/hon/" + articleId + "/battle");
+			modelAndView.setViewName("redirect:/hn/" + articleId + "/battle");
 			return modelAndView;
 
 		} catch (NotSigninException e) {
@@ -128,7 +134,7 @@ public class HomeController {
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "/hon/{articleId}/battle", method = {RequestMethod.GET,RequestMethod.POST})
+	@RequestMapping(value = "/hn/{articleId}/battle", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView battle(@PathVariable String articleId) throws IllegalRequestException {
 
 		validateAccess(articleId);
@@ -137,12 +143,14 @@ public class HomeController {
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("article", article);
+		modelAndView.addObject("facebookClientId", facebookClientId);
+		modelAndView.addObject("homeUrl", homeUrl);
 		modelAndView.setViewName("battle");
 		return modelAndView;
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "/hon/{articleId}/vs", method = {RequestMethod.GET,RequestMethod.POST})
+	@RequestMapping(value = "/hn/{articleId}/vs", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView vs(@PathVariable String articleId) throws IllegalRequestException {
 
 		validateAccess(articleId);
@@ -162,7 +170,7 @@ public class HomeController {
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "/hon/{articleId}/vote", method = RequestMethod.POST)
+	@RequestMapping(value = "/hn/{articleId}/vote", method = RequestMethod.POST)
 	public ModelAndView vote(
 			@PathVariable String articleId
 			, @RequestParam("firstItemId") String firstItemId
@@ -193,7 +201,7 @@ public class HomeController {
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "/hon/{articleId}/rank", method = RequestMethod.GET)
+	@RequestMapping(value = "/hn/{articleId}/rank", method = RequestMethod.GET)
 	public ModelAndView rank(@PathVariable String articleId) throws IllegalRequestException {
 
 		validateAccess(articleId);
@@ -209,7 +217,7 @@ public class HomeController {
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "/hon/{articleId}/item", method = RequestMethod.POST)
+	@RequestMapping(value = "/hn/{articleId}/item", method = RequestMethod.POST)
 	public ModelAndView item(HttpServletRequest request, @PathVariable String articleId) throws IllegalRequestException {
 
 		validateAccess(articleId);
@@ -226,7 +234,6 @@ public class HomeController {
 		}
 
 		YoutubeSearchForm form = new YoutubeSearchForm();
-		form.setArticleId(articleId);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("youtubeSearchForm", form);
@@ -235,10 +242,9 @@ public class HomeController {
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "/hon/{articleId}/searchItem", method = RequestMethod.POST)
+	@RequestMapping(value = "/hn/{articleId}/searchItem", method = RequestMethod.POST)
 	public ModelAndView searchItem(
 			@PathVariable String articleId
-			, @RequestParam("command") String command
 			, @Valid YoutubeSearchForm youtubeSearchForm
 			, BindingResult result
 			) throws IllegalRequestException, IOException {
@@ -251,16 +257,8 @@ public class HomeController {
 			modelAndView.setViewName("/item");
 			return modelAndView;
 		}
-		if (command.equals("prev")) {
-			youtubeSearchForm.prev();
-		} else if (command.equals("next")) {
-			youtubeSearchForm.next();
-		}
-		List<YoutubeItem> items = youtubeSearchService.search(
-				articleId
-				,youtubeSearchForm.getSearchText()
-				, youtubeSearchForm.getStartIndex()
-				, youtubeSearchForm.getListSize());
+		youtubeSearchForm.update();
+		List<YoutubeItem> items = youtubeSearchService.search(articleId, youtubeSearchForm);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("youtubeSearchForm", youtubeSearchForm);
@@ -270,7 +268,7 @@ public class HomeController {
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "/hon/{articleId}/addItem", method = RequestMethod.POST)
+	@RequestMapping(value = "/hn/{articleId}/addItem", method = RequestMethod.POST)
 	public ModelAndView addItem(
 			HttpServletRequest request
 			, @PathVariable String articleId

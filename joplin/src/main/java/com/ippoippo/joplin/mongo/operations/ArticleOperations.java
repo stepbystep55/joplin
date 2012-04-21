@@ -39,6 +39,13 @@ public class ArticleOperations extends AbstractOperations {
 		mongoOperations().insert(article, Article.class.getSimpleName());
 	}
 
+	public void inactivateAllArticles() {
+		Query query = new Query();
+		Update update = new Update();
+		update.set("active", false);
+		mongoOperations().updateMulti(query, update, Article.class.getSimpleName());
+	}
+
 	public void updateSubjectAndActive(Article article) {
 		Query query = Query.query(Criteria.where("id").is(article.getId()));
 		Update update = new Update();

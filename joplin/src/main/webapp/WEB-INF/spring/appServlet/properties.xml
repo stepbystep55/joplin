@@ -13,7 +13,7 @@
 		<!-- general -->
 		<prop key="application.name">VivaJoplin</prop>
 		<prop key="application.caption">Viva! Viva! Viva Joplin!!</prop>
-		<prop key="application.description">This is the "Hot or Not" application on SNS.</prop>
+		<prop key="application.description">This is a "Hot or Not" application on SNS.</prop>
 		<prop key="application.description"></prop>
 		<prop key="cipher.key">osdfa790523qdsu3as4d38be</prop>
 		<prop key="admin.password.md5">329435e5e66be809a656af105f42401e</prop>

@@ -28,8 +28,10 @@ import com.google.api.client.http.HttpRequestFactory;
 import com.google.api.client.json.jackson.JacksonFactory;
 import com.ippoippo.joplin.dto.Vote;
 import com.ippoippo.joplin.dto.YoutubeItem;
+import com.ippoippo.joplin.dto.YoutubeSearchForm;
 import com.ippoippo.joplin.mongo.operations.VoteHistoryOperations;
 import com.ippoippo.joplin.mongo.operations.YoutubeItemOperations;
+import com.ippoippo.joplin.util.Utils;
 import com.ippoippo.joplin.youtube.Video;
 import com.ippoippo.joplin.youtube.VideoFeed;
 import com.ippoippo.joplin.youtube.YouTubeSearchUrl;
@@ -63,25 +65,21 @@ public class YoutubeSearchService {
 	@Inject
 	UsersConnectionRepository usersConnectionRepository;
 
-	public List<YoutubeItem> search(
-			String articleId
-			, String searchText
-			, Integer startIndex
-			, Integer listSize) throws IOException {
+	public List<YoutubeItem> search(String articleId, YoutubeSearchForm youtubeForm) throws IOException {
 
-		// build the YouTube URL
+		// build a YouTube URL
 		YouTubeSearchUrl url = new YouTubeSearchUrl();
-		url.searchText = searchText;
-		url.startIndex = startIndex;
-		url.maxResults = listSize;
+		url.searchText = youtubeForm.getSearchText();
+		url.startIndex = youtubeForm.getStartIndex();
+		url.maxResults = youtubeForm.getListSize();
 
-		// build the HTTP GET request
+		// build a HTTP GET request
 		HttpRequest request = gdataRequestFactory.buildGetRequest(url);
 		request.addParser(new JsonCParser(new JacksonFactory()));
 
 		logger.info("request url: " + request.getUrl().toString());
 
-		// execute the request and the parse video feed
+		// execute the request and parse the video feed
 		VideoFeed feed = request.execute().parseAs(VideoFeed.class);
 		
 		List<YoutubeItem> items = new ArrayList<YoutubeItem>(feed.items.size());
@@ -99,8 +97,8 @@ public class YoutubeSearchService {
 		List<YoutubeItem> items = this.list(articleId);
 		
 		// get clones of 2 candidates randomly
-		int oneIndex = getIndexRandomly(items.size(), 1);
-		int anotherIndex = (oneIndex == 0) ? items.size() - 1 : oneIndex - 1;
+		int oneIndex = Utils.getIntRandomly(items.size(), -1);
+		int anotherIndex = Utils.getIntRandomly(items.size(), oneIndex);
 		YoutubeItem oneItem = items.get(oneIndex).clone();
 		YoutubeItem anotherItem = items.get(anotherIndex).clone();
 
@@ -109,12 +107,7 @@ public class YoutubeSearchService {
 		items4match.add(anotherItem);
 		return items4match;
 	}
-	
-	private int getIndexRandomly(int size, int seed) {
-		if (seed == 0) return 0;
-		return new Random(System.currentTimeMillis() % seed).nextInt(size);
-	}
-	
+
 	public List<YoutubeItem> list(String articleId) {
 		List<YoutubeItem> items = youtubeItemOperations.listByArticleId(articleId);
 		Collections.shuffle(items);
