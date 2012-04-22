@@ -50,9 +50,10 @@
 					</form>
 				</div>
 			</div>
+			<div class="row"><div class="span12">&nbsp;</div></div>
 			<div class="row">
 				<div class="span12">
-					<div class="fb-comments" data-href="${homeUrl}" data-num-posts="2" data-width="470"></div>
+					<div class="fb-like" data-href="${homeUrl}" data-send="false" data-width="450" data-show-faces="true"></div>
 				</div>
 			</div>
 		</section>

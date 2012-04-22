@@ -32,6 +32,7 @@ import com.ippoippo.joplin.jdbc.mapper.UserMasterMapper;
 import com.ippoippo.joplin.mongo.operations.ArticleOperations;
 import com.ippoippo.joplin.mongo.operations.ContributionOperations;
 import com.ippoippo.joplin.mongo.operations.YoutubeItemOperations;
+import com.ippoippo.joplin.service.ItemService;
 import com.ippoippo.joplin.service.YoutubeSearchService;
 import com.ippoippo.joplin.util.UserCookieForTemporaryGenerator;
 
@@ -52,6 +53,9 @@ public class HomeController {
 	
 	@Inject
 	YoutubeSearchService youtubeSearchService;
+
+	@Inject
+	ItemService itemService;
 
 	@Inject
 	UserCookieForTemporaryGenerator userCookieForTemporaryGenerator;
@@ -160,7 +164,7 @@ public class HomeController {
 			return modelAndView;
 		}
 
-		List<YoutubeItem> items = youtubeSearchService.newMatch(articleId);
+		List<YoutubeItem> items = itemService.newMatch(articleId);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("firstItem", items.get(0));
@@ -183,9 +187,9 @@ public class HomeController {
 
 		String userId = userCookieForTemporaryGenerator.getUserId(request);
 
-		youtubeSearchService.vote(userId, firstItemId, secondItemId, winnerItemId);
+		itemService.vote(userId, firstItemId, secondItemId, winnerItemId);
 
-		List<YoutubeItem> items = youtubeSearchService.newMatch(articleId);
+		List<YoutubeItem> items = itemService.newMatch(articleId);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("firstItem", items.get(0));
@@ -272,26 +276,14 @@ public class HomeController {
 	public ModelAndView addItem(
 			HttpServletRequest request
 			, @PathVariable String articleId
-			, @RequestParam("videoId") String videoId) throws IllegalRequestException {
+			, @RequestParam("videoId") String videoId
+			, @RequestParam("canShare") boolean canShare
+			) throws IllegalRequestException {
 
 		validateAccess(articleId);
 
-		// register video
-		if (youtubeItemOperations.countByArticleIdAndVideoId(articleId, videoId) > 0) {
-			logger.info("The video for articldId="+articleId+", videoId="+videoId+" already exists.");
-		} else {
-			YoutubeItem item = new YoutubeItem();
-			item.setArticleId(articleId);
-			item.setVideoId(videoId);
-			youtubeItemOperations.create(item);
-		}
-		// register contribution
 		String userId = userCookieForTemporaryGenerator.getUserId(request);
-		Contribution contribution = new Contribution();
-		contribution.setArticleId(articleId);
-		contribution.setUserId(userId);
-		contribution.setVideoId(videoId);
-		contributionOperations.create(contribution);
+		itemService.contribute(articleId, videoId, userId, canShare);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("updated", true);

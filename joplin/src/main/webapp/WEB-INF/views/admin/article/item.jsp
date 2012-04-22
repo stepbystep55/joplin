@@ -93,7 +93,7 @@
 									<td>
 										<form id="form${status.index}" action="addItem" method="post">
 											<input type="hidden" name="videoId" value="${item.videoId}" />
-											<input type="submit" id="${videoId}" class="addItemBtn" value="add" />
+											<input type="submit" id="${videoId}" class="addItemBtn" value="select" />
 										</form>
 									</td>
 								</tr>

@@ -88,7 +88,8 @@
 									<td>
 										<form id="form${status.index}" action="addItem" method="post">
 											<input type="hidden" name="videoId" value="${item.videoId}" />
-											<input type="submit" id="${videoId}" class="addItemBtn" value="select" />
+											<input type="submit" id="${videoId}" class="addItemBtn" value="select" /><br/>
+											<input type="checkbox" id="canShare" name="canShare" value="true" checked="checked" />&nbsp;Share
 										</form>
 									</td>
 								</tr>
@@ -125,6 +126,8 @@ $(function(){
 		$('#command').val('<%=YoutubeSearchForm.COMMAND_NEXT%>');
 		$('#searchText').val($('#orgnSearchText').val());
 		$('#youtubeSearchForm').submit();
+	});
+	$('.addItemBtn').click(function() {
 	});
 });
 // -->
