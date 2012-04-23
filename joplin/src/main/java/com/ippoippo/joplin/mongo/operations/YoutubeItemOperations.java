@@ -25,6 +25,11 @@ public class YoutubeItemOperations extends AbstractOperations {
 		return mongoOperations().find(query, YoutubeItem.class, YoutubeItem.class.getSimpleName());
 	}
 
+	public Long countByArticleId(String articleId) {
+		Query query = Query.query(Criteria.where("articleId").is(articleId));
+		return mongoOperations().count(query, YoutubeItem.class.getSimpleName());
+	}
+	
 	public Long countByArticleIdAndVideoId(String articleId, String videoId) {
 		Query query = Query.query(Criteria.where("articleId").is(articleId).and("videoId").is(videoId));
 		return mongoOperations().count(query, YoutubeItem.class.getSimpleName());
@@ -35,10 +40,14 @@ public class YoutubeItemOperations extends AbstractOperations {
 		return mongoOperations().find(query, YoutubeItem.class, YoutubeItem.class.getSimpleName());
 	}
 	
-	public List<YoutubeItem> listTopRate(String articleId, Integer limit) {
-		Query query = Query.query(Criteria.where("articleId").is(articleId));
+	public List<YoutubeItem> listByArticleId(String articleId, int startIndex, int limit) {
+		Query query = Query.query(Criteria.where("articleId").in(articleId)).skip(startIndex - 1).limit(limit);
+		return mongoOperations().find(query, YoutubeItem.class, YoutubeItem.class.getSimpleName());
+	}
+	
+	public List<YoutubeItem> listTopRate(String articleId, int limit) {
+		Query query = Query.query(Criteria.where("articleId").is(articleId)).limit(limit);
 		query.sort().on("rate", Order.DESCENDING);
-		query.limit(limit);
 		return mongoOperations().find(query, YoutubeItem.class, YoutubeItem.class.getSimpleName());
 	}
 

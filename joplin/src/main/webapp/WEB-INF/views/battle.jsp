@@ -41,13 +41,23 @@
 		<section id="vs">
 		</section>
 
-		<div class="row">
-			<div class="span12">
-				<form id="itemForm" action="item" method="post">
-					<a id="itemLink" href="javascript:void(0)">Post yours</a>
-				</form>
+		<c:if test="${(articleId != 'noarticle')}">
+		<section id="tool">
+			<div class="row">
+				<div class="span12">
+					<form id="itemForm" action="item" method="post">
+						<a id="itemLink" href="javascript:void(0)">Post yours</a>
+					</form>
+				</div>
 			</div>
-		</div>
+			<div class="row"><div class="span12">&nbsp;</div></div>
+			<div class="row">
+				<div class="span12">
+					<div class="fb-like" data-href="${homeUrl}" data-send="false" data-width="450" data-show-faces="true"></div>
+				</div>
+			</div>
+		</section>
+		</c:if>
 
 		<jsp:include page="_footer.jsp"/>
 	</div>
@@ -59,6 +69,14 @@
 --%>
 
 <%@ include file="_footBase.jsp"%>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/ja_JP/all.js#xfbml=1&appId=${facebookClientId}";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
 <script type="text/javascript">
 <!--
 $(function(){

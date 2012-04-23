@@ -1,4 +1,5 @@
 <%@ page language="java" session="false" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
+<%@ page import="com.ippoippo.joplin.dto.YoutubeSearchForm" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
@@ -44,27 +45,33 @@
 			<form:form modelAttribute="youtubeSearchForm" action="searchItem" method="post">
 				<form:hidden path="startIndex" />
 				<form:hidden path="listSize" />
-				<input type="hidden" id="command" name="command" />
+				<form:hidden path="command" />
 				<div class="row">
-					<div class="span1">
-						<label class="control-label" for="searchText">Terms</label>
+					<div class="span2">
+						<label class="control-label" for="searchText">Search text</label>
 					</div>
 					<div class="span4">
 						<form:input path="searchText" maxlength="128" class="input-xlarge search-query"/>
+						<input type="hidden" id="orgnSearchText" name="orgnSearchText" value="${youtubeSearchForm.searchText}" />
 					</div>
-					<div class="span7">
+					<div class="span6">
 						<input type="button" id="searchBtn" value="search" />
 					</div>
 				</div>
 			</form:form>
 
 			<c:if test="${(items != null) && (fn:length(items) != 0)}">
-				<ul class="pager">
-					<li><a id="prevLink" href="#">Previous</a></li>
-					<li><a id="nextLink" href="#">Next</a></li>
-				</ul>
+			<div class="row">
+				<div class="span2">
+					<ul class="pager">
+						<li><a id="prevLink" href="#">Previous</a></li>
+						<li><a id="nextLink" href="#">Next</a></li>
+					</ul>
+				</div>
+				<div class="span10"></div>
+			</div>
 			</c:if>
-			<div id="resultHolder" style="overflow: auto; max-height: 470px;">
+			<div id="resultHolder" style="overflow: auto; max-height: 470px; width: 550px;">
 				<table class="table table-striped">
 					<tbody>
 						<c:choose>
@@ -81,7 +88,8 @@
 									<td>
 										<form id="form${status.index}" action="addItem" method="post">
 											<input type="hidden" name="videoId" value="${item.videoId}" />
-											<input type="submit" id="${videoId}" class="addItemBtn" value="add" />
+											<input type="submit" id="${videoId}" class="addItemBtn" value="select" /><br/>
+											<input type="checkbox" id="canShare" name="canShare" value="true" checked="checked" />&nbsp;Share
 										</form>
 									</td>
 								</tr>
@@ -106,16 +114,20 @@
 <!--
 $(function(){
 	$('#searchBtn').click(function() {
-		$('#command').val('search');
+		$('#command').val('<%=YoutubeSearchForm.COMMAND_RESET%>');
 		$('#youtubeSearchForm').submit();
 	});
 	$('#prevLink').click(function() {
-		$('#command').val('prev');
+		$('#command').val('<%=YoutubeSearchForm.COMMAND_PREV%>');
+		$('#searchText').val($('#orgnSearchText').val());
 		$('#youtubeSearchForm').submit();
 	});
 	$('#nextLink').click(function() {
-		$('#command').val('next');
+		$('#command').val('<%=YoutubeSearchForm.COMMAND_NEXT%>');
+		$('#searchText').val($('#orgnSearchText').val());
 		$('#youtubeSearchForm').submit();
+	});
+	$('.addItemBtn').click(function() {
 	});
 });
 // -->

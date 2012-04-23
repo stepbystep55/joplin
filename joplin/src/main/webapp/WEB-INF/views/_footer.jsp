@@ -2,7 +2,7 @@
 <footer class="footer">
 	<div class="row">
 		<div class="span12 centering">
-			<p>&copy;ippoippo</p>
+			<p>&copy;nobody</p>
 		</div>
 	</div>
 </footer>

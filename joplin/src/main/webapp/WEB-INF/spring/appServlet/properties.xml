@@ -13,7 +13,7 @@
 		<!-- general -->
 		<prop key="application.name">VivaJoplin</prop>
 		<prop key="application.caption">Viva! Viva! Viva Joplin!!</prop>
-		<prop key="application.description">This is the "Hot or Not" application on SNS.</prop>
+		<prop key="application.description">This is a "Hot or Not" application on SNS.</prop>
 		<prop key="application.description"></prop>
 		<prop key="cipher.key">osdfa790523qdsu3as4d38be</prop>
 		<prop key="admin.password.md5">329435e5e66be809a656af105f42401e</prop>
@@ -26,8 +26,8 @@
 		<prop key="facebook.clientSecret">5e9b6305d8f015a72ce0c38eaef5262e</prop>
 		<prop key="twitter.clientId">SJIrEWFwTHYrlOyt6QXtMA</prop>
 		<prop key="twitter.clientSecret">w8pgTrrsFuxkHIJWpZy88KOIRTEhhqmaYgzEiTr8LCY</prop>
-		<prop key="post.signin.url">http://joplin.cloudfoundry.com/</prop>
-		<prop key="home.url">http://joplin.cloudfoundry.com/</prop>
+		<prop key="post.signin.url">http://joplin.stepbystep55.cloudbees.net/</prop>
+		<prop key="home.url">http://joplin.stepbystep55.cloudbees.net/</prop>
 		
 		<!-- rdb -->
 		<prop key="init.db">false</prop>

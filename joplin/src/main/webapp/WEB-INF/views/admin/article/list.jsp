@@ -65,8 +65,8 @@
 						</td>
 						<td>
 							<c:choose>
-								<c:when test="${article.active}">Active</c:when>
-								<c:otherwise>Suspend</c:otherwise>
+								<c:when test="${article.active}">active</c:when>
+								<c:otherwise>suspend</c:otherwise>
 							</c:choose>
 						</td>
 					</tr>
