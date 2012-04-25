@@ -2,18 +2,22 @@
 <ehcache 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
-	maxBytesLocalHeap="100m">
-
+	updateCheck="false"
+	>
 		<defaultCache
+			maxElementsInMemory="0"
 			statistics="true"
 			eternal="false"
 			overflowToDisk="false"
 			timeToLiveSeconds="600"/>
+
 		<cache 
+			maxElementsInMemory="0"
 			statistics="true"
-			name="searchCache" 
+			name="itemList" 
 			eternal="false"
 			overflowToDisk="false" 
-			timeToLiveSeconds="600"
+			timeToLiveSeconds="900"
 		/>
+		<!-- other configurations are unnecessary. -->
 </ehcache>

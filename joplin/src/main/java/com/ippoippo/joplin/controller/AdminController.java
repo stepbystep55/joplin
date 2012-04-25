@@ -141,21 +141,9 @@ public class AdminController {
 		validateAccess(articleId);
 
 		Article article = articleOperations.getById(articleId);
-		/*
-		ItemListForm itemListForm = new ItemListForm();
-		List<YoutubeItem> items
-			= youtubeItemOperations.listByArticleId(
-					articleId
-					, itemListForm.getStartIndex()
-					, itemListForm.getListSize());
-					*/
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("article", article);
-		/*
-		modelAndView.addObject("itemListForm", itemListForm);
-		modelAndView.addObject("items", items);
-		*/
 		modelAndView.setViewName("admin/article/edit");
 		return modelAndView;
 	}
@@ -261,6 +249,7 @@ public class AdminController {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("youtubeSearchForm", youtubeSearchForm);
 		modelAndView.addObject("items", items);
+		if (items == null || items.size() == 0) modelAndView.addObject("message", "No result");
 		modelAndView.setViewName("admin/article/item");
 		return modelAndView;
 	}

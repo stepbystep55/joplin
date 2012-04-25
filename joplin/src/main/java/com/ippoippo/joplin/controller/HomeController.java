@@ -32,6 +32,7 @@ import com.ippoippo.joplin.jdbc.mapper.UserMasterMapper;
 import com.ippoippo.joplin.mongo.operations.ArticleOperations;
 import com.ippoippo.joplin.mongo.operations.ContributionOperations;
 import com.ippoippo.joplin.mongo.operations.YoutubeItemOperations;
+import com.ippoippo.joplin.service.ArticleService;
 import com.ippoippo.joplin.service.ItemService;
 import com.ippoippo.joplin.service.YoutubeSearchService;
 import com.ippoippo.joplin.util.UserCookieForTemporaryGenerator;
@@ -164,11 +165,12 @@ public class HomeController {
 			return modelAndView;
 		}
 
-		List<YoutubeItem> items = itemService.newMatch(articleId);
+		List<YoutubeItem> items = itemService.list(articleId);
+		List<YoutubeItem> match = itemService.newMatch(items);
 
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("firstItem", items.get(0));
-		modelAndView.addObject("secondItem", items.get(1));
+		modelAndView.addObject("firstItem", match.get(0));
+		modelAndView.addObject("secondItem", match.get(1));
 		modelAndView.setViewName("vs");
 		return modelAndView;
 	}
@@ -189,11 +191,12 @@ public class HomeController {
 
 		itemService.vote(userId, firstItemId, secondItemId, winnerItemId);
 
-		List<YoutubeItem> items = itemService.newMatch(articleId);
+		List<YoutubeItem> items = itemService.list(articleId);
+		List<YoutubeItem> match = itemService.newMatch(items);
 
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("firstItem", items.get(0));
-		modelAndView.addObject("secondItem", items.get(1));
+		modelAndView.addObject("firstItem", match.get(0));
+		modelAndView.addObject("secondItem", match.get(1));
 		modelAndView.setViewName("vs");
 		return modelAndView;
 	}
@@ -230,9 +233,13 @@ public class HomeController {
 
 		Contribution contribution = contributionOperations.getByArticleIdAndUserId(articleId, userId);
 		if (articleId.equals(Article.ID_FOR_NO_ARTICLE) || contribution != null) {
-			// already registered (user can post only one video for each article.)
+			// already registered (user can post only one item for each article.)
 			ModelAndView modelAndView = new ModelAndView();
-			if (contribution != null) modelAndView.addObject("videoId", contribution.getVideoId());
+			if (contribution != null) {
+				modelAndView.addObject("videoId", contribution.getVideoId());
+				long rank = youtubeItemOperations.rankForVideoId(contribution.getVideoId());
+				modelAndView.addObject("rank", rank);
+			}
 			modelAndView.setViewName("/yourItem");
 			return modelAndView;
 		}
@@ -267,6 +274,7 @@ public class HomeController {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("youtubeSearchForm", youtubeSearchForm);
 		modelAndView.addObject("items", items);
+		if (items == null || items.size() == 0) modelAndView.addObject("message", "No result");
 		modelAndView.setViewName("/item");
 		return modelAndView;
 	}

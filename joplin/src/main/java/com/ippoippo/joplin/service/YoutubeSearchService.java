@@ -50,12 +50,12 @@ public class YoutubeSearchService {
 
 		// build a HTTP GET request
 		HttpRequest request = gdataRequestFactory.buildGetRequest(url);
-		request.addParser(new JsonCParser(new JacksonFactory()));
-
 		logger.info("request url: " + request.getUrl().toString());
+		request.addParser(new JsonCParser(new JacksonFactory()));
 
 		// execute the request and parse the video feed
 		VideoFeed feed = request.execute().parseAs(VideoFeed.class);
+		if (feed == null || feed.items == null) return new ArrayList<YoutubeItem>(0);
 		
 		List<YoutubeItem> items = new ArrayList<YoutubeItem>(feed.items.size());
 		for (Video video: feed.items) {

@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.connect.UsersConnectionRepository;
@@ -57,10 +58,11 @@ public class ItemService {
 	@Inject
 	UsersConnectionRepository usersConnectionRepository;
 
-	public List<YoutubeItem> newMatch(String articleId) {
+	// 内部呼出メソッドの@Cacheableが効かないため、分離する
+	//public List<YoutubeItem> newMatch(String articleId) {
+		//List<YoutubeItem> items = this.list(articleId);
+	public List<YoutubeItem> newMatch(List<YoutubeItem> items) {
 
-		List<YoutubeItem> items = this.list(articleId);
-		
 		// get clones of 2 candidates randomly
 		int oneIndex = Utils.getIntRandomly(items.size(), -1);
 		int anotherIndex = Utils.getIntRandomly(items.size(), oneIndex);
@@ -73,9 +75,11 @@ public class ItemService {
 		return items4match;
 	}
 
+	@Cacheable("itemList")
 	public List<YoutubeItem> list(String articleId) {
 		List<YoutubeItem> items = youtubeItemOperations.listByArticleId(articleId);
 		Collections.shuffle(items);
+		logger.info("getting item list: size=" + items.size());
 		return items;
 	}
 	

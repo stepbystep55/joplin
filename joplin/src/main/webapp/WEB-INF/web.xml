@@ -27,7 +27,6 @@
 	</filter-mapping>
 
 	<!-- application status monitor -->
-<!--
 	<filter>
 		<filter-name>monitoring</filter-name>
 		<filter-class>net.bull.javamelody.MonitoringFilter</filter-class>
@@ -39,7 +38,6 @@
 	<listener>
 		<listener-class>net.bull.javamelody.SessionListener</listener-class>
 	</listener>
--->
 	
 	<!-- Creates the Spring Container shared by all Servlets and Filters -->
 	<listener>

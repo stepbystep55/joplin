@@ -37,6 +37,7 @@
 			<div class="row">
 				<div class="span12">
 					<c:if test="${videoId != null}">
+					<h3>Current rank: <c:out value="${rank}" /></h3>
 					<iframe
 						width="400" height="233"
 						src="http://www.youtube.com/embed/${videoId}?rel=0"

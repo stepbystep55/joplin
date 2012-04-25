@@ -35,6 +35,13 @@ public class YoutubeItemOperations extends AbstractOperations {
 		return mongoOperations().count(query, YoutubeItem.class.getSimpleName());
 	}
 
+	public Long rankForVideoId(String videoId) {
+		Query query = Query.query(Criteria.where("videoId").is(videoId));
+		YoutubeItem item = mongoOperations().findOne(query, YoutubeItem.class, YoutubeItem.class.getSimpleName());
+		query = Query.query(Criteria.where("rate").gt(item.getRate()));
+		return (mongoOperations().count(query, YoutubeItem.class.getSimpleName()) + 1);
+	}
+
 	public List<YoutubeItem> listByArticleId(String articleId) {
 		Query query = Query.query(Criteria.where("articleId").in(articleId));
 		return mongoOperations().find(query, YoutubeItem.class, YoutubeItem.class.getSimpleName());

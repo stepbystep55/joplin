@@ -72,10 +72,10 @@
 			</div>
 			</c:if>
 			<div id="resultHolder" style="overflow: auto; max-height: 470px; width: 550px;">
-				<table class="table table-striped">
-					<tbody>
-						<c:choose>
-							<c:when test="${(items != null) && (fn:length(items) != 0)}">
+				<c:choose>
+					<c:when test="${(items != null) && (fn:length(items) != 0)}">
+						<table class="table table-striped">
+							<tbody>
 								<c:forEach items="${items}" var="item" varStatus="status">
 								<tr>
 									<td>
@@ -94,10 +94,13 @@
 									</td>
 								</tr>
 								</c:forEach>
-							</c:when>
-						</c:choose>
-					</tbody>
-				</table>
+							</tbody>
+						</table>
+					</c:when>
+					<c:otherwise>
+						<c:if test="${message != null}"><h3><c:out value="${message}" /></h3></c:if>
+					</c:otherwise>
+				</c:choose>
 			</div>
 		</section>
 
