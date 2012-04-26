@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionRepository;
@@ -58,7 +59,7 @@ public class ItemService {
 	@Inject
 	UsersConnectionRepository usersConnectionRepository;
 
-	// 内部呼出メソッドの@Cacheableが効かないため、分離する
+	// 内部呼出メソッドの@Cacheableが効かないため分離する
 	//public List<YoutubeItem> newMatch(String articleId) {
 		//List<YoutubeItem> items = this.list(articleId);
 	public List<YoutubeItem> newMatch(List<YoutubeItem> items) {
@@ -111,7 +112,7 @@ public class ItemService {
 		voteHistoryOperations.create(vote);
 		
 		long voteCount = voteHistoryOperations.countByUserId(userId);
-		if (voteCount % 25 == 0) {
+		if (voteCount % 50 == 0) {
 			ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(userId);
 			if (connectionRepository.findPrimaryConnection(Facebook.class) != null) {
 				Connection connection = connectionRepository.getPrimaryConnection(Facebook.class);
@@ -125,6 +126,7 @@ public class ItemService {
 		}
 	}
 	
+	@CacheEvict(value="itemList", allEntries=true)
 	public void contribute(String articleId, String videoId, String userId, boolean canShare) {
 
 		// register video

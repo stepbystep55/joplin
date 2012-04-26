@@ -75,14 +75,22 @@ public class Utils {
 		if (size < 1) throw new RuntimeException("size is too small.");
 
 		int ret = 0;
+
+		long currentMills = System.currentTimeMillis();
+
+		// to avoid a lack of randomness
+		// (close numbers often cause the same number)
+		int spice = (int)(currentMills % 10);
+		if (spice == 0) spice = 1;
+
 		for (int i = 1; i <= 10; i++) {
-			long seed = (long)(System.currentTimeMillis() / i);
+			long seed = (long)(currentMills / (i * spice));
 			ret = new Random(seed).nextInt(size);
 			if (ret != excluded) break;
 		}
 
 		if (ret == excluded) {
-			// if cant get different, set the next of excluded.
+			// if the same value, set the next of excluded.
 			ret = (excluded == 0) ? (size - 1) : excluded - 1;
 		}
 		return ret;

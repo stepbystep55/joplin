@@ -59,13 +59,13 @@ public class HomeController {
 	ItemService itemService;
 
 	@Inject
+	ArticleService articleService;
+
+	@Inject
 	UserCookieForTemporaryGenerator userCookieForTemporaryGenerator;
 
 	@Inject
 	UserMasterMapper userMasterMapper;
-
-	@Inject
-	ArticleOperations articleOperations;
 
 	@Inject
 	YoutubeItemOperations youtubeItemOperations;
@@ -77,7 +77,7 @@ public class HomeController {
 	UsersConnectionRepository usersConnectionRepository;
 
 	@Transactional(rollbackForClassName="java.leng.Exception")
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@RequestMapping(value = "/", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView top(HttpServletRequest request, HttpServletResponse response) {
 		
 		try {
@@ -86,17 +86,11 @@ public class HomeController {
 
 			if (userMasterMapper.getById(userId) == null) throw new NotSigninException();
 
-			String articleId = null;
-			List<Article> articles = articleOperations.getActive();
-			if (articles != null && articles.size() > 0) {
-				articleId = articles.get(0).getId();
-			} else {
-				articleId = Article.ID_FOR_NO_ARTICLE;
-			}
+			Article article = articleService.getActive();
 
 			userCookieForTemporaryGenerator.addUserId(response, userId); // renew cookie for extending maxage
 			ModelAndView modelAndView = new ModelAndView();
-			modelAndView.setViewName("redirect:/hn/" + articleId + "/battle");
+			modelAndView.setViewName("redirect:/hn/" + article.getId() + "/battle");
 			return modelAndView;
 
 		} catch (NotSigninException e) {
@@ -144,7 +138,7 @@ public class HomeController {
 
 		validateAccess(articleId);
 
-		Article article = (articleId.equals(Article.ID_FOR_NO_ARTICLE)) ? new Article() : articleOperations.getById(articleId);
+		Article article = (articleId.equals(Article.ID_FOR_NO_ARTICLE)) ? new Article() : articleService.getById(articleId);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("article", article);
@@ -201,9 +195,12 @@ public class HomeController {
 		return modelAndView;
 	}
 
+//	private void validateAccess(String articleId, String userId) throws IllegalRequestException {
+//		if (userMasterMapper.getById(userId) == null) throw new IllegalRequestException();
 	private void validateAccess(String articleId) throws IllegalRequestException {
+
 		if (articleId.equals(Article.ID_FOR_NO_ARTICLE)) return;
-		Article article = articleOperations.getById(articleId);
+		Article article = articleService.getById(articleId);
 		if (article == null) throw new IllegalRequestException();
 	}
 
@@ -213,7 +210,7 @@ public class HomeController {
 
 		validateAccess(articleId);
 
-		Article article = (articleId.equals(Article.ID_FOR_NO_ARTICLE)) ? new Article() : articleOperations.getById(articleId);
+		Article article = (articleId.equals(Article.ID_FOR_NO_ARTICLE)) ? new Article() : articleService.getById(articleId);
 		List<YoutubeItem> items = youtubeItemOperations.listTopRate(articleId, 10);
 
 		ModelAndView modelAndView = new ModelAndView();
@@ -237,7 +234,7 @@ public class HomeController {
 			ModelAndView modelAndView = new ModelAndView();
 			if (contribution != null) {
 				modelAndView.addObject("videoId", contribution.getVideoId());
-				long rank = youtubeItemOperations.rankForVideoId(contribution.getVideoId());
+				long rank = youtubeItemOperations.rankForVideoId(articleId, contribution.getVideoId());
 				modelAndView.addObject("rank", rank);
 			}
 			modelAndView.setViewName("/yourItem");

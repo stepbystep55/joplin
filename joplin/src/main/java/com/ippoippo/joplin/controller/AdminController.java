@@ -49,9 +49,6 @@ public class AdminController {
 	YoutubeSearchService youtubeSearchService;
 
 	@Inject
-	ArticleOperations articleOperations;
-
-	@Inject
 	ArticleService articleService;
 
 	@Inject
@@ -93,7 +90,7 @@ public class AdminController {
 	public ModelAndView list() {
 
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("articles", articleOperations.listLatest(0, 10));
+		modelAndView.addObject("articles", articleService.listLatest(0, 10));
 		modelAndView.setViewName("admin/article/list");
 		return modelAndView;
 	}
@@ -119,8 +116,7 @@ public class AdminController {
 			return modelAndView;
 		}
 
-		articleOperations.create(article);
-		String newId = article.getId();
+		String newId = articleService.create(article);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("created", true);
@@ -130,7 +126,7 @@ public class AdminController {
 
 	private void validateAccess(String articleId) throws IllegalRequestException {
 		
-		Article article = articleOperations.getById(articleId);
+		Article article = articleService.getById(articleId);
 		if (article == null) throw new IllegalRequestException();
 	}
 
@@ -140,7 +136,7 @@ public class AdminController {
 
 		validateAccess(articleId);
 
-		Article article = articleOperations.getById(articleId);
+		Article article = articleService.getByIdForUpdate(articleId);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("article", article);
@@ -185,7 +181,7 @@ public class AdminController {
 		
 		validateAccess(articleId);
 
-		articleOperations.delete(articleId);
+		articleService.delete(articleId);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("deleted", true);

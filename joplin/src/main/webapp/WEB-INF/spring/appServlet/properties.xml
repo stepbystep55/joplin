@@ -26,19 +26,19 @@
 		<prop key="facebook.clientSecret">5e9b6305d8f015a72ce0c38eaef5262e</prop>
 		<prop key="twitter.clientId">SJIrEWFwTHYrlOyt6QXtMA</prop>
 		<prop key="twitter.clientSecret">w8pgTrrsFuxkHIJWpZy88KOIRTEhhqmaYgzEiTr8LCY</prop>
-		<prop key="post.signin.url">http://joplin.stepbystep55.cloudbees.net/</prop>
-		<prop key="home.url">http://joplin.stepbystep55.cloudbees.net/</prop>
+		<prop key="post.signin.url">http://joplin.nm-sy.cloudbees.net/</prop>
+		<prop key="home.url">http://joplin.nm-sy.cloudbees.net/</prop>
 		
 		<!-- rdb -->
 		<prop key="init.db">false</prop>
 		<prop key="db.mapperBasePackage">com.ippoippo.joplin.jdbc.mapper</prop>
 		<prop key="db.driverClassName">com.mysql.jdbc.Driver</prop>
-		<prop key="db.url">jdbc:mysql://instance8503.db.xeround.com.:6266/joplin</prop>
-		<prop key="db.username">joplin</prop>
-		<prop key="db.password">summertime</prop>
+		<prop key="db.url">jdbc:mysql://instance12438.db.xeround.com:8432/mydb</prop>
+		<prop key="db.username">netmilelab</prop>
+		<prop key="db.password">labnetmile</prop>
 		
 		<!-- mongo -->
-		<prop key="mongo.url">mongodb://joplin:summertime@ds031587.mongolab.com:31587/mongogo</prop>
+		<prop key="mongo.url">mongodb://netmilelab:labnetmile@ds033067.mongolab.com:33067/nm1</prop>
 	</util:properties>
 	
 </beans>

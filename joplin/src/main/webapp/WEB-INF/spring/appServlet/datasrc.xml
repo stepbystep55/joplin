@@ -9,9 +9,9 @@
 
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://instance8503.db.xeround.com.:6266/joplin" />
-		<property name="username" value="joplin" />
-		<property name="password" value="summertime" />
+		<property name="url" value="jdbc:mysql://instance12438.db.xeround.com:8432/mydb" />
+		<property name="username" value="netmilelab" />
+		<property name="password" value="labnetmile" />
 	</bean>
 
 	<jdbc:initialize-database data-source="dataSource" enabled="${init.db}">

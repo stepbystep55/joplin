@@ -10,14 +10,28 @@
 			eternal="false"
 			overflowToDisk="false"
 			timeToLiveSeconds="600"/>
-
 		<cache 
 			maxElementsInMemory="0"
 			statistics="true"
 			name="itemList" 
 			eternal="false"
 			overflowToDisk="false" 
-			timeToLiveSeconds="900"
+			timeToLiveSeconds="600"
 		/>
-		<!-- other configurations are unnecessary. -->
+		<cache 
+			maxElementsInMemory="0"
+			statistics="true"
+			name="article" 
+			eternal="false"
+			overflowToDisk="false" 
+			timeToLiveSeconds="600"
+		/>
+		<cache 
+			maxElementsInMemory="0"
+			statistics="true"
+			name="activeArticle" 
+			eternal="false"
+			overflowToDisk="false" 
+			timeToLiveSeconds="600"
+		/>
 </ehcache>
