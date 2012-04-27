@@ -126,7 +126,7 @@ public class AdminController {
 
 	private void validateAccess(String articleId) throws IllegalRequestException {
 		
-		Article article = articleService.getById(articleId);
+		Article article = articleService.getByIdForUpdate(articleId);
 		if (article == null) throw new IllegalRequestException();
 	}
 

@@ -3,6 +3,7 @@ package com.ippoippo.joplin.dto;
 import java.io.Serializable;
 
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.data.annotation.Transient;
 
 public class YoutubeItem implements Serializable {
 
@@ -60,6 +61,7 @@ public class YoutubeItem implements Serializable {
 	/**
 	 * 対決後のrate変動量
 	 */
+	@Transient
 	private double rateVaried;
 
 	public void calcRateVaried(boolean win, double opponentRate) {

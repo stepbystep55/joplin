@@ -72,10 +72,10 @@
 		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
 		p:config-location="/WEB-INF/spring/appServlet/ehcache.xml"/>
 	
-	<beans:import resource="datasrc.xml" />
+	<beans:import resource="dev-datasrc.xml" />
 	<!--
 	<beans:import resource="cache.xml" />
 	-->
-	<beans:import resource="properties.xml" />
+	<beans:import resource="dev-properties.xml" />
 
 </beans:beans>
