@@ -70,33 +70,6 @@ public class SimpleConnectionSignUp implements ConnectionSignUp {
 		} else if (api instanceof Twitter) {
 			
 		}
-		/*
-		User user = userRepository.save(new User());
-		String userId = user.getId();
-		List<User> users = userRepository.findMine("anonymous");
-		logger.info("users=" + users);
-		*/
-
-		/*
-		ConnectionData data = connection.createData();
-		Integer rank = mongoConnectionOperations.getMaxRankByUserIdAndProviderId(userId, data.getProviderId());
-		UsersConnection usersConnection = new UsersConnection();
-		usersConnection.setUserId(userId);
-		usersConnection.setProviderId(data.getProviderId());
-		usersConnection.setProviderUserId(data.getProviderUserId());
-		usersConnection.setRank(rank + 1);
-		usersConnection.setDisplayName(data.getDisplayName());
-		usersConnection.setProfileUrl(data.getProfileUrl());
-		usersConnection.setImageUrl(data.getImageUrl());
-		usersConnection.setAccessToken(data.getAccessToken());
-		usersConnection.setSecret(data.getSecret());
-		usersConnection.setRefreshToken(data.getRefreshToken());
-		usersConnection.setExpireTime(data.getExpireTime());
-		mongoConnectionOperations.raw().save(usersConnection);
-		rank = mongoConnectionOperations.getMaxRankByUserIdAndProviderId(userId, data.getProviderId());
-		logger.info("cons="+rank);
-		*/
-
 		logger.info("Signup with userId=" + userId);
 		return userId.toString();
 	}

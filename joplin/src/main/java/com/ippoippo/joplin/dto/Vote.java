@@ -7,7 +7,9 @@ public class Vote implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 4330494820814600995L;
+	private static final long serialVersionUID = -3974193121196731732L;
+
+	private String articleId;
 
 	private String userId;
 
@@ -17,6 +19,12 @@ public class Vote implements Serializable {
 
 	private String winnerItemId;
 
+	public String getArticleId() {
+		return articleId;
+	}
+	public void setArticleId(String articleId) {
+		this.articleId = articleId;
+	}
 	public String getUserId() {
 		return userId;
 	}

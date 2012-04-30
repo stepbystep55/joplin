@@ -20,6 +20,10 @@
 		<prop key="admin.password.md5">11fbcebdd135a59adaa856f9d6245026</prop>
 		-->
 
+		<!-- parameter -->
+		<prop key="rank.list.size">5</prop>
+		<prop key="vote.mincount.required">3</prop>
+
 		<!-- social -->
 		<prop key="facebook.clientId">314436538597635</prop>
 		<prop key="facebook.clientSecret">ae5f7e6a47cde2cf5e0b0665b5cdf948</prop>

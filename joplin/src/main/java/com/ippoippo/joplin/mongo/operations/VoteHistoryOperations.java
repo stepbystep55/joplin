@@ -18,8 +18,8 @@ public class VoteHistoryOperations extends AbstractOperations {
 	}
 	
 
-	public Long countByUserId(String userId) {
-		Query query = Query.query(Criteria.where("userId").is(userId));
+	public Long countByArticleIdAndUserId(String articleId, String userId) {
+		Query query = Query.query(Criteria.where("articleId").is(articleId).and("userId").is(userId));
 		return mongoOperations().count(query, Vote.class.getSimpleName());
 	}
 }

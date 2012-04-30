@@ -31,6 +31,7 @@ import com.ippoippo.joplin.exception.IllegalRequestException;
 import com.ippoippo.joplin.jdbc.mapper.UserMasterMapper;
 import com.ippoippo.joplin.mongo.operations.ArticleOperations;
 import com.ippoippo.joplin.mongo.operations.ContributionOperations;
+import com.ippoippo.joplin.mongo.operations.VoteHistoryOperations;
 import com.ippoippo.joplin.mongo.operations.YoutubeItemOperations;
 import com.ippoippo.joplin.service.ArticleService;
 import com.ippoippo.joplin.service.ItemService;
@@ -52,6 +53,12 @@ public class HomeController {
 	@Value("${home.url}")
 	private String homeUrl;
 	
+	@Value("${rank.list.size}")
+	private int rankListSize;
+
+	@Value("${vote.mincount.required}")
+	private int voteMinCountRequired;
+
 	@Inject
 	YoutubeSearchService youtubeSearchService;
 
@@ -72,6 +79,9 @@ public class HomeController {
 
 	@Inject
 	ContributionOperations contributionOperations;
+
+	@Inject
+	VoteHistoryOperations voteHistoryOperations;
 
 	@Inject
 	UsersConnectionRepository usersConnectionRepository;
@@ -183,7 +193,7 @@ public class HomeController {
 
 		String userId = userCookieForTemporaryGenerator.getUserId(request);
 
-		itemService.vote(userId, firstItemId, secondItemId, winnerItemId);
+		itemService.vote(articleId, userId, firstItemId, secondItemId, winnerItemId);
 
 		List<YoutubeItem> items = itemService.list(articleId);
 		List<YoutubeItem> match = itemService.newMatch(items);
@@ -206,16 +216,48 @@ public class HomeController {
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "/hn/{articleId}/rank", method = RequestMethod.GET)
-	public ModelAndView rank(@PathVariable String articleId) throws IllegalRequestException {
+	public ModelAndView rank(HttpServletRequest request, @PathVariable String articleId) throws IllegalRequestException {
 
 		validateAccess(articleId);
 
+		String userId = userCookieForTemporaryGenerator.getUserId(request);
+
 		Article article = (articleId.equals(Article.ID_FOR_NO_ARTICLE)) ? new Article() : articleService.getById(articleId);
-		List<YoutubeItem> items = youtubeItemOperations.listTopRate(articleId, 10);
+		List<YoutubeItem> items = itemService.listTopRate(articleId, rankListSize);
+		long voteCount = voteHistoryOperations.countByArticleIdAndUserId(articleId, userId);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("article", article);
 		modelAndView.addObject("items", items);
+		if (voteCount >= voteMinCountRequired) {
+			modelAndView.addObject("voteMinCountReached", true);
+		} else {
+			modelAndView.addObject("voteMinCountReached", false);
+		}
+		modelAndView.setViewName("rank");
+		return modelAndView;
+	}
+
+	@Transactional(rollbackForClassName="java.lang.Exception")
+	@RequestMapping(value = "/hn/{articleId}/friends", method = RequestMethod.GET)
+	public ModelAndView friends(HttpServletRequest request, @PathVariable String articleId) throws IllegalRequestException {
+
+		validateAccess(articleId);
+
+		String userId = userCookieForTemporaryGenerator.getUserId(request);
+
+		Article article = (articleId.equals(Article.ID_FOR_NO_ARTICLE)) ? new Article() : articleService.getById(articleId);
+		List<YoutubeItem> items = itemService.listTopRate(articleId, rankListSize);
+		long voteCount = voteHistoryOperations.countByArticleIdAndUserId(articleId, userId);
+
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("article", article);
+		modelAndView.addObject("items", items);
+		if (voteCount >= voteMinCountRequired) {
+			modelAndView.addObject("voteMinCountReached", true);
+		} else {
+			modelAndView.addObject("voteMinCountReached", false);
+		}
 		modelAndView.setViewName("rank");
 		return modelAndView;
 	}

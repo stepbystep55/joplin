@@ -34,4 +34,12 @@
 			overflowToDisk="false" 
 			timeToLiveSeconds="600"
 		/>
+		<cache 
+			maxElementsInMemory="0"
+			statistics="true"
+			name="topItemList" 
+			eternal="false"
+			overflowToDisk="false" 
+			timeToLiveSeconds="600"
+		/>
 </ehcache>

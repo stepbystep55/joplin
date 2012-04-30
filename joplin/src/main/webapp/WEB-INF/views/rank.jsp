@@ -54,7 +54,28 @@
 							<c:out value="${status.index + 1}" />
 						</td>
 						<td>
-							<iframe width="400" height="233" src="http://www.youtube.com/embed/${item.videoId}?rel=0" frameborder="0" allowfullscreen></iframe>
+							<a data-toggle="modal" href="#video${status.index + 1}">
+								<img id="Thumbnail${status.index + 1}" class="vThumbnail" src="${item.thumbnailUrl}" width="320" height="240" />
+							</a>
+							<h5>
+								<a data-toggle="modal" href="#video${status.index + 1}"><i class="icon-play"></i>&nbsp;Click image to view video</a>
+							</h5>
+							<div class="modal hide fade" id="video${status.index + 1}">
+								<div class="modal-header">
+									<button class="close" data-dismiss="modal">×</button>
+									<h4>Current rank: No.${status.index + 1}</h4>
+								</div>
+								<div class="modal-body">
+								<c:choose>
+									<c:when test="${voteMinCountReached}">
+										<iframe width="530" height="299" src="http://www.youtube.com/embed/${item.videoId}?rel=0&autoplay=1" frameborder="0" allowfullscreen></iframe>
+									</c:when>
+									<c:otherwise>
+										<h3 style="color:#FF6347;">You may vote more to view video!</h3>
+									</c:otherwise>
+								</c:choose>
+								</div>
+							</div>
 						</td>
 					</tr>
 					</c:forEach>

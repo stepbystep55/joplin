@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ippoippo.joplin.jdbc.mapper.UserconnectionMapper">
+
+	<resultMap id="userconnection" type="com.ippoippo.joplin.dto.Userconnection">
+		<id property="userId" column="USERID"/>
+		<result property="providerId" column="PROVIDERID"/>
+		<result property="providerUserid" column="PROVIDERUSERID"/>
+		<result property="displayName" column="DISPLAYNAME"/>
+	</resultMap>
+
+	<select id="listInUserIds" parameterType="set" resultMap="userconnection">
+		SELECT
+			USERID,
+			PROVIDERID,
+			PROVIDERUSERID,
+			DISPLAYNAME
+		FROM
+			USERCONNECTION
+		WHERE
+			PROVIDERID = #{providerId}
+			AND PROVIDERUSERID in #{providerUserids}
+	</select>
+</mapper>

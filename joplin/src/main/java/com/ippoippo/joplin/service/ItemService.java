@@ -25,7 +25,9 @@ import org.springframework.stereotype.Service;
 import com.ippoippo.joplin.dto.Contribution;
 import com.ippoippo.joplin.dto.Vote;
 import com.ippoippo.joplin.dto.YoutubeItem;
+import com.ippoippo.joplin.jdbc.mapper.UserMasterMapper;
 import com.ippoippo.joplin.mongo.operations.ContributionOperations;
+import com.ippoippo.joplin.mongo.operations.FriendListOperations;
 import com.ippoippo.joplin.mongo.operations.VoteHistoryOperations;
 import com.ippoippo.joplin.mongo.operations.YoutubeItemOperations;
 import com.ippoippo.joplin.util.Utils;
@@ -55,6 +57,17 @@ public class ItemService {
 
 	@Inject
 	ContributionOperations contributionOperations;
+
+	@Inject
+	FriendListOperations friendListOperations;
+
+	@Inject
+	UserMasterMapper userMasterMapper;
+
+	/*
+	@Inject
+	UserconnectionMapper userconnectionMapper;
+	*/
 
 	@Inject
 	UsersConnectionRepository usersConnectionRepository;
@@ -101,7 +114,7 @@ public class ItemService {
 		return items;
 	}
 	
-	public void vote(String userId, String oneId, String anotherId, String winnerId) {
+	public void vote(String articleId, String userId, String oneId, String anotherId, String winnerId) {
 
 		List<YoutubeItem> twoItems = youtubeItemOperations.listByIds(Arrays.asList(oneId, anotherId));
 
@@ -122,26 +135,12 @@ public class ItemService {
 		youtubeItemOperations.updateRate(loserItem.getId(), loserItem.getRateVaried());
 
 		Vote vote = new Vote();
+		vote.setArticleId(articleId);
 		vote.setUserId(userId);
 		vote.setOneItemId(oneId);
 		vote.setAnotherItemId(anotherId);
 		vote.setWinnerItemId(winnerId);
 		voteHistoryOperations.create(vote);
-		/*
-		long voteCount = voteHistoryOperations.countByUserId(userId);
-		if (voteCount % 50 == 0) {
-			ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(userId);
-			if (connectionRepository.findPrimaryConnection(Facebook.class) != null) {
-				Connection connection = connectionRepository.getPrimaryConnection(Facebook.class);
-				Object api = connection.getApi();
-				String msg = MessageFormat.format("{0} made " + voteCount + " votes!", connection.getDisplayName());
-				FeedOperations feedOperations = ((Facebook)api).feedOperations();
-				feedOperations.postLink(msg, new FacebookLink(homeUrl, applicationName, applicationCaption, applicationDescription));
-
-			} else if (connectionRepository.findPrimaryConnection(Twitter.class) != null) {
-			}
-		}
-		*/
 	}
 	
 	@CacheEvict(value="itemList", allEntries=true)
@@ -176,4 +175,18 @@ public class ItemService {
 			}
 		}
 	}
+
+	@Cacheable("topItemList")
+	public List<YoutubeItem> listTopRate(String articleId, int rankListSize) {
+		return youtubeItemOperations.listTopRate(articleId, rankListSize);
+	}
+
+	/*
+	public List<UserItem> listFriends(String articleId, String userId, String providerId) {
+		Friends friends = friendListOperations.getByProviderIdAndUserId(providerId, userId);
+		List<UserItem> userItemList = new ArrayList<UserItem>(friends.getFriendIds().size());
+		List<Userconnection> userconnectionList = userconnectionMapper.listInUserIds(friends.getFriendIds());
+		return userItemList;
+	}
+	*/
 }

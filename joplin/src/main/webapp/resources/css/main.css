@@ -30,3 +30,7 @@ section {
 .middlen {
 	vertical-align: middle;
 }
+.vThumbnail {
+	/*border: 2px solid #CCFFFF;*/
+	border: 2px solid #0088CC;
+}
