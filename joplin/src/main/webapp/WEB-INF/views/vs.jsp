@@ -7,54 +7,69 @@
 		<div class="row">
 			<div class="span6 centering">
 				<div>
-					<object width="400" height="233">
-						<param name="movie" value="http://www.youtube.com/v/${firstItem.videoId}?version=3&amp;hl=ja_JP&amp;rel=0"></param>
-						<param name="allowFullScreen" value="true"></param>
-						<param name="allowscriptaccess" value="always"></param>
-						<embed
-							src="http://www.youtube.com/v/${firstItem.videoId}?version=3&amp;hl=ja_JP&amp;rel=0"
-							type="application/x-shockwave-flash" width="400" height="233"
-							allowscriptaccess="always" allowfullscreen="true">
-						</embed>
-					</object>
-					<%--
-					<!-- ajax実行後、IE8で画面がおかしくなるためiframeではなくobject版採用 -->
-					<iframe
-						width="400" height="233"
-						src="http://www.youtube.com/embed/${firstItem.videoId}?rel=0"
-						frameborder="0" allowfullscreen>
-					</iframe>
-					--%>
+					<%--<img id="firstThumbnail" src="${firstItem.thumbnailUrl}" width="320" height="240" /> --%>
+					<a data-toggle="modal" href="#video1"><img id="firstThumbnail" src="${firstItem.thumbnailUrl}" width="320" height="240" />
+					<h5><i class="icon-play"></i>&nbsp;Click image to view video</h5>
+					</a>
 				</div>
+				<br/>
 				<input type="button" id="firstBtn" class="btn-large" name="firstBtn" value="Good!" />
 			</div>
 			<div class="span6 centering">
 				<div>
-					<object width="400" height="233">
-						<param name="movie" value="http://www.youtube.com/v/${secondItem.videoId}?version=3&amp;hl=ja_JP&amp;rel=0"></param>
-						<param name="allowFullScreen" value="true"></param>
-						<param name="allowscriptaccess" value="always"></param>
-						<embed
-							src="http://www.youtube.com/v/${secondItem.videoId}?version=3&amp;hl=ja_JP&amp;rel=0"
-							type="application/x-shockwave-flash" width="400" height="233"
-							allowscriptaccess="always" allowfullscreen="true">
-						</embed>
-					</object>
-					<%--
-					<iframe
-						width="400" height="233"
-						src="http://www.youtube.com/embed/${secondItem.videoId}?rel=0"
-						frameborder="0" allowfullscreen>
-					</iframe>
-					--%>
+					<%--<img id="secondThumbnail" src="${secondItem.thumbnailUrl}" width="320" height="240" /> --%>
+					<a data-toggle="modal" href="#video2"><img id="secondThumbnail" src="${secondItem.thumbnailUrl}" width="320" height="240" />
+					<h5><i class="icon-play"></i>&nbsp;Click image to view video</h5>
+					</a>
 				</div>
+				<br/>
 				<input type="button" id="secondBtn" class="btn-large" name="secondBtn" value="Good!" />
 			</div>
 		</div>
 	</form>
+	<div class="modal hide fade" id="video1">
+		<div class="modal-header">
+			<button class="close" data-dismiss="modal">×</button>
+			<h4>Video one</h4>
+		</div>
+		<div class="modal-body">
+			<object width="530" height="299">
+				<param name="movie" value="http://www.youtube.com/v/${firstItem.videoId}?version=3&hl=ja_JP&rel=0&autoplay=1"></param>
+				<param name="allowFullScreen" value="true"></param>
+				<param name="allowscriptaccess" value="always"></param>
+				<embed
+					src="http://www.youtube.com/v/${firstItem.videoId}?version=3&hl=ja_JP&rel=0&autoplay=1"
+					type="application/x-shockwave-flash" width="530" height="299"
+					allowscriptaccess="always" allowfullscreen="true">
+				</embed>
+			</object>
+		</div>
+	</div>
+	<div class="modal hide fade" id="video2">
+		<div class="modal-header">
+			<button class="close" data-dismiss="modal">×</button>
+			<h3>Video two</h3>
+		</div>
+		<div class="modal-body">
+			<object width="530" height="299">
+				<param name="movie" value="http://www.youtube.com/v/${secondItem.videoId}?version=3&hl=ja_JP&rel=0&autoplay=1"></param>
+				<param name="allowFullScreen" value="true"></param>
+				<param name="allowscriptaccess" value="always"></param>
+				<embed
+					src="http://www.youtube.com/v/${secondItem.videoId}?version=3&hl=ja_JP&rel=0&autoplay=1"
+					type="application/x-shockwave-flash" width="530" height="299"
+					allowscriptaccess="always" allowfullscreen="true">
+				</embed>
+			</object>
+		</div>
+	</div>
 <script type="text/javascript">
 <!--
 $(function(){
+<%--
+	$('#firstThumbnail').click(function(){$('#video1').modal();});
+	$('#secondThumbnail').click(function(){$('#video2').modal();});
+--%>
 	$('input[name="firstBtn"]').click(function(){
 		vote('${firstItem.id}','${secondItem.id}','${firstItem.id}');
 	});

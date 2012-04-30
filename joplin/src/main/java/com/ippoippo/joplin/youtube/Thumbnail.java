@@ -21,4 +21,20 @@ public class Thumbnail implements Serializable {
 	public String toString() {
 		return "Thumbnail [sqDefault=" + sqDefault + ", hqDefault=" + hqDefault + "]";
 	}
+
+	public String getSqDefault() {
+		return sqDefault;
+	}
+
+	public void setSqDefault(String sqDefault) {
+		this.sqDefault = sqDefault;
+	}
+
+	public String getHqDefault() {
+		return hqDefault;
+	}
+
+	public void setHqDefault(String hqDefault) {
+		this.hqDefault = hqDefault;
+	}
 }

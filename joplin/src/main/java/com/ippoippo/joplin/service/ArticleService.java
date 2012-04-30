@@ -27,12 +27,11 @@ public class ArticleService {
 
 	@Cacheable("article")
 	public Article getById(String id) {
-		logger.info("getting an article: id=" + id);
+		logger.info("getting an article for cache: id=" + id);
 		return articleOperations.getById(id);
 	}
 
 	public Article getByIdForUpdate(String id) {
-		logger.info("getting an article: id=" + id);
 		return articleOperations.getById(id);
 	}
 

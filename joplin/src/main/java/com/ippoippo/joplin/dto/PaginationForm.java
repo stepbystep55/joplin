@@ -1,10 +1,17 @@
 package com.ippoippo.joplin.dto;
 
+import java.io.Serializable;
+
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
 
-public abstract class PaginationForm {
+public abstract class PaginationForm implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2681416180158216093L;
 
 	public static final Integer DEFAULT_START_INDEX = 1;
 

@@ -25,9 +25,8 @@ import com.ippoippo.joplin.dto.YoutubeItem;
 import com.ippoippo.joplin.dto.YoutubeSearchForm;
 import com.ippoippo.joplin.exception.IllegalOperationException;
 import com.ippoippo.joplin.exception.IllegalRequestException;
-import com.ippoippo.joplin.mongo.operations.ArticleOperations;
-import com.ippoippo.joplin.mongo.operations.YoutubeItemOperations;
 import com.ippoippo.joplin.service.ArticleService;
+import com.ippoippo.joplin.service.ItemService;
 import com.ippoippo.joplin.service.YoutubeSearchService;
 import com.ippoippo.joplin.util.Utils;
 
@@ -52,7 +51,7 @@ public class AdminController {
 	ArticleService articleService;
 
 	@Inject
-	YoutubeItemOperations youtubeItemOperations;
+	ItemService itemService;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView top() {
@@ -199,10 +198,7 @@ public class AdminController {
 
 		itemListForm.update();
 		List<YoutubeItem> items
-			= youtubeItemOperations.listByArticleId(
-					articleId
-					, itemListForm.getStartIndex()
-					, itemListForm.getListSize());
+			= itemService.list(articleId, itemListForm.getStartIndex(), itemListForm.getListSize());
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("itemListForm", itemListForm);
@@ -219,7 +215,7 @@ public class AdminController {
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("youtubeSearchForm", new YoutubeSearchForm());
-		modelAndView.setViewName("admin/article/item");
+		modelAndView.setViewName("admin/article/searchItem");
 		return modelAndView;
 	}
 	
@@ -235,7 +231,7 @@ public class AdminController {
 		if (result.hasErrors()) {
 			ModelAndView modelAndView = new ModelAndView();
 			modelAndView.addObject("youtubeSearchForm", youtubeSearchForm);
-			modelAndView.setViewName("admin/article/item");
+			modelAndView.setViewName("admin/article/searchItem");
 			return modelAndView;
 		}
 
@@ -246,26 +242,21 @@ public class AdminController {
 		modelAndView.addObject("youtubeSearchForm", youtubeSearchForm);
 		modelAndView.addObject("items", items);
 		if (items == null || items.size() == 0) modelAndView.addObject("message", "No result");
-		modelAndView.setViewName("admin/article/item");
+		modelAndView.setViewName("admin/article/searchItem");
 		return modelAndView;
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "/article/{articleId}/addItem", method = RequestMethod.POST)
 	public ModelAndView addItem(
-			@PathVariable String articleId, @RequestParam("videoId") String videoId)
-					throws IllegalRequestException {
+			@PathVariable String articleId
+			, @Valid YoutubeItem item
+			, BindingResult result) throws IllegalRequestException {
 
 		validateAccess(articleId);
 
-		if (youtubeItemOperations.countByArticleIdAndVideoId(articleId, videoId) > 0) {
-			logger.info("The video for articldId="+articleId+", videoId="+videoId+" already exists.");
-		} else {
-			YoutubeItem item = new YoutubeItem();
-			item.setArticleId(articleId);
-			item.setVideoId(videoId);
-			youtubeItemOperations.create(item);
-		}
+		itemService.add(articleId, item);
+		
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("updated", true);
 		modelAndView.setViewName("forward:edit");
@@ -280,7 +271,7 @@ public class AdminController {
 
 		validateAccess(articleId);
 
-		youtubeItemOperations.delete(itemId);
+		itemService.delete(itemId);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("updated", true);

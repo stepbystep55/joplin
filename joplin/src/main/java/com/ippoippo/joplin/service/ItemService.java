@@ -59,6 +59,23 @@ public class ItemService {
 	@Inject
 	UsersConnectionRepository usersConnectionRepository;
 
+	public void add(String articleId, YoutubeItem item) {
+
+		if (youtubeItemOperations.countByArticleIdAndVideoId(articleId, item.getVideoId()) > 0) {
+			logger.info("The video for articldId="+articleId+", videoId="+item.getVideoId()+" already exists.");
+		} else {
+			youtubeItemOperations.create(item);
+		}
+	}
+
+	public List<YoutubeItem> list(String articleId, int startIndex, int listSize) {
+			return youtubeItemOperations.listByArticleId(articleId, startIndex, listSize);
+	}
+
+	public void delete(String itemId) {
+		youtubeItemOperations.delete(itemId);
+	}
+
 	// 内部呼出メソッドの@Cacheableが効かないため分離する
 	//public List<YoutubeItem> newMatch(String articleId) {
 		//List<YoutubeItem> items = this.list(articleId);
@@ -110,7 +127,7 @@ public class ItemService {
 		vote.setAnotherItemId(anotherId);
 		vote.setWinnerItemId(winnerId);
 		voteHistoryOperations.create(vote);
-		
+		/*
 		long voteCount = voteHistoryOperations.countByUserId(userId);
 		if (voteCount % 50 == 0) {
 			ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(userId);
@@ -124,6 +141,7 @@ public class ItemService {
 			} else if (connectionRepository.findPrimaryConnection(Twitter.class) != null) {
 			}
 		}
+		*/
 	}
 	
 	@CacheEvict(value="itemList", allEntries=true)

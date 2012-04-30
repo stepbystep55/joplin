@@ -93,7 +93,9 @@
 									<td>
 										<form id="form${status.index}" action="addItem" method="post">
 											<input type="hidden" name="videoId" value="${item.videoId}" />
-											<input type="submit" id="${videoId}" class="addItemBtn" value="select" />
+											<input type="hidden" name="title" value="${item.title}" />
+											<input type="hidden" name="encodedThumbnailUrl" value="${item.encodedThumbnailUrl}" />
+											<input type="submit" id="${item.videoId}" class="addItemBtn" value="select" />
 										</form>
 									</td>
 								</tr>

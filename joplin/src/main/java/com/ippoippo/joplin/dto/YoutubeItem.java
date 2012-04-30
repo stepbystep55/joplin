@@ -1,6 +1,9 @@
 package com.ippoippo.joplin.dto;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Transient;
@@ -20,6 +23,12 @@ public class YoutubeItem implements Serializable {
 	@NotEmpty
 	private String videoId;
 	
+	@NotEmpty
+	private String title;
+	
+	@NotEmpty
+	private String thumbnailUrl;
+
 	private double rate = 1600;
 
 	public String getId() {
@@ -54,6 +63,41 @@ public class YoutubeItem implements Serializable {
 		this.rate = rate;
 	}
 
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getThumbnailUrl() {
+		return thumbnailUrl;
+	}
+
+	public void setThumbnailUrl(String thumbnailUrl) {
+		this.thumbnailUrl = thumbnailUrl;
+	}
+
+	public String getEncodedThumbnailUrl() {
+		String encodedThumbnail = null;
+		try {
+			encodedThumbnail = URLEncoder.encode(thumbnailUrl, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// not happened
+			e.printStackTrace();
+		}
+		return encodedThumbnail;
+	}
+
+	public void setEncodedThumbnailUrl(String encodedThumbnailUrl) {
+		try {
+			this.thumbnailUrl = URLDecoder.decode(encodedThumbnailUrl, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+	}
+
 	private static final double WINNER_POINT = 1;
 	private static final double LOSER_POINT = 0;
 	private static final double TOURNAMENT_LEVEL = 32;
@@ -74,10 +118,13 @@ public class YoutubeItem implements Serializable {
 		return this.rateVaried;
 	}
 
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result
+				+ ((articleId == null) ? 0 : articleId.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
@@ -91,6 +138,11 @@ public class YoutubeItem implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		YoutubeItem other = (YoutubeItem) obj;
+		if (articleId == null) {
+			if (other.articleId != null)
+				return false;
+		} else if (!articleId.equals(other.articleId))
+			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -101,9 +153,10 @@ public class YoutubeItem implements Serializable {
 
 	@Override
 	public String toString() {
-		return "YoutubeItem [id=" + id
-				+ ", articleId=" + articleId + ", videoId=" + videoId
-				+ ", rate=" + rate + ", rateVaried=" + rateVaried + "]";
+		return "YoutubeItem [id=" + id + ", articleId=" + articleId
+				+ ", videoId=" + videoId + ", title=" + title + ", thumbnailUrl="
+				+ thumbnailUrl + ", rate=" + rate + ", rateVaried=" + rateVaried
+				+ "]";
 	}
 
 	@Override
@@ -112,6 +165,8 @@ public class YoutubeItem implements Serializable {
 		cloneItem.setId(this.id);
 		cloneItem.setArticleId(this.articleId);
 		cloneItem.setVideoId(this.videoId);
+		cloneItem.setTitle(this.title);
+		cloneItem.setThumbnailUrl(this.thumbnailUrl);
 		cloneItem.setRate(this.rate);
 		return cloneItem;
 	}

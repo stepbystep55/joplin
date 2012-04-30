@@ -4,6 +4,11 @@ import org.hibernate.validator.constraints.Length;
 
 public class YoutubeSearchForm extends PaginationForm {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7010365096595167041L;
+
 	@Length(min=1,max=128)
 	private String searchText;
 

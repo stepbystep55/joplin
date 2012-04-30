@@ -62,6 +62,8 @@ public class YoutubeSearchService {
 			YoutubeItem item = new YoutubeItem();
 			item.setArticleId(articleId);
 			item.setVideoId(video.id);
+			item.setTitle(video.title);
+			item.setThumbnailUrl(video.thumbnail.hqDefault);
 			items.add(item);
 		}
 		return items;
