@@ -71,6 +71,26 @@ public class YoutubeItem implements Serializable {
 		this.title = title;
 	}
 
+	public String getEncodedTitle() {
+		String encodedTitle = null;
+		try {
+			encodedTitle = URLEncoder.encode(title, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// not happen
+			e.printStackTrace();
+		}
+		return encodedTitle;
+	}
+
+	public void setEncodedTitle(String encodedTitle) {
+		try {
+			this.title = URLDecoder.decode(encodedTitle, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// not happen
+			e.printStackTrace();
+		}
+	}
+
 	public String getThumbnailUrl() {
 		return thumbnailUrl;
 	}
@@ -84,7 +104,7 @@ public class YoutubeItem implements Serializable {
 		try {
 			encodedThumbnail = URLEncoder.encode(thumbnailUrl, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
-			// not happened
+			// not happen
 			e.printStackTrace();
 		}
 		return encodedThumbnail;
@@ -94,6 +114,7 @@ public class YoutubeItem implements Serializable {
 		try {
 			this.thumbnailUrl = URLDecoder.decode(encodedThumbnailUrl, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
+			// not happened
 			e.printStackTrace();
 		}
 	}

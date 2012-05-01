@@ -72,10 +72,10 @@ public class ItemService {
 	@Inject
 	UsersConnectionRepository usersConnectionRepository;
 
-	public void add(String articleId, YoutubeItem item) {
+	public void add(YoutubeItem item) {
 
-		if (youtubeItemOperations.countByArticleIdAndVideoId(articleId, item.getVideoId()) > 0) {
-			logger.info("The video for articldId="+articleId+", videoId="+item.getVideoId()+" already exists.");
+		if (youtubeItemOperations.countByArticleIdAndVideoId(item.getArticleId(), item.getVideoId()) > 0) {
+			logger.info("This item="+item+" already exists.");
 		} else {
 			youtubeItemOperations.create(item);
 		}
@@ -143,24 +143,23 @@ public class ItemService {
 		voteHistoryOperations.create(vote);
 	}
 	
+	public long countVote(String articleId, String userId) {
+		return voteHistoryOperations.countByArticleIdAndUserId(articleId, userId);
+	}
+
 	@CacheEvict(value="itemList", allEntries=true)
-	public void contribute(String articleId, String videoId, String userId, boolean canShare) {
+	public void contribute(String articleId, String userId, YoutubeItem item, boolean canShare) {
 
 		// register video
-		if (youtubeItemOperations.countByArticleIdAndVideoId(articleId, videoId) > 0) {
-			logger.info("The video for articldId="+articleId+", videoId="+videoId+" already exists.");
-		} else {
-			YoutubeItem item = new YoutubeItem();
-			item.setArticleId(articleId);
-			item.setVideoId(videoId);
-			youtubeItemOperations.create(item);
-		}
+		this.add(item);
+
 		// register contribution
 		Contribution contribution = new Contribution();
 		contribution.setArticleId(articleId);
 		contribution.setUserId(userId);
-		contribution.setVideoId(videoId);
+		contribution.setItem(item);
 		contributionOperations.create(contribution);
+
 		// share about the contribution
 		if (canShare) {
 			ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(userId);

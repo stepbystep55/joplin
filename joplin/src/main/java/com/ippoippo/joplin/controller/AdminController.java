@@ -255,7 +255,9 @@ public class AdminController {
 
 		validateAccess(articleId);
 
-		itemService.add(articleId, item);
+		if (result.hasErrors()) throw new IllegalRequestException(""+result.getAllErrors());
+
+		itemService.add(item);
 		
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("updated", true);

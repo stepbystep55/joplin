@@ -39,19 +39,36 @@
 		</header>
 
 		<section id="video">
+			<c:if test="${contribution.item.videoId != null}">
 			<div class="row">
 				<div class="span12">
-					<c:if test="${videoId != null}">
-					<h3>Current rank: <c:out value="${rank}" /></h3>
-					<iframe
-						width="400" height="233"
-						src="http://www.youtube.com/embed/${videoId}?rel=0"
-						frameborder="0" allowfullscreen>
-					</iframe>
-					<p>You can post only one video for each article.</p>
-					</c:if>
+					<h3>Current rank: <c:out value="${contribution.rank}" /></h3>
+					<div>
+						<a data-toggle="modal" href="#myVideo">
+							<img id="thumbnail" class="vThumbnail" src="${contribution.item.thumbnailUrl}" width="320" height="240" />
+						</a>
+						<h5 style="padding-left: 70px;">
+							<a data-toggle="modal" href="#myVideo"><i class="icon-play"></i>&nbsp;Click image to view video</a>
+						</h5>
+					</div>
+					<div class="modal hide fade" id="myVideo">
+						<div class="modal-header">
+							<button class="close" data-dismiss="modal">×</button>
+							<h4>Your posted video</h4>
+						</div>
+						<div class="modal-body">
+							<iframe width="530" height="299" src="http://www.youtube.com/embed/${contribution.item.videoId}?rel=0&autoplay=1" frameborder="0" allowfullscreen></iframe>
+						</div>
+					</div>
 				</div>
 			</div>
+			<div class="row"><div class="span12">&nbsp;</div></div>
+			<div class="row">
+				<div class="span12">
+					<p>You can post only one video for each article.</p>
+				</div>
+			</div>
+			</c:if>
 		</section>
 
 		<jsp:include page="_footer.jsp"/>

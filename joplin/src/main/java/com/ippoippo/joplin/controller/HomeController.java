@@ -28,13 +28,11 @@ import com.ippoippo.joplin.dto.UserDisplay;
 import com.ippoippo.joplin.dto.YoutubeItem;
 import com.ippoippo.joplin.dto.YoutubeSearchForm;
 import com.ippoippo.joplin.exception.IllegalRequestException;
-import com.ippoippo.joplin.jdbc.mapper.UserMasterMapper;
-import com.ippoippo.joplin.mongo.operations.ArticleOperations;
 import com.ippoippo.joplin.mongo.operations.ContributionOperations;
-import com.ippoippo.joplin.mongo.operations.VoteHistoryOperations;
 import com.ippoippo.joplin.mongo.operations.YoutubeItemOperations;
 import com.ippoippo.joplin.service.ArticleService;
 import com.ippoippo.joplin.service.ItemService;
+import com.ippoippo.joplin.service.UserService;
 import com.ippoippo.joplin.service.YoutubeSearchService;
 import com.ippoippo.joplin.util.UserCookieForTemporaryGenerator;
 
@@ -69,19 +67,16 @@ public class HomeController {
 	ArticleService articleService;
 
 	@Inject
-	UserCookieForTemporaryGenerator userCookieForTemporaryGenerator;
+	UserService userService;
 
 	@Inject
-	UserMasterMapper userMasterMapper;
+	UserCookieForTemporaryGenerator userCookieForTemporaryGenerator;
 
 	@Inject
 	YoutubeItemOperations youtubeItemOperations;
 
 	@Inject
 	ContributionOperations contributionOperations;
-
-	@Inject
-	VoteHistoryOperations voteHistoryOperations;
 
 	@Inject
 	UsersConnectionRepository usersConnectionRepository;
@@ -94,7 +89,7 @@ public class HomeController {
 			String userId = userCookieForTemporaryGenerator.getUserId(request);
 			if (userId == null) throw new NotSigninException();
 
-			if (userMasterMapper.getById(userId) == null) throw new NotSigninException();
+			if (userService.getById(userId) == null) throw new NotSigninException();
 
 			Article article = articleService.getActive();
 
@@ -224,7 +219,7 @@ public class HomeController {
 
 		Article article = (articleId.equals(Article.ID_FOR_NO_ARTICLE)) ? new Article() : articleService.getById(articleId);
 		List<YoutubeItem> items = itemService.listTopRate(articleId, rankListSize);
-		long voteCount = voteHistoryOperations.countByArticleIdAndUserId(articleId, userId);
+		long voteCount = itemService.countVote(articleId, userId);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("article", article);
@@ -248,7 +243,7 @@ public class HomeController {
 
 		Article article = (articleId.equals(Article.ID_FOR_NO_ARTICLE)) ? new Article() : articleService.getById(articleId);
 		List<YoutubeItem> items = itemService.listTopRate(articleId, rankListSize);
-		long voteCount = voteHistoryOperations.countByArticleIdAndUserId(articleId, userId);
+		long voteCount = itemService.countVote(articleId, userId);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("article", article);
@@ -275,9 +270,9 @@ public class HomeController {
 			// already registered (user can post only one item for each article.)
 			ModelAndView modelAndView = new ModelAndView();
 			if (contribution != null) {
-				modelAndView.addObject("videoId", contribution.getVideoId());
-				long rank = youtubeItemOperations.rankForVideoId(articleId, contribution.getVideoId());
-				modelAndView.addObject("rank", rank);
+				modelAndView.addObject("contribution", contribution);
+				//long rank = youtubeItemOperations.rankForVideoId(articleId, contribution.getVideoId());
+				//modelAndView.addObject("rank", rank);
 			}
 			modelAndView.setViewName("/yourItem");
 			return modelAndView;
@@ -323,14 +318,17 @@ public class HomeController {
 	public ModelAndView addItem(
 			HttpServletRequest request
 			, @PathVariable String articleId
-			, @RequestParam("videoId") String videoId
-			, @RequestParam("canShare") boolean canShare
+			, @Valid YoutubeItem item
+			, BindingResult result
 			) throws IllegalRequestException {
 
+		boolean canShare = Boolean.parseBoolean(request.getParameter("canShare"));
 		validateAccess(articleId);
 
+		if (result.hasErrors()) throw new IllegalRequestException(""+result.getAllErrors());
+
 		String userId = userCookieForTemporaryGenerator.getUserId(request);
-		itemService.contribute(articleId, videoId, userId, canShare);
+		itemService.contribute(articleId, userId, item, canShare);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("updated", true);

@@ -48,6 +48,7 @@
 			</beans:props>
 		</beans:property>
 	</beans:bean>
+
 <!--
 	<beans:bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<beans:property name="location">

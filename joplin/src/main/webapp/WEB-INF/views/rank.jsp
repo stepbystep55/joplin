@@ -57,7 +57,7 @@
 							<a data-toggle="modal" href="#video${status.index + 1}">
 								<img id="Thumbnail${status.index + 1}" class="vThumbnail" src="${item.thumbnailUrl}" width="320" height="240" />
 							</a>
-							<h5>
+							<h5 style="padding-left: 70px;">
 								<a data-toggle="modal" href="#video${status.index + 1}"><i class="icon-play"></i>&nbsp;Click image to view video</a>
 							</h5>
 							<div class="modal hide fade" id="video${status.index + 1}">

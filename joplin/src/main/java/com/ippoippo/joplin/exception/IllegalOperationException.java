@@ -11,7 +11,15 @@ public class IllegalOperationException extends Exception {
 		super();
 	}
 
+	public IllegalOperationException(String message, Throwable cause) {
+		super(message, cause);
+	}
+
 	public IllegalOperationException(String message) {
 		super(message);
+	}
+
+	public IllegalOperationException(Throwable cause) {
+		super(cause);
 	}
 }

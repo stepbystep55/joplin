@@ -4,14 +4,17 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 
+<c:if test="${(items != null) && (fn:length(items) != 0)}">
+
 <div class="row">
+	<div class="span1">&nbsp;</div>
 	<div class="span2">
 		<ul class="pager">
 			<li><a id="prevLink" href="#">Previous</a></li>
 			<li><a id="nextLink" href="#">Next</a></li>
 		</ul>
 	</div>
-	<div class="span10"></div>
+	<div class="span9"></div>
 </div>
 <div class="row">
 	<div class="span1">
@@ -19,8 +22,6 @@
 	</div>
 	<div class="span11">
 		<div id="resultHolder" style="overflow: auto; max-height: 470px;">
-		<c:choose>
-			<c:when test="${(items != null) && (fn:length(items) != 0)}">
 				<table class="table table-striped">
 					<tbody>
 						<c:forEach items="${items}" var="item">
@@ -41,11 +42,6 @@
 						</c:forEach>
 					</tbody>
 				</table>
-			</c:when>
-			<c:otherwise>
-				<c:if test="${message != null}"><h3><c:out value="${message}" /></h3></c:if>
-			</c:otherwise>
-		</c:choose>
 		</div>
 	</div>
 </div>
@@ -89,3 +85,4 @@ $(function(){
 });
 // -->
 </script>
+</c:if>

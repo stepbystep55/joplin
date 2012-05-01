@@ -9,7 +9,7 @@ public class Contribution implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -7260602360603406112L;
+	private static final long serialVersionUID = -7619132274630975852L;
 
 	private String id;
 	
@@ -18,10 +18,11 @@ public class Contribution implements Serializable {
 
 	@NotEmpty
 	private String userId;
-	
-	@NotEmpty
-	private String videoId;
-	
+
+	private YoutubeItem item;
+
+	private Long rank;
+
 	public String getId() {
 		return id;
 	}
@@ -38,20 +39,28 @@ public class Contribution implements Serializable {
 		this.articleId = articleId;
 	}
 
-	public String getVideoId() {
-		return videoId;
-	}
-
-	public void setVideoId(String videoId) {
-		this.videoId = videoId;
-	}
-
 	public String getUserId() {
 		return userId;
 	}
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public YoutubeItem getItem() {
+		return item;
+	}
+
+	public void setItem(YoutubeItem item) {
+		this.item = item;
+	}
+
+	public Long getRank() {
+		return rank;
+	}
+
+	public void setRank(Long rank) {
+		this.rank = rank;
 	}
 
 	@Override
@@ -82,6 +91,6 @@ public class Contribution implements Serializable {
 	@Override
 	public String toString() {
 		return "Contribution [id=" + id + ", articleId=" + articleId
-				+ ", videoId=" + videoId + ", userId=" + userId + "]";
+				+ ", userId=" + userId + ", item=" + item + "]";
 	}
 }

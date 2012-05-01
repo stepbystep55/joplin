@@ -41,7 +41,7 @@
 			<li class="active">Edit article</li>
 		</ul>
 
-		<section id="article">
+		<section id="articleMain">
 			<h2><c:out value="${article.id}" /></h2>
 			<c:if test="${errorMessage != null}">
 				<h3 style="color: red;"><c:out value="${errorMessage}" /></h3>
@@ -51,7 +51,7 @@
 			<form:form modelAttribute="article" action="update" method="post">
 			<div class="row">
 				<div class="span1">
-					<label class="control-label" for="subject">Subject</label>
+					<label class="control-label" for="subject"><strong>Subject</strong></label>
 				</div>
 				<div class="span11">
 					<form:input path="subject" maxlength="128" cssClass="input-xxlarge" />
@@ -62,23 +62,25 @@
 			</div>
 			<div class="row">
 				<div class="span1">
-					<label class="control-label" for="active">Active</label>
+					<label class="control-label" for="active"><strong>Active</strong></label>
 				</div>
 				<div class="span11">
 					<label class="radio"><form:radiobutton path="active" value="true"/>&nbsp;active</label>
 					<label class="radio"><form:radiobutton path="active" value="false"/>&nbsp;inactive</label>
 				</div>
 			</div>
+			<div class="row"><div class="span12">&nbsp;</div></div>
 			<div class="row">
 				<div class="span1">&nbsp;</div>
-				<div class="span1">
+				<div class="span11">
 					<input type="submit" id="updateBtn" name="updateBtn" value="update" />
-				</div>
-				<div class="span10">
-					<input type="submit" id="deleteBtn" name="deleteBtn" value="delete" />
+					&nbsp;<input type="submit" id="deleteBtn" name="deleteBtn" value="delete" />
 				</div>
 			</div>
 			</form:form>
+
+		</section>
+		<section id="articleMain">
 
 			<div class="row">
 				<div class="span1">&nbsp;</div>

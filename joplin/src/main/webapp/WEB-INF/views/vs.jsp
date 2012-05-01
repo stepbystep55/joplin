@@ -37,16 +37,7 @@
 			<h4>Do you like this?</h4>
 		</div>
 		<div class="modal-body">
-			<object width="530" height="299">
-				<param name="movie" value="http://www.youtube.com/v/${firstItem.videoId}?version=3&hl=ja_JP&rel=0&autoplay=1"></param>
-				<param name="allowFullScreen" value="true"></param>
-				<param name="allowscriptaccess" value="always"></param>
-				<embed
-					src="http://www.youtube.com/v/${firstItem.videoId}?version=3&hl=ja_JP&rel=0&autoplay=1"
-					type="application/x-shockwave-flash" width="530" height="299"
-					allowscriptaccess="always" allowfullscreen="true">
-				</embed>
-			</object>
+			<iframe width="530" height="299" src="http://www.youtube.com/embed/${firstItem.videoId}?rel=0&autoplay=1" frameborder="0" allowfullscreen></iframe>
 		</div>
 	</div>
 	<div class="modal hide fade" id="video2">
@@ -55,16 +46,7 @@
 			<h4>Do you like this?</h4>
 		</div>
 		<div class="modal-body">
-			<object width="530" height="299">
-				<param name="movie" value="http://www.youtube.com/v/${secondItem.videoId}?version=3&hl=ja_JP&rel=0&autoplay=1"></param>
-				<param name="allowFullScreen" value="true"></param>
-				<param name="allowscriptaccess" value="always"></param>
-				<embed
-					src="http://www.youtube.com/v/${secondItem.videoId}?version=3&hl=ja_JP&rel=0&autoplay=1"
-					type="application/x-shockwave-flash" width="530" height="299"
-					allowscriptaccess="always" allowfullscreen="true">
-				</embed>
-			</object>
+			<iframe width="530" height="299" src="http://www.youtube.com/embed/${secondItem.videoId}?rel=0&autoplay=1" frameborder="0" allowfullscreen></iframe>
 		</div>
 	</div>
 <script type="text/javascript">
