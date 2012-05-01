@@ -37,7 +37,7 @@
 			<h4>Do you like this?</h4>
 		</div>
 		<div class="modal-body">
-			<iframe width="530" height="299" src="http://www.youtube.com/embed/${firstItem.videoId}?rel=0&autoplay=1" frameborder="0" allowfullscreen></iframe>
+			<iframe width="530" height="299" src="http://www.youtube.com/embed/${firstItem.videoId}?rel=0" frameborder="0" allowfullscreen></iframe>
 		</div>
 	</div>
 	<div class="modal hide fade" id="video2">
@@ -46,7 +46,7 @@
 			<h4>Do you like this?</h4>
 		</div>
 		<div class="modal-body">
-			<iframe width="530" height="299" src="http://www.youtube.com/embed/${secondItem.videoId}?rel=0&autoplay=1" frameborder="0" allowfullscreen></iframe>
+			<iframe width="530" height="299" src="http://www.youtube.com/embed/${secondItem.videoId}?rel=0" frameborder="0" allowfullscreen></iframe>
 		</div>
 	</div>
 <script type="text/javascript">

@@ -57,7 +57,7 @@
 							<h4>Your posted video</h4>
 						</div>
 						<div class="modal-body">
-							<iframe width="530" height="299" src="http://www.youtube.com/embed/${contribution.item.videoId}?rel=0&autoplay=1" frameborder="0" allowfullscreen></iframe>
+							<iframe width="530" height="299" src="http://www.youtube.com/embed/${contribution.item.videoId}?rel=0" frameborder="0" allowfullscreen></iframe>
 						</div>
 					</div>
 				</div>

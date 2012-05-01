@@ -68,10 +68,11 @@
 								<div class="modal-body">
 								<c:choose>
 									<c:when test="${voteMinCountReached}">
-										<iframe width="530" height="299" src="http://www.youtube.com/embed/${item.videoId}?rel=0&autoplay=1" frameborder="0" allowfullscreen></iframe>
+										<iframe width="530" height="299" src="http://www.youtube.com/embed/${item.videoId}?rel=0" frameborder="0" allowfullscreen></iframe>
 									</c:when>
 									<c:otherwise>
-										<h3 style="color:#FF6347;">You may vote more to view video!</h3>
+										<h3 style="color:#FF6347;">
+										You vote more to view video. Ciao!</h3>
 									</c:otherwise>
 								</c:choose>
 								</div>
