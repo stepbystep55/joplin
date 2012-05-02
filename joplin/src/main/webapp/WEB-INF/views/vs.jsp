@@ -43,31 +43,45 @@
 <script type="text/javascript">
 <!--
 var vfrm = '<iframe width="530" height="299" src="http://www.youtube.com/embed/_VID_?rel=0&autoplay=1" frameborder="0" allowfullscreen></iframe>';
+var canVote = false;
+var viewed1st = null;
 $(function(){
 	$('.vDialogBtn').click(function(){
 		var videoId = $(this).attr('href').substring(1);
+		setCanVote(videoId);
 		$('#vDialog').on('show', function(){$('.modal-body').html(vfrm.replace('_VID_',videoId));});
 		$('#vDialog').on('hidden', function(){$('.modal-body').html('');});
 		$('#vDialog').modal();
 	});
-	$('input[name="firstBtn"]').click(function(){vote('${firstItem.id}','${secondItem.id}','${firstItem.id}');});
-	$('input[name="secondBtn"]').click(function(){vote('${firstItem.id}','${secondItem.id}','${secondItem.id}');});
+	$('input[name="firstBtn"]').click(function(){vote('${firstItem.id}','${secondItem.id}');});
+	$('input[name="secondBtn"]').click(function(){vote('${secondItem.id}','${firstItem.id}');});
 });
-function vote(firstItemId,secondItemId,winnerItemId){
-	winningRun();
-	$.ajax({
-		type: 'POST',
-		url: 'vote',
-		data: {
-			firstItemId: firstItemId,
-			secondItemId: secondItemId,
-			winnerItemId: winnerItemId
-		},
-		cache: false,
-		success: function(html){
-			$("#vs").html(html);
-		}
-	});
+function setCanVote(videoId){
+	if(viewed1st == null){
+		viewed1st = videoId;
+	} else {
+		if(viewed1st != videoId) canVote = true;
+	}
+	return;
+}
+function vote(winnerItemId,loserItemId){
+	if(canVote){
+		winningRun();
+		$.ajax({
+			type: 'POST',
+			url: 'vote',
+			data: {
+				winnerItemId: winnerItemId,
+				loserItemId: loserItemId
+			},
+			cache: false,
+			success: function(html){
+				$("#vs").html(html);
+			}
+		});
+	}else{
+		alertVote("You didn't watch both videos, did you?");
+	}
 }
 // -->
 </script>

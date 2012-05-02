@@ -114,9 +114,9 @@ public class ItemService {
 		return items;
 	}
 	
-	public void vote(String articleId, String userId, String oneId, String anotherId, String winnerId) {
+	public void vote(String articleId, String userId, String winnerId, String loserId) {
 
-		List<YoutubeItem> twoItems = youtubeItemOperations.listByIds(Arrays.asList(oneId, anotherId));
+		List<YoutubeItem> twoItems = youtubeItemOperations.listByIds(Arrays.asList(winnerId, loserId));
 
 		YoutubeItem winnerItem = null;
 		YoutubeItem loserItem = null;
@@ -137,8 +137,8 @@ public class ItemService {
 		Vote vote = new Vote();
 		vote.setArticleId(articleId);
 		vote.setUserId(userId);
-		vote.setOneItemId(oneId);
-		vote.setAnotherItemId(anotherId);
+		vote.setOneItemId(winnerId);
+		vote.setAnotherItemId(loserId);
 		vote.setWinnerItemId(winnerId);
 		voteHistoryOperations.create(vote);
 	}

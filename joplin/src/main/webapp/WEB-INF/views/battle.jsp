@@ -37,13 +37,16 @@
 		<header class="header">
 			<h1><c:out value="${article.subject}" /></h1>
 			<div class="row">
-				<div class="span12 centering"  style="line-height: 48px; color:#FF6600; font-size: 36px;">
+				<div id="shoutbox" class="span12 centering" style="line-height: 48px;">
 					<span>&nbsp;</span><span id="shout"></span>
 				</div>
 			</div>
 		</header>
 
-		<section id="vs">
+		<section id="vs" style="min-height:350px;">
+			<div  class="centering">
+				<img id="logo" alt="logo" src="<%= request.getContextPath() %>/resources/img/all_icons_png/square/image200.png" />
+			</div>
 		</section>
 
 		<c:if test="${(articleId != 'noarticle')}">
@@ -56,7 +59,7 @@
 				</div>
 			</div>
 			<div class="row"><div class="span12">&nbsp;</div></div>
-			<div class="row">
+			<div class="row" style="min-height:86px;">
 				<div class="span12">
 					<div class="fb-like" data-href="${homeUrl}" data-send="false" data-width="450" data-show-faces="true"></div>
 				</div>
@@ -79,19 +82,21 @@
 <script type="text/javascript">
 <!--
 $(function(){
-	$.ajax({
-		type: 'GET',
-		url: 'vs',
-		cache: false,
-		success: function(html){
-			$("#vs").html(html);
-		}
-	});
 	$('#itemLink').click(function() {
 		$('#itemForm').submit();
 		return false;
 	});
+	//setTimeout(loadVs, 1000);
+	$('#logo').fadeOut(1000,loadVs);
 });
+function loadVs(){
+	$.ajax({
+		type: 'GET',
+		url: 'vs',
+		cache: false,
+		success: function(html){$("#vs").html(html);}
+	});
+}
 var msgArr = new Array(
 '%u3069%u3093%u3060%u3051%uFF5E'
 ,'%u30DE%u30B8%uFF01%uFF1F'
@@ -125,11 +130,19 @@ var msgArr = new Array(
 ,'v%28%5E_%5E%29v'
 ,'orz'
 ,'%28%uFF9F%u2207%uFF9F%20%3B%29%u30A8%u30A8%u3063%uFF01%uFF1F'
+,'%e5%ab%8c%e3%81%84%e3%81%98%e3%82%83%e3%81%aa%e3%81%84%e3%81%ad%e3%81%87'
+,'Ouai%21'
+,'Bravo%21'
+,'It%27s%20a%20beautiful%20day%2e'
 );
 function winningRun(){
 	var idx = Math.floor(Math.random()*msgArr.length);
+	$('#shoutbox').css({'color':'#FF6600','font-size':'36px'});
 	$('#shout').html(unescape(msgArr[idx])).show().fadeOut(2000);
-	//$('#shout').html(unescape(msgArr[idx])).show().slideUp(2000);
+}
+function alertVote(msg){
+	$('#shoutbox').css({'color':'#FF0000','font-size':'22px'});
+	$('#shout').html(msg).show().fadeOut(7000);
 }
 // -->
 </script>

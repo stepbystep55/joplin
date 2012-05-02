@@ -178,9 +178,8 @@ public class HomeController {
 	@RequestMapping(value = "/hn/{articleId}/vote", method = RequestMethod.POST)
 	public ModelAndView vote(
 			@PathVariable String articleId
-			, @RequestParam("firstItemId") String firstItemId
-			, @RequestParam("secondItemId") String secondItemId
 			, @RequestParam("winnerItemId") String winnerItemId
+			, @RequestParam("loserItemId") String loserItemId
 			, HttpServletRequest request
 			) throws IllegalRequestException {
 
@@ -188,7 +187,7 @@ public class HomeController {
 
 		String userId = userCookieForTemporaryGenerator.getUserId(request);
 
-		itemService.vote(articleId, userId, firstItemId, secondItemId, winnerItemId);
+		itemService.vote(articleId, userId, winnerItemId, loserItemId);
 
 		List<YoutubeItem> items = itemService.list(articleId);
 		List<YoutubeItem> match = itemService.newMatch(items);
