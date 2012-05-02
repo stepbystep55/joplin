@@ -84,11 +84,16 @@
 								<c:forEach items="${items}" var="item" varStatus="status">
 								<tr>
 									<td>
-										<iframe
-											width="360" height="213"
-											src="http://www.youtube.com/embed/${item.videoId}?rel=0"
-											frameborder="0" allowfullscreen>
-										</iframe>
+										<div>
+											<a class="vDialogBtn" href="#${item.videoId}">
+												<img id="thumbnail" class="vThumbnail" src="${item.thumbnailUrl}" width="300" height="200" />
+											</a>
+											<h5 style="padding-left: 70px;">
+												<a class="vDialogBtn" href="#${item.videoId}">
+													<i class="icon-play"></i>&nbsp;Click image to view video
+												</a>
+											</h5>
+										</div>
 									</td>
 									<td>
 										<form id="form${status.index}" action="addItem" method="post">
@@ -112,6 +117,14 @@
 			</div>
 		</section>
 
+		<div class="modal hide fade" id="vDialog">
+			<div class="modal-header">
+				<button class="close" data-dismiss="modal">×</button>
+				<h4>Your posted video</h4>
+			</div>
+			<div class="modal-body"></div>
+		</div>
+
 		<jsp:include page="_footer.jsp"/>
 	</div>
 
@@ -123,7 +136,14 @@
 
 <script type="text/javascript">
 <!--
+var vfrm = '<iframe width="530" height="299" src="http://www.youtube.com/embed/_VID_?rel=0&autoplay=1" frameborder="0" allowfullscreen></iframe>';
 $(function(){
+	$('.vDialogBtn').click(function(){
+		var videoId = $(this).attr('href').substring(1);
+		$('#vDialog').on('show', function(){$('.modal-body').html(vfrm.replace('_VID_',videoId));});
+		$('#vDialog').on('hidden', function(){$('.modal-body').html('');});
+		$('#vDialog').modal();
+	});
 	$('#searchBtn').click(function() {
 		$('#command').val('<%=YoutubeSearchForm.COMMAND_RESET%>');
 		$('#youtubeSearchForm').submit();

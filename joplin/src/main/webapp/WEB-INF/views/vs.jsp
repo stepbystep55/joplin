@@ -7,11 +7,11 @@
 		<div class="row">
 			<div class="span6 centering">
 				<div>
-					<a data-toggle="modal" href="#video1">
-						<img id="firstThumbnail" class="vThumbnail" src="${firstItem.thumbnailUrl}" width="320" height="240" />
+					<a class="vDialogBtn" href="#${firstItem.videoId}">
+						<img class="vThumbnail" src="${firstItem.thumbnailUrl}" width="320" height="240" alt="first video thumbnail" />
 					</a>
 					<h5>
-						<a data-toggle="modal" href="#video1"><i class="icon-play"></i>&nbsp;Click image to view video</a>
+						<a class="vDialogBtn" href="#${firstItem.videoId}"><i class="icon-play"></i>&nbsp;Click image to view video</a>
 					</h5>
 				</div>
 				<br/>
@@ -19,11 +19,11 @@
 			</div>
 			<div class="span6 centering">
 				<div>
-					<a data-toggle="modal" href="#video2">
-						<img id="secondThumbnail" class="vThumbnail" src="${secondItem.thumbnailUrl}" width="320" height="240" />
+					<a class="vDialogBtn" href="#${secondItem.videoId}">
+						<img class="vThumbnail" src="${secondItem.thumbnailUrl}" width="320" height="240" alt="second video thumbnail" />
 					</a>
 					<h5>
-						<a data-toggle="modal" href="#video2"><i class="icon-play"></i>&nbsp;Click image to view video</a>
+						<a class="vDialogBtn" href="#${secondItem.videoId}"><i class="icon-play"></i>&nbsp;Click image to view video</a>
 					</h5>
 				</div>
 				<br/>
@@ -31,35 +31,29 @@
 			</div>
 		</div>
 	</form>
-	<div class="modal hide fade" id="video1">
+
+	<div class="modal hide fade" id="vDialog">
 		<div class="modal-header">
 			<button class="close" data-dismiss="modal">×</button>
 			<h4>Do you like this?</h4>
 		</div>
-		<div class="modal-body">
-			<iframe width="530" height="299" src="http://www.youtube.com/embed/${firstItem.videoId}?rel=0" frameborder="0" allowfullscreen></iframe>
-		</div>
+		<div class="modal-body centering"></div>
 	</div>
-	<div class="modal hide fade" id="video2">
-		<div class="modal-header">
-			<button class="close" data-dismiss="modal">×</button>
-			<h4>Do you like this?</h4>
-		</div>
-		<div class="modal-body">
-			<iframe width="530" height="299" src="http://www.youtube.com/embed/${secondItem.videoId}?rel=0" frameborder="0" allowfullscreen></iframe>
-		</div>
-	</div>
+
 <script type="text/javascript">
 <!--
+var vfrm = '<iframe width="530" height="299" src="http://www.youtube.com/embed/_VID_?rel=0&autoplay=1" frameborder="0" allowfullscreen></iframe>';
 $(function(){
-	$('input[name="firstBtn"]').click(function(){
-		vote('${firstItem.id}','${secondItem.id}','${firstItem.id}');
+	$('.vDialogBtn').click(function(){
+		var videoId = $(this).attr('href').substring(1);
+		$('#vDialog').on('show', function(){$('.modal-body').html(vfrm.replace('_VID_',videoId));});
+		$('#vDialog').on('hidden', function(){$('.modal-body').html('');});
+		$('#vDialog').modal();
 	});
-	$('input[name="secondBtn"]').click(function(){
-		vote('${firstItem.id}','${secondItem.id}','${secondItem.id}');
-	});
+	$('input[name="firstBtn"]').click(function(){vote('${firstItem.id}','${secondItem.id}','${firstItem.id}');});
+	$('input[name="secondBtn"]').click(function(){vote('${firstItem.id}','${secondItem.id}','${secondItem.id}');});
 });
-function vote(firstItemId,secondItemId,winnerItemId) {
+function vote(firstItemId,secondItemId,winnerItemId){
 	winningRun();
 	$.ajax({
 		type: 'POST',

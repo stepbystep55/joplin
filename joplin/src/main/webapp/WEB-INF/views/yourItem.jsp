@@ -44,22 +44,16 @@
 				<div class="span12">
 					<h3>Current rank: <c:out value="${contribution.rank}" /></h3>
 					<div>
-						<a data-toggle="modal" href="#myVideo">
+						<a class="vDialogBtn" href="#${contribution.item.videoId}">
 							<img id="thumbnail" class="vThumbnail" src="${contribution.item.thumbnailUrl}" width="320" height="240" />
 						</a>
 						<h5 style="padding-left: 70px;">
-							<a data-toggle="modal" href="#myVideo"><i class="icon-play"></i>&nbsp;Click image to view video</a>
+							<a class="vDialogBtn" href="#${contribution.item.videoId}">
+								<i class="icon-play"></i>&nbsp;Click image to view video
+							</a>
 						</h5>
 					</div>
-					<div class="modal hide fade" id="myVideo">
-						<div class="modal-header">
-							<button class="close" data-dismiss="modal">×</button>
-							<h4>Your posted video</h4>
-						</div>
-						<div class="modal-body">
-							<iframe width="530" height="299" src="http://www.youtube.com/embed/${contribution.item.videoId}?rel=0" frameborder="0" allowfullscreen></iframe>
-						</div>
-					</div>
+					
 				</div>
 			</div>
 			<div class="row"><div class="span12">&nbsp;</div></div>
@@ -71,13 +65,28 @@
 			</c:if>
 		</section>
 
+		<div class="modal hide fade" id="vDialog">
+			<div class="modal-header">
+				<button class="close" data-dismiss="modal">×</button>
+				<h4>Your posted video</h4>
+			</div>
+			<div class="modal-body"></div>
+		</div>
+
 		<jsp:include page="_footer.jsp"/>
 	</div>
 
 <%@ include file="_footBase.jsp"%>
 <script type="text/javascript">
 <!--
+var vfrm = '<iframe width="530" height="299" src="http://www.youtube.com/embed/_VID_?rel=0&autoplay=1" frameborder="0" allowfullscreen></iframe>';
 $(function(){
+	$('.vDialogBtn').click(function(){
+		var videoId = $(this).attr('href').substring(1);
+		$('#vDialog').on('show', function(){$('.modal-body').html(vfrm.replace('_VID_',videoId));});
+		$('#vDialog').on('hidden', function(){$('.modal-body').html('');});
+		$('#vDialog').modal();
+	});
 });
 // -->
 </script>

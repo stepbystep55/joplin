@@ -54,29 +54,13 @@
 							<c:out value="${status.index + 1}" />
 						</td>
 						<td>
-							<a data-toggle="modal" href="#video${status.index + 1}">
+							<a class="vDialogBtn" href="#${item.videoId}">
 								<img id="Thumbnail${status.index + 1}" class="vThumbnail" src="${item.thumbnailUrl}" width="320" height="240" />
 							</a>
 							<h5 style="padding-left: 70px;">
-								<a data-toggle="modal" href="#video${status.index + 1}"><i class="icon-play"></i>&nbsp;Click image to view video</a>
+								<a class="vDialogBtn" href="#${item.videoId}"><i class="icon-play"></i>&nbsp;Click image to view video</a>
 							</h5>
-							<div class="modal hide fade" id="video${status.index + 1}">
-								<div class="modal-header">
-									<button class="close" data-dismiss="modal">×</button>
-									<h4>Current rank: No.${status.index + 1}</h4>
-								</div>
-								<div class="modal-body">
-								<c:choose>
-									<c:when test="${voteMinCountReached}">
-										<iframe width="530" height="299" src="http://www.youtube.com/embed/${item.videoId}?rel=0" frameborder="0" allowfullscreen></iframe>
-									</c:when>
-									<c:otherwise>
-										<h3 style="color:#FF6347;">
-										You vote more to view video. Ciao!</h3>
-									</c:otherwise>
-								</c:choose>
-								</div>
-							</div>
+							
 						</td>
 					</tr>
 					</c:forEach>
@@ -85,13 +69,35 @@
 			</table>
 		</section>
 
+		<div class="modal hide fade" id="vDialog">
+			<div class="modal-header">
+				<button class="close" data-dismiss="modal">×</button>
+				<h4>Video view</h4>
+			</div>
+			<div class="modal-body centering">
+				<img id="logo" alt="logo" src="<%= request.getContextPath() %>/resources/img/all_icons_png/square/image128.png" />
+				<h3 style="color:#FF6347;">You vote more to view video. Ciao!</h3>
+			</div>
+		</div>
+
 		<jsp:include page="_footer.jsp"/>
 	</div>
 
 <%@ include file="_footBase.jsp"%>
 <script type="text/javascript">
 <!--
+<c:if test=" ${voteMinCountReached}">
+var vfrm = '<iframe width="530" height="299" src="http://www.youtube.com/embed/_VID_?rel=0&autoplay=1" frameborder="0" allowfullscreen></iframe>';
+</c:if>
 $(function(){
+	$('.vDialogBtn').click(function(){
+<c:if test=" ${voteMinCountReached}">
+		var videoId = $(this).attr('href').substring(1);
+		$('#vDialog').on('show', function(){$('.modal-body').html(vfrm.replace('_VID_',videoId));});
+		$('#vDialog').on('hidden', function(){$('.modal-body').html('');});
+</c:if>
+		$('#vDialog').modal();
+	});
 });
 // -->
 </script>
