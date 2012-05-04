@@ -42,6 +42,8 @@ public class YoutubeSearchService {
 
 	public List<YoutubeItem> search(String articleId, YoutubeSearchForm youtubeForm) throws IOException {
 
+		youtubeForm.update();
+
 		// build a YouTube URL
 		YouTubeSearchUrl url = new YouTubeSearchUrl();
 		url.searchText = youtubeForm.getSearchText();

@@ -1,6 +1,5 @@
 package com.ippoippo.joplin.service;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -10,19 +9,11 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.social.connect.Connection;
-import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.connect.UsersConnectionRepository;
-import org.springframework.social.facebook.api.Facebook;
-import org.springframework.social.facebook.api.FacebookLink;
-import org.springframework.social.facebook.api.FeedOperations;
-import org.springframework.social.twitter.api.Twitter;
 import org.springframework.stereotype.Service;
 
-import com.ippoippo.joplin.dto.Contribution;
+import com.ippoippo.joplin.dto.ItemListForm;
 import com.ippoippo.joplin.dto.Vote;
 import com.ippoippo.joplin.dto.YoutubeItem;
 import com.ippoippo.joplin.jdbc.mapper.UserMasterMapper;
@@ -36,18 +27,6 @@ import com.ippoippo.joplin.util.Utils;
 public class ItemService {
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-	@Value("${home.url}")
-	private String homeUrl;
-
-	@Value("${application.name}")
-	private String applicationName;
-
-	@Value("${application.caption}")
-	private String applicationCaption;
-
-	@Value("${application.description}")
-	private String applicationDescription;
 
 	@Inject
 	YoutubeItemOperations youtubeItemOperations;
@@ -81,8 +60,9 @@ public class ItemService {
 		}
 	}
 
-	public List<YoutubeItem> list(String articleId, int startIndex, int listSize) {
-			return youtubeItemOperations.listByArticleId(articleId, startIndex, listSize);
+	public List<YoutubeItem> list(String articleId, ItemListForm itemListForm) {
+		itemListForm.update();
+		return youtubeItemOperations.listByArticleId(articleId, itemListForm.getStartIndex(), itemListForm.getListSize());
 	}
 
 	public void delete(String itemId) {
@@ -145,34 +125,6 @@ public class ItemService {
 	
 	public long countVote(String articleId, String userId) {
 		return voteHistoryOperations.countByArticleIdAndUserId(articleId, userId);
-	}
-
-	@CacheEvict(value="itemList", allEntries=true)
-	public void contribute(String articleId, String userId, YoutubeItem item, boolean canShare) {
-
-		// register video
-		this.add(item);
-
-		// register contribution
-		Contribution contribution = new Contribution();
-		contribution.setArticleId(articleId);
-		contribution.setUserId(userId);
-		contribution.setItem(item);
-		contributionOperations.create(contribution);
-
-		// share about the contribution
-		if (canShare) {
-			ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(userId);
-			if (connectionRepository.findPrimaryConnection(Facebook.class) != null) {
-				Connection connection = connectionRepository.getPrimaryConnection(Facebook.class);
-				Object api = connection.getApi();
-				String msg = MessageFormat.format("{0} posted a video!", connection.getDisplayName());
-				FeedOperations feedOperations = ((Facebook)api).feedOperations();
-				feedOperations.postLink(msg, new FacebookLink(homeUrl, applicationName, applicationCaption, applicationDescription));
-
-			} else if (connectionRepository.findPrimaryConnection(Twitter.class) != null) {
-			}
-		}
 	}
 
 	@Cacheable("topItemList")

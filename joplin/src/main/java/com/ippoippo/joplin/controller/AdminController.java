@@ -125,7 +125,7 @@ public class AdminController {
 
 	private void validateAccess(String articleId) throws IllegalRequestException {
 		
-		Article article = articleService.getByIdForUpdate(articleId);
+		Article article = articleService.getForUpdate(articleId);
 		if (article == null) throw new IllegalRequestException();
 	}
 
@@ -135,7 +135,7 @@ public class AdminController {
 
 		validateAccess(articleId);
 
-		Article article = articleService.getByIdForUpdate(articleId);
+		Article article = articleService.getForUpdate(articleId);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("article", article);
@@ -196,9 +196,7 @@ public class AdminController {
 
 		validateAccess(articleId);
 
-		itemListForm.update();
-		List<YoutubeItem> items
-			= itemService.list(articleId, itemListForm.getStartIndex(), itemListForm.getListSize());
+		List<YoutubeItem> items = itemService.list(articleId, itemListForm);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("itemListForm", itemListForm);
@@ -224,25 +222,20 @@ public class AdminController {
 	public ModelAndView searchItem(
 			@PathVariable String articleId
 			, @Valid YoutubeSearchForm youtubeSearchForm
-			, BindingResult result) throws IllegalRequestException, IOException {
+			, BindingResult result
+			) throws IllegalRequestException, IOException {
 		
 		validateAccess(articleId);
 
-		if (result.hasErrors()) {
-			ModelAndView modelAndView = new ModelAndView();
-			modelAndView.addObject("youtubeSearchForm", youtubeSearchForm);
-			modelAndView.setViewName("admin/article/searchItem");
-			return modelAndView;
-		}
+		if (result.hasErrors()) throw new IllegalRequestException(""+result.getAllErrors());
 
-		youtubeSearchForm.update();
 		List<YoutubeItem> items = youtubeSearchService.search(articleId, youtubeSearchForm);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("youtubeSearchForm", youtubeSearchForm);
 		modelAndView.addObject("items", items);
 		if (items == null || items.size() == 0) modelAndView.addObject("message", "No result");
-		modelAndView.setViewName("admin/article/searchItem");
+		modelAndView.setViewName("admin/article/searchItemResult");
 		return modelAndView;
 	}
 

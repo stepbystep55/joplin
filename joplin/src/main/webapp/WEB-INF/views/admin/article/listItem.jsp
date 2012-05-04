@@ -4,7 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 
-<c:if test="${(items != null) && (fn:length(items) != 0)}">
 
 <div class="row">
 	<div class="span1">&nbsp;</div>
@@ -14,37 +13,44 @@
 			<li><a id="nextLink" href="#">Next</a></li>
 		</ul>
 	</div>
-	<div class="span9"></div>
-</div>
-<div class="row">
-	<div class="span1">
-		Items
+	<div class="span9">
+		<form action="#" method="post">
+			<input type="hidden" id="resultStartIndex" name="startIndex" value="${itemListForm.startIndex}" />
+			<input type="hidden" id="resultListSize" name="listSize" value="${itemListForm.listSize}" />
+		</form>
 	</div>
-	<div class="span11">
-		<div id="resultHolder" style="overflow: auto; max-height: 470px;">
-				<table class="table table-striped">
-					<tbody>
-						<c:forEach items="${items}" var="item">
-						<tr>
-							<td>
-								<c:out value="${item.id}" />
-							</td>
-							<td>
-								<iframe width="360" height="213" src="http://www.youtube.com/embed/${item.videoId}?rel=0" frameborder="0" allowfullscreen></iframe>
-							</td>
-							<td>
-								<form action="deleteItem" method="post">
-									<input type="hidden" name="itemId" value="${item.id}" />
-									<input type="submit" id="deleteItemBtn" value="delete" />
-								</form>
-							</td>
-						</tr>
-						</c:forEach>
-					</tbody>
-				</table>
+</div>
+<c:if test="${(items != null) && (fn:length(items) != 0)}">
+	<div class="row">
+		<div class="span1">
+			Items
+		</div>
+		<div class="span11">
+			<div id="resultHolder" style="overflow: auto; max-height: 470px;">
+					<table class="table table-striped">
+						<tbody>
+							<c:forEach items="${items}" var="item">
+							<tr>
+								<td>
+									<c:out value="${item.id}" />
+								</td>
+								<td>
+									<iframe width="360" height="213" src="http://www.youtube.com/embed/${item.videoId}?rel=0" frameborder="0" allowfullscreen></iframe>
+								</td>
+								<td>
+									<form action="deleteItem" method="post">
+										<input type="hidden" name="itemId" value="${item.id}" />
+										<input type="submit" id="deleteItemBtn" value="delete" />
+									</form>
+								</td>
+							</tr>
+							</c:forEach>
+						</tbody>
+					</table>
+			</div>
 		</div>
 	</div>
-</div>
+</c:if>
 
 <script type="text/javascript">
 <!--
@@ -53,36 +59,11 @@ $(function(){
 		return confirm('Are you sure?');
 	});
 	$('#prevLink').click(function() {
-		$.ajax({
-			type: 'POST',
-			url: 'listItem',
-			data: {
-				startIndex: '${itemListForm.startIndex}',
-				listSize: '${itemListForm.listSize}',
-				command: '<%= ItemListForm.COMMAND_PREV %>'
-			},
-			cache: false,
-			success: function(html){
-				$("#itemList").html(html);
-			}
-		});
+		loadItemList('<%= ItemListForm.COMMAND_PREV %>',$('#resultStartIndex').val(),$('#resultListSize').val());
 	});
 	$('#nextLink').click(function() {
-		$.ajax({
-			type: 'POST',
-			url: 'listItem',
-			data: {
-				startIndex: '${itemListForm.startIndex}',
-				listSize: '${itemListForm.listSize}',
-				command: '<%= ItemListForm.COMMAND_NEXT %>'
-			},
-			cache: false,
-			success: function(html){
-				$("#itemList").html(html);
-			}
-		});
+		loadItemList('<%= ItemListForm.COMMAND_NEXT %>',$('#resultStartIndex').val(),$('#resultListSize').val());
 	});
 });
 // -->
 </script>
-</c:if>

@@ -43,7 +43,7 @@
 			</div>
 		</header>
 
-		<section id="vs" style="min-height:350px;">
+		<section id="vs" style="min-height:300px;">
 			<div  class="centering">
 				<img id="logo" alt="logo" src="<%= request.getContextPath() %>/resources/img/all_icons_png/square/image200.png" />
 			</div>
@@ -59,8 +59,8 @@
 				</div>
 			</div>
 			<div class="row"><div class="span12">&nbsp;</div></div>
-			<div class="row" style="min-height:86px;">
-				<div class="span12">
+			<div class="row">
+				<div class="span12" style="min-height:85px;">
 					<div class="fb-like" data-href="${homeUrl}" data-send="false" data-width="450" data-show-faces="true"></div>
 				</div>
 			</div>
@@ -86,7 +86,6 @@ $(function(){
 		$('#itemForm').submit();
 		return false;
 	});
-	//setTimeout(loadVs, 1000);
 	$('#logo').fadeOut(1000,loadVs);
 });
 function loadVs(){
@@ -104,13 +103,14 @@ var msgArr = new Array(
 ,'Oh%2C%20babe%21'
 ,'%u304A%u30FC%u3001%u3058%u30FC%u3056%u3059%u3002'
 ,'%u30C1%u30E5%u30C3%uFF08%u306F%u3041%u3068%uFF09'
-,'Yeaaahh%21'
+,'YeaaaHH%21'
 ,'%u3046%u30FC%u3001%u30DE%u30F3%u30DC%uFF01'
 ,'%u4F1A%u5FC3%u306E%u4E00%u6483%uFF01'
 ,'%u30A8%u30FC%u30FC%u30FC%u3063%uFF01'
 ,'%u30DE%u30B8%u306A%u3093%uFF1F'
 ,'Thank%20you.'
-,'Viva%21%21'
+,'VIVA%21%21'
+,'Vous%20me%20manquez%2e'
 ,'Viva%21%20Viva%21%20Viva%20Joplin%21%21'
 ,'You%20are%20so%20nice.'
 ,'You%20are%20so%20cute%20%3C3'
@@ -132,12 +132,12 @@ var msgArr = new Array(
 ,'%28%uFF9F%u2207%uFF9F%20%3B%29%u30A8%u30A8%u3063%uFF01%uFF1F'
 ,'%e5%ab%8c%e3%81%84%e3%81%98%e3%82%83%e3%81%aa%e3%81%84%e3%81%ad%e3%81%87'
 ,'Ouai%21'
-,'Bravo%21'
+,'BRAVO%21'
 ,'It%27s%20a%20beautiful%20day%2e'
 );
 function winningRun(){
 	var idx = Math.floor(Math.random()*msgArr.length);
-	$('#shoutbox').css({'color':'#FF6600','font-size':'36px'});
+	$('#shoutbox').css({'color':'#FF33FF','font-size':'36px'});
 	$('#shout').html(unescape(msgArr[idx])).show().fadeOut(2000);
 }
 function alertVote(msg){

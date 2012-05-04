@@ -8,26 +8,26 @@
 			<div class="span6 centering">
 				<div>
 					<a class="vDialogBtn" href="#${firstItem.videoId}">
-						<img class="vThumbnail" src="${firstItem.thumbnailUrl}" width="320" height="240" alt="first video thumbnail" />
+						<img class="vThumbnail" src="${firstItem.thumbnailUrl}" width="280" height="210" alt="first video thumbnail" />
 					</a>
 					<h5>
 						<a class="vDialogBtn" href="#${firstItem.videoId}"><i class="icon-play"></i>&nbsp;Click image to view video</a>
 					</h5>
 				</div>
 				<br/>
-				<input type="button" id="firstBtn" class="btn-large" name="firstBtn" value="Good!" />
+				<input type="button" id="firstBtn" class="btn-large" name="${firstItem.id}" value="Good!" />
 			</div>
 			<div class="span6 centering">
 				<div>
 					<a class="vDialogBtn" href="#${secondItem.videoId}">
-						<img class="vThumbnail" src="${secondItem.thumbnailUrl}" width="320" height="240" alt="second video thumbnail" />
+						<img class="vThumbnail" src="${secondItem.thumbnailUrl}" width="280" height="210" alt="second video thumbnail" />
 					</a>
 					<h5>
 						<a class="vDialogBtn" href="#${secondItem.videoId}"><i class="icon-play"></i>&nbsp;Click image to view video</a>
 					</h5>
 				</div>
 				<br/>
-				<input type="button" id="secondBtn" class="btn-large" name="secondBtn" value="Good!" />
+				<input type="button" id="secondBtn" class="btn-large" name="${secondItem.id}" value="Good!" />
 			</div>
 		</div>
 	</form>
@@ -53,8 +53,8 @@ $(function(){
 		$('#vDialog').on('hidden', function(){$('.modal-body').html('');});
 		$('#vDialog').modal();
 	});
-	$('input[name="firstBtn"]').click(function(){vote('${firstItem.id}','${secondItem.id}');});
-	$('input[name="secondBtn"]').click(function(){vote('${secondItem.id}','${firstItem.id}');});
+	$('#firstBtn').click(function(){vote($('#firstBtn').attr('name'),$('#secondBtn').attr('name'));});
+	$('#secondBtn').click(function(){vote($('#secondBtn').attr('name'),$('#firstBtn').attr('name'));});
 });
 function setCanVote(videoId){
 	if(viewed1st == null){
@@ -64,8 +64,11 @@ function setCanVote(videoId){
 	}
 	return;
 }
+var submitted = false;
 function vote(winnerItemId,loserItemId){
 	if(canVote){
+		if (submitted) return;
+		submitted = true;
 		winningRun();
 		$.ajax({
 			type: 'POST',
@@ -75,9 +78,7 @@ function vote(winnerItemId,loserItemId){
 				loserItemId: loserItemId
 			},
 			cache: false,
-			success: function(html){
-				$("#vs").html(html);
-			}
+			success: function(html){$("#vs").html(html);}
 		});
 	}else{
 		alertVote("You didn't watch both videos, did you?");

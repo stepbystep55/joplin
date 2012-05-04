@@ -103,23 +103,22 @@
 <script type="text/javascript">
 <!--
 $(function(){
-	$('#deleteBtn').click(function() {
-		return confirm('Are you sure?');
-	});
+	$('#deleteBtn').click(function(){return confirm('Are you sure?');});
+	loadItemList('<%= ItemListForm.COMMAND_RESET %>','<%= ItemListForm.DEFAULT_START_INDEX %>','<%= ItemListForm.DEFAULT_LIST_SIZE %>');
+});
+function loadItemList(command, startIndex, listSize){
 	$.ajax({
 		type: 'POST',
 		url: 'listItem',
 		data: {
-			startIndex: '<%= ItemListForm.DEFAULT_START_INDEX %>',
-			listSize: '<%= ItemListForm.DEFAULT_LIST_SIZE %>',
-			command: '<%= ItemListForm.COMMAND_RESET %>'
+			startIndex: startIndex,
+			listSize: listSize,
+			command:command 
 		},
 		cache: false,
-		success: function(html){
-			$("#itemList").html(html);
-		}
+		success: function(html){$("#itemList").html(html);}
 	});
-});
+}
 // -->
 </script>
 </body>

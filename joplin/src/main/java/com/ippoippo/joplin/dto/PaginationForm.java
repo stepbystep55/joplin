@@ -57,8 +57,12 @@ public abstract class PaginationForm implements Serializable {
 	public void setCommand(String command) {
 		this.command = command;
 	}
-	
+
+	private boolean updated = false;
+
 	public void update() {
+		if (updated) return;
+
 		if (this.command.equals(COMMAND_RESET)) {
 			this.startIndex = 1;
 		} else if (this.command.equals(COMMAND_NEXT)) {
@@ -67,5 +71,6 @@ public abstract class PaginationForm implements Serializable {
 			this.startIndex = this.startIndex - this.listSize;
 			if (this.startIndex < 1) this.startIndex = 1;
 		}
+		updated = true;
 	}
 }
