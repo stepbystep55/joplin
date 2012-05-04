@@ -12,7 +12,6 @@ import org.springframework.social.connect.ConnectionSignUp;
 import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.facebook.api.FacebookLink;
 import org.springframework.social.facebook.api.FeedOperations;
-import org.springframework.social.twitter.api.Twitter;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ippoippo.joplin.dto.User;
@@ -24,33 +23,21 @@ import com.ippoippo.joplin.jdbc.mapper.UserMasterMapper;
 public class SimpleConnectionSignUp implements ConnectionSignUp {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-	
+
 	@Inject
 	private UserMasterMapper userMasterMapper;
 
 	@Value("${home.url}")
 	private String homeUrl;
-	
+
 	@Value("${application.name}")
 	private String applicationName;
-	
+
 	@Value("${application.caption}")
 	private String applicationCaption;
-	
+
 	@Value("${application.description}")
 	private String applicationDescription;
-	
-/*
-	@Inject
-	private UserRepository userRepository;
-
-	@Inject
-	private MongoConnectionRepository mongoConnectionRepository;
-*/
-	/*
-	@Inject
-	private MongoConnectionOperations mongoConnectionOperations;
-	*/
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
 	public String execute(Connection<?> connection) {
@@ -67,8 +54,7 @@ public class SimpleConnectionSignUp implements ConnectionSignUp {
 			FeedOperations feedOperations = ((Facebook)api).feedOperations();
 			feedOperations.postLink(msg, new FacebookLink(homeUrl, applicationName, applicationCaption, applicationDescription));
 
-		} else if (api instanceof Twitter) {
-			
+		//} else if (api instanceof Twitter) {
 		}
 		logger.info("Signup with userId=" + userId);
 		return userId.toString();

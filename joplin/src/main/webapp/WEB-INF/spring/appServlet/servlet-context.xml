@@ -3,11 +3,13 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:cache="http://www.springframework.org/schema/cache"
 	xmlns:p="http://www.springframework.org/schema/p"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
@@ -49,6 +51,11 @@
 		</beans:property>
 	</beans:bean>
 
+	<!-- アスペクト使用宣言-->
+	<aop:aspectj-autoproxy />
+
+	<beans:bean id="exceptionLogger" class="com.ippoippo.joplin.aop.ExceptionLogger" />
+	
 <!--
 	<beans:bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<beans:property name="location">
@@ -73,10 +80,11 @@
 		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
 		p:config-location="/WEB-INF/spring/appServlet/ehcache.xml"/>
 	
-	<beans:import resource="dev-datasrc.xml" />
+	<beans:import resource="properties.xml" />
+	<beans:import resource="datasrc.xml" />
 	<!--
 	<beans:import resource="cache.xml" />
 	-->
-	<beans:import resource="dev-properties.xml" />
+	<beans:import resource="task.xml" />
 
 </beans:beans>

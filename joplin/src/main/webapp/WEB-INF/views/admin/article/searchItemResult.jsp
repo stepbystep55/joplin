@@ -47,7 +47,7 @@
 			</table>
 		</c:when>
 		<c:otherwise>
-			<c:if test="${message != null}"><h3><c:out value="${message}" /></h3></c:if>
+			<c:if test="${message != null}"><h3><i><c:out value="${message}" /></i></h3></c:if>
 		</c:otherwise>
 	</c:choose>
 </div>

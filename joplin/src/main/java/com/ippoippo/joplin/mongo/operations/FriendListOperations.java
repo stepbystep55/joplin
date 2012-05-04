@@ -16,13 +16,13 @@ public class FriendListOperations extends AbstractOperations {
 		super(mongoOperations);
 	}
 
-	public Friends getByProviderIdAndUserId(String providerId, String userId) {
-		Query query = Query.query(Criteria.where("providerId").is(providerId).and("userId").is(userId));
+	public Friends getByUserId(String userId) {
+		Query query = Query.query(Criteria.where("userId").is(userId));
 		return mongoOperations().findOne(query, Friends.class, Friends.class.getSimpleName());
 	}
 
-	public void create(Friends friendList) {
-		mongoOperations().insert(friendList, Friends.class.getSimpleName());
+	public void create(Friends friends) {
+		mongoOperations().insert(friends, Friends.class.getSimpleName());
 	}
 
 	public void delete(String id) {

@@ -19,6 +19,8 @@ public class Contribution implements Serializable {
 	@NotEmpty
 	private String userId;
 
+	private String displayName;
+
 	private YoutubeItem item;
 
 	private Long rank;
@@ -45,6 +47,14 @@ public class Contribution implements Serializable {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public String getDisplayName() {
+		return displayName;
+	}
+
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
 	}
 
 	public YoutubeItem getItem() {
@@ -91,6 +101,8 @@ public class Contribution implements Serializable {
 	@Override
 	public String toString() {
 		return "Contribution [id=" + id + ", articleId=" + articleId
-				+ ", userId=" + userId + ", item=" + item + "]";
+				+ ", userId=" + userId + ", displayName=" + displayName
+				+ ", item=" + item + ", rank=" + rank + "]";
 	}
+
 }

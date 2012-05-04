@@ -6,7 +6,7 @@
 <html>
 <head>
 	<%@ include file="_headBase.jsp"%>
-	<title>Ranking</title>
+	<title>Friends</title>
 </head>
 <body>
 
@@ -25,8 +25,8 @@
 				<div>
 					<ul class="nav">
 						<li><a href="battle">Battle</a></li>
-						<li class="active"><a href="#">Ranking</a></li>
-						<li><a href="friends">Friends</a></li>
+						<li><a href="rank">Ranking</a></li>
+						<li class="active"><a href="#">Friends</a></li>
 					</ul>
 				</div>
 			</div>
@@ -39,33 +39,42 @@
 			<h1><c:out value="${article.subject}" />&nbsp;</h1>
 		</header>
 
-		<section id="ranking">
+		<section id="friends">
 			<table class="table">
 				<thead>
 					<tr>
+						<th>Friend</th>
 						<th>Rank</th>
 						<th>Movie</th>
 					</tr>
 				</thead>
-				<c:if test="${(items != null) && (fn:length(items) != 0)}">
 				<tbody>
-					<c:forEach items="${items}" var="item" varStatus="status">
-					<tr>
-						<td>
-							<c:out value="${status.index + 1}" />
-						</td>
-						<td>
-							<a class="vDialogBtn" href="#${item.videoId}">
-								<img id="Thumbnail${status.index + 1}" class="vThumbnail" src="${item.thumbnailUrl}" width="320" height="240" />
-							</a>
-							<h5 style="padding-left: 70px;">
-								<a class="vDialogBtn" href="#${item.videoId}"><i class="icon-play"></i>&nbsp;Click image to view video</a>
-							</h5>
-						</td>
-					</tr>
-					</c:forEach>
+				<c:choose>
+					<c:when test="${(contributions != null) && (fn:length(contributions) != 0)}">
+						<c:forEach items="${contributions}" var="contribution" varStatus="status">
+						<tr>
+							<td>
+								<c:out value="${contribution.displayName}" />
+							</td>
+							<td>
+								<c:out value="${contribution.rank}" />
+							</td>
+							<td>
+								<a class="vDialogBtn" href="#${contribution.item.videoId}">
+									<img id="Thumbnail${status.index + 1}" class="vThumbnail" src="${contribution.item.thumbnailUrl}" width="320" height="240" />
+								</a>
+								<h5 style="padding-left: 70px;">
+									<a class="vDialogBtn" href="#${contribution.item.videoId}"><i class="icon-play"></i>&nbsp;Click image to view video</a>
+								</h5>
+							</td>
+						</tr>
+						</c:forEach>
+					</c:when>
+					<c:otherwise>
+						<tr><td colspan="3"><i>No video</i></td></tr>
+					</c:otherwise>
+				</c:choose>
 				</tbody>
-				</c:if>
 			</table>
 		</section>
 

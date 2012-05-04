@@ -35,8 +35,8 @@ public class YoutubeItemOperations extends AbstractOperations {
 		return mongoOperations().count(query, YoutubeItem.class.getSimpleName());
 	}
 
-	public Long rankForVideoId(String articleId, String videoId) {
-		Query query = Query.query(Criteria.where("articleId").is(articleId).and("videoId").is(videoId));
+	public Long rank(String id) {
+		Query query = Query.query(Criteria.where("id").is(id));
 		YoutubeItem item = mongoOperations().findOne(query, YoutubeItem.class, YoutubeItem.class.getSimpleName());
 		query = Query.query(Criteria.where("rate").gt(item.getRate()));
 		return (mongoOperations().count(query, YoutubeItem.class.getSimpleName()) + 1);

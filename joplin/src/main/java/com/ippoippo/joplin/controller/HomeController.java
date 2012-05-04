@@ -134,6 +134,7 @@ public class HomeController {
 	}
 
 	private class NotSigninException extends Exception {
+		private static final long serialVersionUID = 5339130006274941143L;
 		public NotSigninException() { }
 	}
 
@@ -216,36 +217,11 @@ public class HomeController {
 
 		Article article = (articleId.equals(Article.ID_FOR_NO_ARTICLE)) ? new Article() : articleService.get(articleId);
 		List<YoutubeItem> items = itemService.listTopRate(articleId, rankListSize);
-		long voteCount = itemService.countVote(articleId, userId);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("article", article);
 		modelAndView.addObject("items", items);
-		if (voteCount >= voteMinCountRequired) {
-			modelAndView.addObject("voteMinCountReached", true);
-		} else {
-			modelAndView.addObject("voteMinCountReached", false);
-		}
-		modelAndView.setViewName("rank");
-		return modelAndView;
-	}
-
-	@Transactional(rollbackForClassName="java.lang.Exception")
-	@RequestMapping(value = "/hn/{articleId}/friends", method = RequestMethod.GET)
-	public ModelAndView friends(HttpServletRequest request, @PathVariable String articleId) throws IllegalRequestException {
-
-		validateAccess(articleId);
-
-		String userId = userCookieForTemporaryGenerator.getUserId(request);
-
-		Article article = (articleId.equals(Article.ID_FOR_NO_ARTICLE)) ? new Article() : articleService.get(articleId);
-		List<YoutubeItem> items = itemService.listTopRate(articleId, rankListSize);
-		long voteCount = itemService.countVote(articleId, userId);
-
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("article", article);
-		modelAndView.addObject("items", items);
-		if (voteCount >= voteMinCountRequired) {
+		if (itemService.countVote(articleId, userId) >= voteMinCountRequired) {
 			modelAndView.addObject("voteMinCountReached", true);
 		} else {
 			modelAndView.addObject("voteMinCountReached", false);
@@ -261,21 +237,20 @@ public class HomeController {
 		validateAccess(articleId);
 
 		String userId = userCookieForTemporaryGenerator.getUserId(request);
+		Article article = (articleId.equals(Article.ID_FOR_NO_ARTICLE)) ? new Article() : articleService.get(articleId);
 
 		Contribution contribution = contributionService.get(articleId, userId);
 		if (articleId.equals(Article.ID_FOR_NO_ARTICLE) || contribution != null) {
 			// already registered (user can post only one item for each article.)
 			ModelAndView modelAndView = new ModelAndView();
-			if (contribution != null) {
-				modelAndView.addObject("contribution", contribution);
-				//long rank = youtubeItemOperations.rankForVideoId(articleId, contribution.getVideoId());
-				//modelAndView.addObject("rank", rank);
-			}
+			modelAndView.addObject("article", article);
+			if (contribution != null) modelAndView.addObject("contribution", contribution);
 			modelAndView.setViewName("/yourItem");
 			return modelAndView;
 		}
 
 		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("article", article);
 		modelAndView.addObject("youtubeSearchForm", new YoutubeSearchForm());
 		modelAndView.setViewName("/item");
 		return modelAndView;
@@ -324,6 +299,32 @@ public class HomeController {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("updated", true);
 		modelAndView.setViewName("forward:battle");
+		return modelAndView;
+	}
+
+	@Transactional(rollbackForClassName="java.lang.Exception")
+	@RequestMapping(value = "/hn/{articleId}/friends", method = RequestMethod.GET)
+	public ModelAndView friends(
+			HttpServletRequest request
+			, @PathVariable String articleId
+			) throws IllegalRequestException {
+
+		validateAccess(articleId);
+
+		String userId = userCookieForTemporaryGenerator.getUserId(request);
+		Article article = (articleId.equals(Article.ID_FOR_NO_ARTICLE)) ? new Article() : articleService.get(articleId);
+
+		List<Contribution> contributions = contributionService.listFriendContributions(articleId, userId);
+
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("article", article);
+		modelAndView.addObject("contributions", contributions);
+		if (itemService.countVote(articleId, userId) >= voteMinCountRequired) {
+			modelAndView.addObject("voteMinCountReached", true);
+		} else {
+			modelAndView.addObject("voteMinCountReached", false);
+		}
+		modelAndView.setViewName("friends");
 		return modelAndView;
 	}
 }

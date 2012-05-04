@@ -26,6 +26,7 @@
 					<ul class="nav">
 						<li class="active"><a href="#">Battle</a></li>
 						<li><a href="rank">Ranking</a></li>
+						<li><a href="friends">Friends</a></li>
 					</ul>
 				</div>
 			</div>
@@ -35,7 +36,7 @@
 	<div class="container">
 
 		<header class="header">
-			<h1><c:out value="${article.subject}" /></h1>
+			<h1><c:out value="${article.subject}" />&nbsp;</h1>
 			<div class="row">
 				<div id="shoutbox" class="span12 centering" style="line-height: 48px;">
 					<span>&nbsp;</span><span id="shout"></span>
@@ -125,15 +126,17 @@ var msgArr = new Array(
 ,'%u2605%uFF3C%28%5E0%5E%29/%u2605'
 ,'%u591C%u9732%u6B7B%u82E6'
 ,'%u30B2%u30ED%u30B2%u30ED'
-,'%u30B6%u30AF%u5C02%u7528%u30B7%u30E3%u30A2'
 ,'%u3044%u3084%u3093%20%28%5E_%5E%3B%29'
 ,'v%28%5E_%5E%29v'
 ,'orz'
 ,'%28%uFF9F%u2207%uFF9F%20%3B%29%u30A8%u30A8%u3063%uFF01%uFF1F'
-,'%e5%ab%8c%e3%81%84%e3%81%98%e3%82%83%e3%81%aa%e3%81%84%e3%81%ad%e3%81%87'
+,'%u30B6%u30AF%u5C02%u7528%u30B7%u30E3%u30A2%u306E%u304F%u305B%u306B%u3002'
 ,'Ouai%21'
 ,'BRAVO%21'
 ,'It%27s%20a%20beautiful%20day%2e'
+,'Tr%E8s%20bien%21'
+,'Bien%2C%20Bien%2C%20Bien%21'
+,'Are%20you%20serious%3F'
 );
 function winningRun(){
 	var idx = Math.floor(Math.random()*msgArr.length);
@@ -142,7 +145,7 @@ function winningRun(){
 }
 function alertVote(msg){
 	$('#shoutbox').css({'color':'#FF0000','font-size':'22px'});
-	$('#shout').html(msg).show().fadeOut(7000);
+	$('#shout').html(msg).show().fadeOut(5000);
 }
 // -->
 </script>

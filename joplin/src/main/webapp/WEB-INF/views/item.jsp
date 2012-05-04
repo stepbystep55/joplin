@@ -30,6 +30,7 @@
 					<ul class="nav">
 						<li class="active"><a href="battle">Battle</a></li>
 						<li><a href="rank">Ranking</a></li>
+						<li><a href="friends">Friends</a></li>
 					</ul>
 				</div>
 			</div>
@@ -39,7 +40,7 @@
 	<div class="container">
 
 		<header class="header">
-			<h1><c:out value="${article.subject}" /></h1>
+			<h1><c:out value="${article.subject}" />&nbsp;</h1>
 		</header>
 
 		<section id="searchForm">

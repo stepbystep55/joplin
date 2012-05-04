@@ -26,6 +26,7 @@
 					<ul class="nav">
 						<li class="active"><a href="battle">Battle</a></li>
 						<li><a href="rank">Ranking</a></li>
+						<li><a href="friends">Friends</a></li>
 					</ul>
 				</div>
 			</div>
