@@ -36,7 +36,7 @@
 	<div class="container">
 
 		<header class="header">
-			<h1>&nbsp;</h1>
+			<h1><c:out value="${article.subject}" />&nbsp;</h1>
 		</header>
 
 		<section id="video">

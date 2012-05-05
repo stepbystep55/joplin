@@ -58,7 +58,6 @@
 		<jsp:include page="_footer.jsp"/>
 	</div>
 
-
 <%@ include file="_footBase.jsp"%>
 </body>
 </html>
