@@ -13,11 +13,13 @@
 	<div class="navbar navbar-fixed-top">
 		<div class="navbar-inner">
 			<div class="container">
+			<%--
 				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</a>
+			--%>
 				<a class="brand" href="#">VivaJoplin</a>
 			</div>
 		</div>
@@ -32,7 +34,7 @@
 		<section id="login">
 			<div class="row">
 				<div class="offset5 span7">
-					<form:form action="signin/facebook" method="post">
+					<form:form action="signin/facebook" method="post" target="_top">
 					<div class="control-group">
 						<input type="hidden" name="scope" value="user_likes,publish_stream,offline_access" />
 						<input type="submit" class="btn-large" name="connectFacebook" value="connect" />

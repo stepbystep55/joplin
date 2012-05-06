@@ -88,7 +88,7 @@ $(function(){
 		$('#itemForm').submit();
 		return false;
 	});
-	$('#logo').fadeOut(1000,loadVs);
+	$('#logo').fadeOut(1500,loadVs);
 });
 function loadVs(){
 	$.ajax({

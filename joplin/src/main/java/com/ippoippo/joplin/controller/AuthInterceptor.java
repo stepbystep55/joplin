@@ -10,14 +10,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.servlet.view.RedirectView;
 
-import com.ippoippo.joplin.util.UserCookieForTemporaryGenerator;
+import com.ippoippo.joplin.service.AuthService;
 
 public class AuthInterceptor extends HandlerInterceptorAdapter {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Inject
-	UserCookieForTemporaryGenerator userCookieForTemporaryGenerator;
+	AuthService authService;
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -47,7 +47,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 			return false;
 
 		} else {
-			String userId = userCookieForTemporaryGenerator.getUserId(request);
+			String userId = authService.getUserId(request);
 			if (userId == null) {
 				logger.info("Access without session: " + request.getRequestURI());
 				new RedirectView("/", true).render(null, request, response);

@@ -13,9 +13,9 @@
 					<h5>
 						<a class="vDialogBtn" href="#${firstItem.videoId}"><i class="icon-play"></i>&nbsp;Click image to view video</a>
 					</h5>
+					<br/>
+					<input type="button" id="firstBtn" class="btn-large" name="${firstItem.id}" value="Good!" />
 				</div>
-				<br/>
-				<input type="button" id="firstBtn" class="btn-large" name="${firstItem.id}" value="Good!" />
 			</div>
 			<div class="span6 centering">
 				<div>
@@ -25,9 +25,9 @@
 					<h5>
 						<a class="vDialogBtn" href="#${secondItem.videoId}"><i class="icon-play"></i>&nbsp;Click image to view video</a>
 					</h5>
+					<br/>
+					<input type="button" id="secondBtn" class="btn-large" name="${secondItem.id}" value="Good!" />
 				</div>
-				<br/>
-				<input type="button" id="secondBtn" class="btn-large" name="${secondItem.id}" value="Good!" />
 			</div>
 		</div>
 	</form>

@@ -8,7 +8,7 @@ import org.springframework.web.util.CookieGenerator;
 
 public class UserCookieForTemporaryGenerator {
 
-	public static final String SESSION_KEY_AUTH = "uid";
+	public static final String KEY_USERID = "uid";
 
 	private Encryptor encryptor;
 
@@ -18,9 +18,9 @@ public class UserCookieForTemporaryGenerator {
 
 	public UserCookieForTemporaryGenerator(Encryptor encryptor) {
 		this.encryptor = encryptor;
-		//this.userIdCookieGenerator.setCookieMaxAge(-1);
-		this.userIdCookieGenerator.setCookieMaxAge(ONE_WEEK);
-		this.userIdCookieGenerator.setCookieName(SESSION_KEY_AUTH);
+		this.userIdCookieGenerator.setCookieMaxAge(-1);
+		//this.userIdCookieGenerator.setCookieMaxAge(ONE_WEEK);
+		this.userIdCookieGenerator.setCookieName(KEY_USERID);
 	}
 
 	public void addUserId(HttpServletResponse response, String userId) {
@@ -37,7 +37,7 @@ public class UserCookieForTemporaryGenerator {
 
 		String userId = null;
 		for (Cookie cookie : cookies) {
-			if (cookie.getName().equals(SESSION_KEY_AUTH)) {
+			if (cookie.getName().equals(KEY_USERID)) {
 				userId = encryptor.decrypt(cookie.getValue());
 				break;
 			}

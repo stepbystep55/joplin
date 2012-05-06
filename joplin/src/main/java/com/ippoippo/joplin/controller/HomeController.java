@@ -30,11 +30,11 @@ import com.ippoippo.joplin.dto.YoutubeSearchForm;
 import com.ippoippo.joplin.exception.IllegalRequestException;
 import com.ippoippo.joplin.mongo.operations.YoutubeItemOperations;
 import com.ippoippo.joplin.service.ArticleService;
+import com.ippoippo.joplin.service.AuthService;
 import com.ippoippo.joplin.service.ContributionService;
 import com.ippoippo.joplin.service.ItemService;
 import com.ippoippo.joplin.service.UserService;
 import com.ippoippo.joplin.service.YoutubeSearchService;
-import com.ippoippo.joplin.util.UserCookieForTemporaryGenerator;
 
 /**
  * Handles requests for the application home page.
@@ -58,6 +58,9 @@ public class HomeController {
 	private int voteMinCountRequired;
 
 	@Inject
+	AuthService authService;
+	
+	@Inject
 	YoutubeSearchService youtubeSearchService;
 
 	@Inject
@@ -68,9 +71,6 @@ public class HomeController {
 
 	@Inject
 	UserService userService;
-
-	@Inject
-	UserCookieForTemporaryGenerator userCookieForTemporaryGenerator;
 
 	@Inject
 	YoutubeItemOperations youtubeItemOperations;
@@ -86,20 +86,22 @@ public class HomeController {
 	public ModelAndView top(HttpServletRequest request, HttpServletResponse response) {
 		
 		try {
-			String userId = userCookieForTemporaryGenerator.getUserId(request);
+			String userId = authService.getUserId(request);
 			if (userId == null) throw new NotSigninException();
 
 			if (userService.getById(userId) == null) throw new NotSigninException();
 
 			Article article = articleService.getActive();
 
-			userCookieForTemporaryGenerator.addUserId(response, userId); // renew cookie for extending maxage
+			authService.setUserId(request, response, userId);
+
 			ModelAndView modelAndView = new ModelAndView();
 			modelAndView.setViewName("redirect:/hn/" + article.getId() + "/battle");
 			return modelAndView;
 
 		} catch (NotSigninException e) {
-			userCookieForTemporaryGenerator.removeUserId(response);
+			authService.removeUserId(request, response);
+			
 			ModelAndView modelAndView = new ModelAndView();
 			modelAndView.setViewName("login");
 			return modelAndView;
@@ -112,7 +114,7 @@ public class HomeController {
 	public ModelAndView header(HttpServletRequest request) {
 
 		try {
-			String userId = userCookieForTemporaryGenerator.getUserId(request);
+			String userId = authService.getUserId(request);
 			if (userId == null) throw new NotSigninException();
 	
 			ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(userId);
@@ -133,7 +135,7 @@ public class HomeController {
 		}
 	}
 
-	private class NotSigninException extends Exception {
+	private class NotSigninException extends IllegalRequestException {
 		private static final long serialVersionUID = 5339130006274941143L;
 		public NotSigninException() { }
 	}
@@ -186,7 +188,7 @@ public class HomeController {
 
 		validateAccess(articleId);
 
-		String userId = userCookieForTemporaryGenerator.getUserId(request);
+		String userId = authService.getUserId(request);
 
 		itemService.vote(articleId, userId, winnerItemId, loserItemId);
 
@@ -213,7 +215,7 @@ public class HomeController {
 
 		validateAccess(articleId);
 
-		String userId = userCookieForTemporaryGenerator.getUserId(request);
+		String userId = authService.getUserId(request);
 
 		Article article = (articleId.equals(Article.ID_FOR_NO_ARTICLE)) ? new Article() : articleService.get(articleId);
 		List<YoutubeItem> items = itemService.listTopRate(articleId, rankListSize);
@@ -236,7 +238,7 @@ public class HomeController {
 
 		validateAccess(articleId);
 
-		String userId = userCookieForTemporaryGenerator.getUserId(request);
+		String userId = authService.getUserId(request);
 		Article article = (articleId.equals(Article.ID_FOR_NO_ARTICLE)) ? new Article() : articleService.get(articleId);
 
 		Contribution contribution = contributionService.get(articleId, userId);
@@ -292,7 +294,7 @@ public class HomeController {
 
 		if (result.hasErrors()) throw new IllegalRequestException(""+result.getAllErrors());
 
-		String userId = userCookieForTemporaryGenerator.getUserId(request);
+		String userId = authService.getUserId(request);
 		itemService.add(item);
 		contributionService.contribute(articleId, userId, item, canShare);
 
@@ -311,7 +313,7 @@ public class HomeController {
 
 		validateAccess(articleId);
 
-		String userId = userCookieForTemporaryGenerator.getUserId(request);
+		String userId = authService.getUserId(request);
 		Article article = (articleId.equals(Article.ID_FOR_NO_ARTICLE)) ? new Article() : articleService.get(articleId);
 
 		List<Contribution> contributions = contributionService.listFriendContributions(articleId, userId);
