@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<%@ include file="_headBase.jsp"%>
+	<%@ include file="_headBase520.jsp"%>
 	<title>Ranking</title>
 </head>
 <body>
@@ -79,9 +79,9 @@
 				<h3 style="color:#FF6347;">You vote more to view video. Ciao!</h3>
 			</div>
 		</div>
-
-		<jsp:include page="_footer.jsp"/>
 	</div>
+
+<jsp:include page="_footer.jsp"/>
 
 <%@ include file="_footBase.jsp"%>
 <script type="text/javascript">

@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<%@ include file="_headBase.jsp"%>
+	<%@ include file="_headBase520.jsp"%>
 	<title>Sign in</title>
 </head>
 <body>
@@ -56,9 +56,9 @@
 			</div>
 			--%>
 		</section>
-
-		<jsp:include page="_footer.jsp"/>
 	</div>
+
+<jsp:include page="_footer.jsp"/>
 
 <%@ include file="_footBase.jsp"%>
 </body>

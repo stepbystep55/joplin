@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<%@ include file="_headBase.jsp"%>
+	<%@ include file="_headBase520.jsp"%>
 <%--
 	<link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/resources/tableScroll/jquery.tablescroll.css" />
 --%>
@@ -65,9 +65,9 @@
 		</section>
 
 		<section id="searchResult"></section>
-
-		<jsp:include page="_footer.jsp"/>
 	</div>
+
+<jsp:include page="_footer.jsp"/>
 
 <%@ include file="_footBase.jsp"%>
 <%--

@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<%@ include file="_headBase.jsp"%>
+	<%@ include file="_headBase520.jsp"%>
 	<title>Battle</title>
 </head>
 <body>
@@ -67,9 +67,9 @@
 			</div>
 		</section>
 		</c:if>
-
-		<jsp:include page="_footer.jsp"/>
 	</div>
+
+<jsp:include page="_footer.jsp"/>
 
 <div id="fb-root"></div>
 <script>(function(d, s, id) {

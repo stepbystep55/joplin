@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<%@ include file="_headBase.jsp"%>
+	<%@ include file="_headBase520.jsp"%>
 	<title>Your item</title>
 </head>
 <body>
@@ -73,9 +73,9 @@
 			</div>
 			<div class="modal-body"></div>
 		</div>
-
-		<jsp:include page="_footer.jsp"/>
 	</div>
+
+<jsp:include page="_footer.jsp"/>
 
 <%@ include file="_footBase.jsp"%>
 <script type="text/javascript">

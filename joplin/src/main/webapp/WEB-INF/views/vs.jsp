@@ -8,7 +8,7 @@
 			<div class="span6 centering">
 				<div>
 					<a class="vDialogBtn" href="#${firstItem.videoId}">
-						<img class="vThumbnail" src="${firstItem.thumbnailUrl}" width="280" height="210" alt="first video thumbnail" />
+						<img class="vThumbnail" src="${firstItem.thumbnailUrl}" width="240" height="180" alt="first video thumbnail" />
 					</a>
 					<h5>
 						<a class="vDialogBtn" href="#${firstItem.videoId}"><i class="icon-play"></i>&nbsp;Click image to view video</a>
@@ -20,7 +20,7 @@
 			<div class="span6 centering">
 				<div>
 					<a class="vDialogBtn" href="#${secondItem.videoId}">
-						<img class="vThumbnail" src="${secondItem.thumbnailUrl}" width="280" height="210" alt="second video thumbnail" />
+						<img class="vThumbnail" src="${secondItem.thumbnailUrl}" width="240" height="180" alt="second video thumbnail" />
 					</a>
 					<h5>
 						<a class="vDialogBtn" href="#${secondItem.videoId}"><i class="icon-play"></i>&nbsp;Click image to view video</a>
