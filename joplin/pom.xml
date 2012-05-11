@@ -327,12 +327,13 @@
 						<phase>process-resources</phase>
 						<configuration>
 							<webappSourceDir>${basedir}/src/main/webapp</webappSourceDir>
-							<webappTargetDir>${project.build.directory}/${project.build.finalName}/resources</webappTargetDir>
+							<webappTargetDir>${project.build.directory}/${project.build.finalName}</webappTargetDir>
 							<cssSourceDir>resources/bootstrap/css</cssSourceDir>
 							<cssSourceFiles>
 								<cssSourceFile>bootstrap520.css</cssSourceFile>
 							</cssSourceFiles>
-							<cssFinalFile>style.css</cssFinalFile>
+							<cssTargetDir>resources/css</cssTargetDir>
+							<cssFinalFile>bootstrap520.css</cssFinalFile>
 						</configuration>
 						<goals>
 							<goal>minify</goal>

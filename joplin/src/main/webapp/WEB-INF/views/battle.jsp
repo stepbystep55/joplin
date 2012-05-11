@@ -38,13 +38,13 @@
 		<header class="header">
 			<h1><c:out value="${article.subject}" />&nbsp;</h1>
 			<div class="row">
-				<div id="shoutbox" class="span12 centering" style="line-height: 48px;">
+				<div id="shoutbox" class="span12 centering" style="line-height: 40px;">
 					<span>&nbsp;</span><span id="shout"></span>
 				</div>
 			</div>
 		</header>
 
-		<section id="vs" style="min-height:300px;">
+		<section id="vs" style="min-height:280px;">
 			<div  class="centering">
 				<img id="logo" alt="logo" src="<%= request.getContextPath() %>/resources/img/all_icons_png/square/image200.png" />
 			</div>
@@ -141,7 +141,7 @@ var msgArr = new Array(
 );
 function winningRun(){
 	var idx = Math.floor(Math.random()*msgArr.length);
-	$('#shoutbox').css({'color':'#FF33FF','font-size':'36px'});
+	$('#shoutbox').css({'color':'#FF33FF','font-size':'32px'});
 	$('#shout').html(unescape(msgArr[idx])).show().fadeOut(2000);
 }
 function alertVote(msg){

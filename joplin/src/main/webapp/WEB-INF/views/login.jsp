@@ -33,7 +33,7 @@
 
 		<section id="login">
 			<div class="row">
-				<div class="offset5 span7">
+				<div class="span12 centering">
 					<form:form action="signin/facebook" method="post" target="_top">
 					<div class="control-group">
 						<input type="hidden" name="scope" value="user_likes,publish_stream,offline_access" />

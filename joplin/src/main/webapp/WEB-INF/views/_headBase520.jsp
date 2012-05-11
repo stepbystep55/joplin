@@ -8,5 +8,5 @@
 <!--[if lt IE 9]>
 	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
-<link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/resources/bootstrap/css/bootstrap520.css" />
+<link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/resources/bootstrap/css/bootstrap520.min.css" />
 <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/resources/css/main.css" />

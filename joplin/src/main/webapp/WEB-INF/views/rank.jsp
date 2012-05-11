@@ -56,7 +56,7 @@
 						</td>
 						<td>
 							<a class="vDialogBtn" href="#${item.videoId}">
-								<img id="Thumbnail${status.index + 1}" class="vThumbnail" src="${item.thumbnailUrl}" width="320" height="240" />
+								<img id="Thumbnail${status.index + 1}" class="vThumbnail" src="${item.thumbnailUrl}" width="280" height="210" />
 							</a>
 							<h5 style="padding-left: 70px;">
 								<a class="vDialogBtn" href="#${item.videoId}"><i class="icon-play"></i>&nbsp;Click image to view video</a>
