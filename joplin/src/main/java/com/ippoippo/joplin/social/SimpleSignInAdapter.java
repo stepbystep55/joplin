@@ -37,5 +37,4 @@ public final class SimpleSignInAdapter implements SignInAdapter {
 		logger.info("Signin with userId=" + userId);
 		return null;
 	}
-
 }

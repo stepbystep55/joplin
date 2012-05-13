@@ -54,14 +54,15 @@
 					<div class="span2">
 						<label class="control-label" for="searchText">Search text</label>
 					</div>
-					<div class="span4">
-						<form:input path="searchText" maxlength="128" class="input-xlarge search-query"/>
-					</div>
 					<div class="span6">
+						<form:input path="searchText" maxlength="128" class="input-large search-query"/>
+					</div>
+					<div class="span4">
 						<input type="button" id="searchBtn" value="search" />
 					</div>
 				</div>
 			</form:form>
+			<span id="errmsg4searchText" style="color:#FF0000;"></span>
 		</section>
 
 		<section id="searchResult"></section>
@@ -78,6 +79,11 @@
 <!--
 $(function(){
 	$('#searchBtn').click(function(){
+		if($('#searchText').val().length == 0){
+			$('#errmsg4searchText').html('Please provide some text');
+			return;
+		}
+		$('#errmsg4searchText').html('');
 		loadSearchResult($('#command').val(),$('#startIndex').val(),$('#listSize').val(),$('#searchText').val());
 	});
 });

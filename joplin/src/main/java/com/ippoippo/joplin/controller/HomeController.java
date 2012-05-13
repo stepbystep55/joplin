@@ -28,12 +28,12 @@ import com.ippoippo.joplin.dto.UserDisplay;
 import com.ippoippo.joplin.dto.YoutubeItem;
 import com.ippoippo.joplin.dto.YoutubeSearchForm;
 import com.ippoippo.joplin.exception.IllegalRequestException;
-import com.ippoippo.joplin.mongo.operations.YoutubeItemOperations;
 import com.ippoippo.joplin.service.ArticleService;
 import com.ippoippo.joplin.service.AuthService;
 import com.ippoippo.joplin.service.ContributionService;
 import com.ippoippo.joplin.service.ItemService;
 import com.ippoippo.joplin.service.UserService;
+import com.ippoippo.joplin.service.UtilService;
 import com.ippoippo.joplin.service.YoutubeSearchService;
 
 /**
@@ -73,13 +73,22 @@ public class HomeController {
 	UserService userService;
 
 	@Inject
-	YoutubeItemOperations youtubeItemOperations;
+	UtilService utilService;
 
 	@Inject
 	ContributionService contributionService;
 
 	@Inject
 	UsersConnectionRepository usersConnectionRepository;
+
+	@Transactional(rollbackForClassName="java.leng.Exception")
+	@RequestMapping(value = "/amialive", method = RequestMethod.GET)
+	public ModelAndView amIAlive() {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("message", utilService.amIAlive());
+		modelAndView.setViewName("amIAlive");
+		return modelAndView;
+	}
 
 	@Transactional(rollbackForClassName="java.leng.Exception")
 	@RequestMapping(value = "/", method = {RequestMethod.GET,RequestMethod.POST})
@@ -93,7 +102,7 @@ public class HomeController {
 
 			Article article = articleService.getActive();
 
-			authService.setUserId(request, response, userId);
+			//authService.setUserId(request, response, userId); // extend expiring time
 
 			ModelAndView modelAndView = new ModelAndView();
 			modelAndView.setViewName("redirect:/hn/" + article.getId() + "/battle");

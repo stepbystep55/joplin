@@ -1,36 +1,11 @@
 @CHARSET "UTF-8";
-.header {
-	margin-top: 55px;
-}
-.footer {
-	margin-top: 32px;
-	padding: 15px 0 36px;
-	border-top: 1px solid #e5e5e5;
-}
-section {
-	padding-top: 12px;
-}
-#brdCrmb {
-	margin-top: 20px;
-}
-.confirm {
-	color: #FFA500;
-}
-#logo {
-	margin-top: 35px;
-	margin-bottom: 35px;
-	
-}
-.righten {
-	text-align: right;
-}
-.centering {
-	text-align: center;
-}
-.middlen {
-	vertical-align: middle;
-}
-.vThumbnail {
-	border: 2px solid #0088CC;
-	/*border: 2px inset #0088CC;*/
-}
+.header{margin-top:55px;}
+.footer{margin-top:32px;padding:15px 0 36px;border-top:1px solid #e5e5e5;}
+section{padding-top:12px;}
+#brdCrmb{margin-top:20px;}
+.confirm{color:#FFA500;}
+#logo{margin-top:35px;margin-bottom:35px;}
+.righten{text-align:right;}
+.centering{text-align:center;}
+.middlen{vertical-align:middle;}
+.vThumbnail{border:2px solid #0088CC;}

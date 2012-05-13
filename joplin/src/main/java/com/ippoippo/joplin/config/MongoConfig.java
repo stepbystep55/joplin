@@ -13,6 +13,7 @@ import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
 import com.ippoippo.joplin.mongo.operations.ArticleOperations;
 import com.ippoippo.joplin.mongo.operations.ContributionOperations;
 import com.ippoippo.joplin.mongo.operations.FriendListOperations;
+import com.ippoippo.joplin.mongo.operations.UtilOperations;
 import com.ippoippo.joplin.mongo.operations.VoteHistoryOperations;
 import com.ippoippo.joplin.mongo.operations.YoutubeItemOperations;
 import com.mongodb.MongoException;
@@ -57,5 +58,10 @@ public class MongoConfig {
 	@Bean
 	public FriendListOperations friendListOperations() throws MongoException, UnknownHostException {
 		return new FriendListOperations(mongoOperations());
+	}
+
+	@Bean
+	public UtilOperations utilOperations() throws MongoException, UnknownHostException {
+		return new UtilOperations(mongoOperations());
 	}
 }

@@ -52,7 +52,7 @@
 					<c:forEach items="${items}" var="item" varStatus="status">
 					<tr>
 						<td>
-							<c:out value="${status.index + 1}" />
+							<strong><c:out value="${status.index + 1}" /></strong>
 						</td>
 						<td>
 							<a class="vDialogBtn" href="#${item.videoId}">

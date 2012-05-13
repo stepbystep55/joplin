@@ -30,6 +30,9 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 		} else if (servletPath.startsWith("/resources")) {
 			return true;
 
+		} else if (servletPath.startsWith("/amialive")) {
+			return true;
+
 		} else if (servletPath.startsWith("/signin")) {
 			return true;
 

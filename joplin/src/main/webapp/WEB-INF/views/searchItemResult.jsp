@@ -4,13 +4,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <div class="row">
-	<div class="span2">
+	<div class="span4">
 		<ul class="pager">
 			<li><a id="prevLink" href="#">Previous</a></li>
 			<li><a id="nextLink" href="#">Next</a></li>
 		</ul>
 	</div>
-	<div class="span10">
+	<div class="span8">
 		<form action="#" method="post">
 			<input type="hidden" id="resultStartIndex" name="startIndex" value="${youtubeSearchForm.startIndex}" />
 			<input type="hidden" id="resultListSize" name="listSize" value="${youtubeSearchForm.listSize}" />

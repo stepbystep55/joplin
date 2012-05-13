@@ -31,6 +31,7 @@
 		<prop key="twitter.clientSecret">w8pgTrrsFuxkHIJWpZy88KOIRTEhhqmaYgzEiTr8LCY</prop>
 		<prop key="post.signin.url">http://apps.facebook.com/viva_joplin</prop>
 		<prop key="home.url">http://apps.facebook.com/viva_joplin</prop>
+		<prop key="healthcheck.url">http://joplin.nm-sy.cloudbees.net/amialive</prop>
 		
 		<!-- rdb -->
 		<prop key="init.db">false</prop>
