@@ -3,7 +3,7 @@
 
 <mapper namespace="com.ippoippo.joplin.jdbc.mapper.UtilMapper">
 
-	<select id="areYouAlive" resultType="Integer">
+	<select id="onePlusOne" resultType="Integer">
 		SELECT 1 + 1 FROM DUAL
 	</select>
 </mapper>

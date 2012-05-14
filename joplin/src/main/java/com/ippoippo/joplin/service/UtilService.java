@@ -35,7 +35,7 @@ public class UtilService {
 	public static final String MSG_NO = "I'm not alive.";
 
 	public String amIAlive() {
-		Integer result = utilMapper.areYouAlive();
+		Integer result = utilMapper.onePlusOne();
 		Set<String> collectionNames = utilOperations.getCollectionNames();
 		return MSG_YES;
 	}
