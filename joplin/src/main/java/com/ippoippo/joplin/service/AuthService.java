@@ -8,7 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.ippoippo.joplin.util.UserCookieForTemporaryGenerator;
+import com.ippoippo.joplin.cookie.FappCookie;
+import com.ippoippo.joplin.cookie.UserCookieForTemporary;
 
 @Service
 public class AuthService {
@@ -16,18 +17,29 @@ public class AuthService {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Inject
-	UserCookieForTemporaryGenerator userCookieForTemporaryGenerator;
+	UserCookieForTemporary userCookie;
+
+	@Inject
+	FappCookie fappCookie;
 
 	public String getUserId(HttpServletRequest request) {
-		String userId = userCookieForTemporaryGenerator.getUserId(request);
+		String userId = userCookie.getUserId(request);
 		return userId;
 	}
 
-	public void setUserId(HttpServletRequest request, HttpServletResponse response, String userId) {
-		userCookieForTemporaryGenerator.addUserId(response, userId);
+	public void setUserId(HttpServletResponse response, String userId) {
+		userCookie.addUserId(response, userId);
 	}
 
-	public void removeUserId(HttpServletRequest request, HttpServletResponse response) {
-		userCookieForTemporaryGenerator.removeUserId(response);
+	public void removeUserId(HttpServletResponse response) {
+		userCookie.removeUserId(response);
+	}
+
+	public void setFappTrue(HttpServletResponse response) {
+		fappCookie.setTrue(response);
+	}
+
+	public boolean isFapp(HttpServletRequest request) {
+		return fappCookie.isTrue(request);
 	}
 }

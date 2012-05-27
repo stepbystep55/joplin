@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.web.SignInAdapter;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -20,6 +21,9 @@ public final class SimpleSignInAdapter implements SignInAdapter {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+	@Value("${facebook.home.url}")
+	private String facebookHomeUrl;
+
 	@Inject
 	AuthService authService;
 
@@ -30,11 +34,12 @@ public final class SimpleSignInAdapter implements SignInAdapter {
 		
 		HttpServletResponse httpResponse = request.getNativeResponse(HttpServletResponse.class);
 		HttpServletRequest httpRequest = request.getNativeRequest(HttpServletRequest.class);
-		authService.setUserId(httpRequest, httpResponse, userId);
+		authService.setUserId(httpResponse, userId);
 
 		friendService.updateFriends(userId, connection);
 
 		logger.info("Signin with userId=" + userId);
-		return null;
+
+		return (authService.isFapp(httpRequest)) ? facebookHomeUrl : null;
 	}
 }

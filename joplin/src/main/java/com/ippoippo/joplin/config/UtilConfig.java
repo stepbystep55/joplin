@@ -9,8 +9,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.ippoippo.joplin.cookie.FappCookie;
+import com.ippoippo.joplin.cookie.UserCookieForTemporary;
 import com.ippoippo.joplin.util.Encryptor;
-import com.ippoippo.joplin.util.UserCookieForTemporaryGenerator;
 
 /**
  * Utility Configuration.
@@ -22,8 +23,13 @@ public class UtilConfig {
 	private String cipherKey;
 
 	@Bean
-	public UserCookieForTemporaryGenerator userCookieForTemporaryGenerator() {
-		return new UserCookieForTemporaryGenerator(encryptor());
+	public UserCookieForTemporary userCookieForTemporaryGenerator() {
+		return new UserCookieForTemporary(encryptor());
+	}
+	
+	@Bean
+	public FappCookie fappCookie() {
+		return new FappCookie();
 	}
 	
 	@Bean

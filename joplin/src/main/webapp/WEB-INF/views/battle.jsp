@@ -46,7 +46,7 @@
 
 		<section id="vs" style="min-height:280px;">
 			<div  class="centering">
-				<img id="logo" alt="logo" src="<%= request.getContextPath() %>/resources/img/all_icons_png/square/image200.png" />
+				<img id="logo" alt="logo" src="<%= request.getContextPath() %>/resources/img/mark/square/image200.png" />
 			</div>
 		</section>
 

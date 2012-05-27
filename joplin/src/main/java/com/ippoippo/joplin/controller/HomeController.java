@@ -51,6 +51,9 @@ public class HomeController {
 	@Value("${home.url}")
 	private String homeUrl;
 	
+	@Value("${facebook.home.url}")
+	private String facebookHomeUrl;
+	
 	@Value("${rank.list.size}")
 	private int rankListSize;
 
@@ -81,7 +84,7 @@ public class HomeController {
 	@Inject
 	UsersConnectionRepository usersConnectionRepository;
 
-	@Transactional(rollbackForClassName="java.leng.Exception")
+	@Transactional(rollbackForClassName="java.lang.Exception")
 	@RequestMapping(value = "/amialive", method = RequestMethod.GET)
 	public ModelAndView amIAlive() {
 		ModelAndView modelAndView = new ModelAndView();
@@ -90,8 +93,8 @@ public class HomeController {
 		return modelAndView;
 	}
 
-	@Transactional(rollbackForClassName="java.leng.Exception")
-	@RequestMapping(value = "/", method = {RequestMethod.GET,RequestMethod.POST})
+	@Transactional(rollbackForClassName="java.lang.Exception")
+	@RequestMapping(value ="/", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView top(HttpServletRequest request, HttpServletResponse response) {
 		
 		try {
@@ -109,9 +112,12 @@ public class HomeController {
 			return modelAndView;
 
 		} catch (NotSigninException e) {
-			authService.removeUserId(request, response);
+			authService.removeUserId(response);
 			
 			ModelAndView modelAndView = new ModelAndView();
+			if (Boolean.parseBoolean(request.getParameter("fapp"))) modelAndView.addObject("fapp", true);
+			modelAndView.addObject("homeUrl", homeUrl);
+			modelAndView.addObject("facebookHomeUrl", facebookHomeUrl);
 			modelAndView.setViewName("login");
 			return modelAndView;
 			

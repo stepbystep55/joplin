@@ -28,7 +28,7 @@
 	<div class="container">
 
 		<header class="header centering">
-			<img id="logo" alt="logo" src="<%= request.getContextPath() %>/resources/img/all_icons_png/square/image200.png" />
+			<img id="logo" alt="logo" src="<%= request.getContextPath() %>/resources/img/mark/square/image200.png" />
 		</header>
 
 		<section id="login">
@@ -37,10 +37,18 @@
 					<form:form action="signin/facebook" method="post" target="_top">
 					<div class="control-group">
 						<input type="hidden" name="scope" value="user_likes,publish_stream,offline_access" />
+						<input type="hidden" name="fapp" value="${fapp}" />
 						<input type="submit" class="btn-large" name="connectFacebook" value="connect" />
 						<span class="help-inline"><strong>with Facebook</strong></span>
 					</div>
 					</form:form>
+					<c:choose>
+						<c:when test="${fapp}"></c:when>
+						<c:otherwise>
+							<img id="small-logo" alt="samll logo" src="<%= request.getContextPath() %>/resources/img/picon/square/image16.png" />
+							<a href="${facebookHomeUrl}">Facebook app (non-ssl only)</a>
+						</c:otherwise>
+					</c:choose>
 				</div>
 			</div>
 			<%--

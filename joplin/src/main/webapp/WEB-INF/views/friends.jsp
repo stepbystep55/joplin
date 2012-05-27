@@ -84,7 +84,7 @@
 				<h4>Video view</h4>
 			</div>
 			<div class="modal-body centering">
-				<img id="logo" alt="logo" src="<%= request.getContextPath() %>/resources/img/all_icons_png/square/image128.png" />
+				<img id="logo" alt="logo" src="<%= request.getContextPath() %>/resources/img/mark/square/image128.png" />
 				<h3 style="color:#FF6347;">You vote more to view video. Ciao!</h3>
 			</div>
 		</div>

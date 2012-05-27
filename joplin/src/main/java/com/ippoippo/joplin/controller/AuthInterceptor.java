@@ -34,6 +34,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 			return true;
 
 		} else if (servletPath.startsWith("/signin")) {
+			if (Boolean.parseBoolean(request.getParameter("fapp"))) authService.setFappTrue(response);
 			return true;
 
 		} else if (servletPath.startsWith("/admin")) {
