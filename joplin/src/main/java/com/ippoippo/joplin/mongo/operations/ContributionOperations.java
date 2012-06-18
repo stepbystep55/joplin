@@ -52,4 +52,9 @@ public class ContributionOperations extends AbstractOperations {
 	public void create(Contribution contribution) {
 		mongoOperations().insert(contribution, Contribution.class.getSimpleName());
 	}
+
+	public void deleteByUserId(String userId) {
+		Query query = Query.query(Criteria.where("userId").is(userId));
+		mongoOperations().remove(query, Contribution.class.getSimpleName());
+	}
 }

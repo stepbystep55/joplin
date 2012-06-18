@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 
 import com.ippoippo.joplin.cookie.FappCookie;
 import com.ippoippo.joplin.cookie.UserCookieForTemporary;
+import com.ippoippo.joplin.jdbc.mapper.UserMasterMapper;
+import com.ippoippo.joplin.mongo.operations.ContributionOperations;
+import com.ippoippo.joplin.mongo.operations.VoteHistoryOperations;
 
 @Service
 public class AuthService {
@@ -21,6 +24,15 @@ public class AuthService {
 
 	@Inject
 	FappCookie fappCookie;
+
+	@Inject
+	ContributionOperations contributionOperations;
+
+	@Inject
+	VoteHistoryOperations voteHistoryOperations;
+
+	@Inject
+	UserMasterMapper userMasterMapper;
 
 	public String getUserId(HttpServletRequest request) {
 		String userId = userCookie.getUserId(request);
@@ -41,5 +53,13 @@ public class AuthService {
 
 	public boolean isFapp(HttpServletRequest request) {
 		return fappCookie.isTrue(request);
+	}
+	
+	public void deleteUser(HttpServletRequest request, HttpServletResponse response) {
+		String userId = userCookie.getUserId(request);
+		contributionOperations.deleteByUserId(userId);
+		voteHistoryOperations.deleteByUserId(userId);
+		userMasterMapper.delete(userId);
+		userCookie.removeUserId(response);
 	}
 }

@@ -22,4 +22,9 @@ public class VoteHistoryOperations extends AbstractOperations {
 		Query query = Query.query(Criteria.where("articleId").is(articleId).and("userId").is(userId));
 		return mongoOperations().count(query, Vote.class.getSimpleName());
 	}
+
+	public void deleteByUserId(String userId) {
+		Query query = Query.query(Criteria.where("userId").is(userId));
+		mongoOperations().remove(query, Vote.class.getSimpleName());
+	}
 }

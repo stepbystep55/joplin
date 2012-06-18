@@ -113,15 +113,17 @@ public class HomeController {
 
 		} catch (NotSigninException e) {
 			authService.removeUserId(response);
-			
-			ModelAndView modelAndView = new ModelAndView();
-			if (Boolean.parseBoolean(request.getParameter("fapp"))) modelAndView.addObject("fapp", true);
-			modelAndView.addObject("homeUrl", homeUrl);
-			modelAndView.addObject("facebookHomeUrl", facebookHomeUrl);
-			modelAndView.setViewName("login");
-			return modelAndView;
-			
+			return login(Boolean.parseBoolean(request.getParameter("fapp")));
 		}
+	}
+
+	private ModelAndView login(boolean isFacabookApp) {
+		ModelAndView modelAndView = new ModelAndView();
+		if (isFacabookApp) modelAndView.addObject("fapp", true);
+		modelAndView.addObject("homeUrl", homeUrl);
+		modelAndView.addObject("facebookHomeUrl", facebookHomeUrl);
+		modelAndView.setViewName("login");
+		return modelAndView;
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
@@ -153,6 +155,15 @@ public class HomeController {
 	private class NotSigninException extends IllegalRequestException {
 		private static final long serialVersionUID = 5339130006274941143L;
 		public NotSigninException() { }
+	}
+
+	@Transactional(rollbackForClassName="java.lang.Exception")
+	@RequestMapping(value = "/hn/quit", method = RequestMethod.GET)
+	public ModelAndView quit(HttpServletRequest request, HttpServletResponse response) throws IllegalRequestException {
+
+		authService.deleteUser(request, response);
+
+		return login(Boolean.parseBoolean(request.getParameter("fapp")));
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
