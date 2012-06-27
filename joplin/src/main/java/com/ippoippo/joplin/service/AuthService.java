@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.social.connect.ConnectionRepository;
+import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.stereotype.Service;
 
 import com.ippoippo.joplin.cookie.FappCookie;
@@ -34,6 +36,9 @@ public class AuthService {
 	@Inject
 	UserMasterMapper userMasterMapper;
 
+	@Inject
+	UsersConnectionRepository usersConnectionRepository;
+
 	public String getUserId(HttpServletRequest request) {
 		String userId = userCookie.getUserId(request);
 		return userId;
@@ -52,7 +57,13 @@ public class AuthService {
 	}
 
 	public boolean isFapp(HttpServletRequest request) {
-		return fappCookie.isTrue(request);
+		boolean fapp = false;
+		if (request.getParameter("fapp") != null) {
+			fapp = Boolean.parseBoolean(request.getParameter("fapp"));
+		} else {
+			fapp = fappCookie.isTrue(request);
+		}
+		return fapp;
 	}
 	
 	public void deleteUser(HttpServletRequest request, HttpServletResponse response) {
@@ -60,6 +71,8 @@ public class AuthService {
 		contributionOperations.deleteByUserId(userId);
 		voteHistoryOperations.deleteByUserId(userId);
 		userMasterMapper.delete(userId);
+		ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(userId);
+		connectionRepository.removeConnections("facebook");
 		userCookie.removeUserId(response);
 	}
 }

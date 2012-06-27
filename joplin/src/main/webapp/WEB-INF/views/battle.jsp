@@ -28,8 +28,32 @@
 						<li><a href="rank">Ranking</a></li>
 						<li><a href="friends">Friends</a></li>
 					</ul>
+					<ul class="nav pull-right">
+						<li></li>
+						<li class="dropdown" id="menu1">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="#menu1">and ...<b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a data-toggle="modal" href="#qDialog">Deactivate</a></li>
+							</ul>
+						</li>
+					</ul>
 				</div>
 			</div>
+		</div>
+	</div>
+
+	<div class="modal hide fade" id="qDialog">
+		<div class="modal-header">
+			<button class="close" data-dismiss="modal">×</button>
+			<h4>Are you sure?</h4>
+		</div>
+		<div class="modal-body centering">
+			<h3>Do you really deactivate your account?</h3>
+			<p>All your data will be erased from the application.</p>
+		</div>
+		<div class="modal-footer">
+			<a href="#" class="btn" data-dismiss="modal">No, not yet</a>
+			<a href="../quit" class="btn btn-primary">Yes, go ahead!</a>
 		</div>
 	</div>
 

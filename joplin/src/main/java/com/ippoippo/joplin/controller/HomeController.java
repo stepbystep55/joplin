@@ -113,7 +113,7 @@ public class HomeController {
 
 		} catch (NotSigninException e) {
 			authService.removeUserId(response);
-			return login(Boolean.parseBoolean(request.getParameter("fapp")));
+			return login(authService.isFapp(request));
 		}
 	}
 
@@ -163,7 +163,7 @@ public class HomeController {
 
 		authService.deleteUser(request, response);
 
-		return login(Boolean.parseBoolean(request.getParameter("fapp")));
+		return login(authService.isFapp(request));
 	}
 
 	@Transactional(rollbackForClassName="java.lang.Exception")
