@@ -38,7 +38,7 @@
 		<prop key="init.db">false</prop>
 		<prop key="db.mapperBasePackage">com.ippoippo.joplin.jdbc.mapper</prop>
 		<prop key="db.driverClassName">org.h2.Driver</prop>
-		<prop key="db.url">jdbc:h2:tcp://localhost/d:/h2/data</prop>
+		<prop key="db.url">jdbc:h2:tcp://localhost/c:/h2/data</prop>
 		<prop key="db.username">sa</prop>
 		<prop key="db.password"></prop>
 

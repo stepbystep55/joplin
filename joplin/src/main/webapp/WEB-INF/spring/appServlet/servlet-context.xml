@@ -70,6 +70,7 @@
 -->
 
 	<!-- cache -->
+	<!--
 	<cache:annotation-driven />
 	<beans:bean
 		id="cacheManager"
@@ -79,12 +80,9 @@
 		id="ehcache"
 		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
 		p:config-location="/WEB-INF/spring/appServlet/ehcache.xml"/>
-	
+	-->
 	<beans:import resource="dev-properties.xml" />
 	<beans:import resource="dev-datasrc.xml" />
-	<!--
-	<beans:import resource="cache.xml" />
-	-->
 	<beans:import resource="task.xml" />
 
 </beans:beans>

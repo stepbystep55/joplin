@@ -11,10 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.stereotype.Service;
 
-import com.google.api.client.googleapis.json.JsonCParser;
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestFactory;
-import com.google.api.client.json.jackson.JacksonFactory;
 import com.ippoippo.joplin.dto.YoutubeItem;
 import com.ippoippo.joplin.dto.YoutubeSearchForm;
 import com.ippoippo.joplin.mongo.operations.VoteHistoryOperations;
@@ -53,7 +51,7 @@ public class YoutubeSearchService {
 		// build a HTTP GET request
 		HttpRequest request = gdataRequestFactory.buildGetRequest(url);
 		logger.info("request url: " + request.getUrl().toString());
-		request.addParser(new JsonCParser(new JacksonFactory()));
+		//request.addParser(new JsonCParser(new JacksonFactory()));
 
 		// execute the request and parse the video feed
 		VideoFeed feed = request.execute().parseAs(VideoFeed.class);

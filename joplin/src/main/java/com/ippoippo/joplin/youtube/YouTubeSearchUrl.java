@@ -36,7 +36,7 @@ public class YouTubeSearchUrl extends GoogleUrl {
 
 	public YouTubeSearchUrl() {
 		super(BASE_URL);
-		this.alt = "jsonc";
-		this.prettyprint = PRETTY_PRINT;
+		setAlt("jsonc");
+		setPrettyPrint(PRETTY_PRINT);
 	}
 }
