@@ -55,8 +55,7 @@
 	<aop:aspectj-autoproxy />
 
 	<beans:bean id="exceptionLogger" class="com.ippoippo.joplin.aop.ExceptionLogger" />
-	
-<!--
+	<!--
 	<beans:bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<beans:property name="location">
 			<beans:value>classpath:/application.properties</beans:value>
@@ -67,7 +66,7 @@
 			</beans:props>
 		</beans:property>
 	</beans:bean>
--->
+	-->
 
 	<!-- cache -->
 	<!--
@@ -81,8 +80,9 @@
 		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
 		p:config-location="/WEB-INF/spring/appServlet/ehcache.xml"/>
 	-->
-	<beans:import resource="dev-properties.xml" />
-	<beans:import resource="dev-datasrc.xml" />
+
+	<beans:import resource="properties.xml" />
+	<beans:import resource="datasrc.xml" />
 	<beans:import resource="task.xml" />
 
 </beans:beans>

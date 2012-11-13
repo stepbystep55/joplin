@@ -14,34 +14,22 @@
 		<prop key="application.name">VivaJoplin</prop>
 		<prop key="application.caption">Viva! Viva! Viva Joplin!!</prop>
 		<prop key="application.description">This is a "Hot or Not" application on SNS.</prop>
-		<prop key="cipher.key">osdfa790523qdsu3as4d38be</prop>
-		<prop key="admin.password.md5">329435e5e66be809a656af105f42401e</prop>
-		<!--
-		<prop key="admin.password.md5">11fbcebdd135a59adaa856f9d6245026</prop>
-		-->
+		<prop key="cipher.key">__24_alphanumeric_characters__</prop>
+		<prop key="admin.password.md5">__md5_hashed_password__</prop>
+		<prop key="init.db">false</prop>
 
 		<!-- parameter -->
 		<prop key="rank.list.size">5</prop>
 		<prop key="vote.mincount.required">3</prop>
 
 		<!-- social -->
-		<prop key="facebook.clientId">314436538597635</prop>
-		<prop key="facebook.clientSecret">ae5f7e6a47cde2cf5e0b0665b5cdf948</prop>
-		<prop key="twitter.clientId">uvdyZgVoLULdG68B2CNrw</prop>
-		<prop key="twitter.clientSecret">Pogop0X8n0wfG7WYqnRaHPsjU4EbhOYH1BLKkypWc</prop>
-		<prop key="post.signin.url">http://www.ippoippo.com:8080/joplin/</prop>
-		<prop key="home.url">http://www.ippoippo.com:8080/joplin/</prop>
-		<prop key="facebook.home.url">http://apps.facebook.com/viva_joplin_local/</prop>
-		<prop key="healthcheck.url">http://www.ippoippo.com:8080/joplin/amialive</prop>
+		<prop key="facebook.clientId">__client_id_for_facebook_app__</prop>
+		<prop key="facebook.clientSecret">__client_secret_for_facebook_app__</prop>
+		<prop key="post.signin.url">http://__my_domain__/joplin/</prop>
+		<prop key="home.url">http://__my_domain__/joplin/</prop>
+		<prop key="facebook.home.url">http://apps.facebook.com/__app_name__/</prop>
+		<prop key="healthcheck.url">http://__my_domain__/joplin/amialive</prop>
 	
-		<!-- rdb -->
-		<prop key="init.db">false</prop>
-		<prop key="db.mapperBasePackage">com.ippoippo.joplin.jdbc.mapper</prop>
-		<prop key="db.driverClassName">org.h2.Driver</prop>
-		<prop key="db.url">jdbc:h2:tcp://localhost/c:/h2/data</prop>
-		<prop key="db.username">sa</prop>
-		<prop key="db.password"></prop>
-
 		<!-- mongo -->
 		<prop key="mongo.url">mongodb://localhost:27017/joplin</prop>
 	</util:properties>

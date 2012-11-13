@@ -10,9 +10,10 @@ import com.google.api.client.http.HttpRequestFactory;
 import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.jackson2.JacksonFactory;
 
 /**
- * HTTP Client for only gdata Configuration.
+ * HTTP Client Configuration for only gdata.
  */
 @Configuration
 public class GdataClientConfig {
@@ -23,7 +24,6 @@ public class GdataClientConfig {
 
 			@Override
 			public void initialize(HttpRequest request) {
-				// set the parser
 				// set up the Google headers
 				GoogleHeaders headers = new GoogleHeaders();
 				headers.setApplicationName("joplin/1.0");
@@ -32,7 +32,7 @@ public class GdataClientConfig {
 				// set timeout
 				request.setConnectTimeout(3000);
 				request.setReadTimeout(3000);
-
+				// set the parser
 				JsonCParser parser = new JsonCParser(new JacksonFactory());
 				request.setParser(parser);
 			}
